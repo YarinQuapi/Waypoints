@@ -1,13 +1,13 @@
 name: QWaypoints
-version: 2.0-PRE.RELEASE.1
-main: me.yarinlevi.waypoints.Waypoints
+version: 0.3-EXPERIMENTAL
+main: xyz.yarinlevi.waypoints.Waypoints
 api-version: 1.16
 author: Quapi
 
 commands:
   waypoint:
     description: Main command.
-    aliases: [wp, qwaypoints]
+    aliases: [wp, qwaypoints, qwp]
   wpadmin:
-    aliases: [wpa, waypointadmin, qwaypointadmin]
+    aliases: [wpa, waypointadmin, qwaypointadmin, wpadmin]
     permission: waypoints.admin
