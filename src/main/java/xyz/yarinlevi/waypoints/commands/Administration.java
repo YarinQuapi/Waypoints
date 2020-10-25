@@ -6,6 +6,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 import xyz.yarinlevi.waypoints.gui.helpers.Gui;
+import xyz.yarinlevi.waypoints.gui.inventories.CreateWaypointGUI;
 import xyz.yarinlevi.waypoints.gui.inventories.ListWaypointsGui;
 import xyz.yarinlevi.waypoints.utils.LocationHandler;
 import xyz.yarinlevi.waypoints.utils.Utils;
@@ -42,6 +43,9 @@ public class Administration implements CommandExecutor, TabCompleter {
                 ListWaypointsGui listWaypointsGui = new ListWaypointsGui();
                 listWaypointsGui.initialize(p).register();
                 p.openInventory(listWaypointsGui.getInventory());
+            } else if (args[1].equalsIgnoreCase("ANVIL_GUI_CREATE")) {
+                CreateWaypointGUI createWaypointGUI = new CreateWaypointGUI();
+                createWaypointGUI.open(p);
             } else {
                 if (Gui.guiList.containsKey(args[1].toUpperCase())) {
                     p.openInventory(Gui.getGui(args[1].toUpperCase()));
