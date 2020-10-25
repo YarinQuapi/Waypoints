@@ -1,8 +1,8 @@
 package xyz.yarinlevi.waypoints.utils;
 
+import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Color;
 import xyz.yarinlevi.waypoints.Waypoints;
-import net.md_5.bungee.api.ChatColor;
 
 public class Utils {
     public static String newMessage(String message) {
@@ -22,7 +22,17 @@ public class Utils {
      * @return colored string
      */
     public static String newRGBMessage(String message, int red, int green, int blue) {
-        Color color = Color.fromRGB(red, green, blue);
+        ChatColor color = ChatColor.of(getHexFromRGB(red, green, blue));
         return (color + message);
+    }
+
+    private static String getHexFromRGB(int red, int green, int blue) {
+        org.bukkit.Color color = Color.fromRGB(red, green, blue);
+        String hex = Integer.toHexString(color.asRGB() & 0xffffff);
+        if (hex.length() < 6) {
+            hex = "0" + hex;
+        }
+        hex = "#" + hex;
+        return hex;
     }
 }

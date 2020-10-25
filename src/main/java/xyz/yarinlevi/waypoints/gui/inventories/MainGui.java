@@ -2,7 +2,10 @@ package xyz.yarinlevi.waypoints.gui.inventories;
 
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import xyz.yarinlevi.waypoints.gui.helpers.Gui;
@@ -10,11 +13,12 @@ import xyz.yarinlevi.waypoints.utils.Utils;
 
 import java.util.ArrayList;
 
-public class MainGui extends Gui {
+public class MainGui extends Gui implements Listener {
     public Gui initialize() {
         this.setKey("WAYPOINTS_MAIN_GUI");
         this.setSlots(9);
         this.setTitle(Utils.newRGBMessage("QWaypoints", 130, 179, 171));
+        this.setInventoryType(InventoryType.CHEST);
 
         //Item Initialization
         ItemStack createWaypointButton = new ItemStack(Material.LIME_WOOL);
@@ -36,9 +40,12 @@ public class MainGui extends Gui {
     }
 
     @Override
+    @EventHandler
     public void onInventoryClick(InventoryClickEvent e) {
         Player player = (Player) e.getWhoClicked();
 
-        player.sendMessage("surprisingly this is working correctly.");
+        if (e.getRawSlot() == 2) {
+            player.sendMessage("surprisingly this is working correctly.");
+        }
     }
 }

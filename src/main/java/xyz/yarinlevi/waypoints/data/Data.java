@@ -10,10 +10,15 @@ import org.bukkit.entity.Player;
 
 import java.io.File;
 import java.util.Iterator;
+import java.util.Set;
 
 public class Data {
     @Getter @Setter private static File waypointFile;
     @Getter @Setter private static FileConfiguration playerData;
+
+    public static Set<String> getRawWaypointNames(Player p) {
+        return (playerData.getConfigurationSection(p.getUniqueId().toString()).getKeys(false).isEmpty()) ? playerData.getConfigurationSection(p.getUniqueId().toString()).getKeys(false) : null;
+    }
 
     public static boolean addWaypointToData(Player p, String name, boolean systemInduced) {
         ConfigurationSection playerSection = playerData.getConfigurationSection(p.getUniqueId().toString());
