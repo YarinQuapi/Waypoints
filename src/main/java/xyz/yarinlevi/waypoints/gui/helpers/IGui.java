@@ -9,26 +9,41 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.event.inventory.InventoryMoveItemEvent;
+import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import xyz.yarinlevi.waypoints.exceptions.InventoryDoesNotExistException;
 
 import java.util.HashMap;
 
 public abstract class IGui implements Listener {
     @Getter private Inventory inventory;
+    @Getter private InventoryType inventoryType = InventoryType.CHEST;
     @Getter @Setter private String title, key;
     @Getter @Setter private int slots;
     @Getter private final HashMap<Integer, ItemStack> items = new HashMap<>();
 
     public abstract void run(Player player);
 
-    public Inventory initializeInventory() {
-        inventory = Bukkit.createInventory(null, slots, title);
+    public Inventory initializeInventory() throws InventoryDoesNotExistException {
+        if (inventoryType.equals(InventoryType.CHEST)) {
+            inventory = Bukkit.createInventory(null, slots, title);
 
+            for (int slot : items.keySet()) {
+                inventory.setItem(slot, items.get(slot));
+            }
+            return inventory;
+        } else if (inventoryType.equals(InventoryType.ANVIL)) {
+            return Bukkit.createInventory(null, InventoryType.ANVIL, title);
+        } else {
+            throw new InventoryDoesNotExistException();
+        }
+    }
+
+    public void initializeSlots(Inventory inventory) {
         for (int slot : items.keySet()) {
             inventory.setItem(slot, items.get(slot));
         }
-        return inventory;
     }
 
     @EventHandler
