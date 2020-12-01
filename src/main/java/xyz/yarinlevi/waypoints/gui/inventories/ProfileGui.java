@@ -5,6 +5,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
+import xyz.yarinlevi.waypoints.exceptions.InventoryDoesNotExistException;
 import xyz.yarinlevi.waypoints.gui.helpers.IGui;
 import xyz.yarinlevi.waypoints.utils.Utils;
 
@@ -67,7 +68,11 @@ public class ProfileGui extends IGui {
             }
 
 
-            player.openInventory(this.initializeInventory());
+            try {
+                player.openInventory(this.initializeInventory());
+            } catch (InventoryDoesNotExistException e) {
+                e.printStackTrace();
+            }
             player.sendMessage("opened a gui for you.");
         }
     }

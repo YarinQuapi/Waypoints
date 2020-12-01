@@ -8,6 +8,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import xyz.yarinlevi.waypoints.data.Data;
 import xyz.yarinlevi.waypoints.data.WaypointManager;
+import xyz.yarinlevi.waypoints.exceptions.InventoryDoesNotExistException;
 import xyz.yarinlevi.waypoints.gui.helpers.IGui;
 import xyz.yarinlevi.waypoints.utils.LocationHandler;
 
@@ -43,7 +44,11 @@ public class WaypointListGui extends IGui {
             i++;
         }
 
-        player.openInventory(this.initializeInventory());
+        try {
+            player.openInventory(this.initializeInventory());
+        } catch (InventoryDoesNotExistException e) {
+            e.printStackTrace();
+        }
         player.sendMessage("opened a gui for you.");
     }
 }
