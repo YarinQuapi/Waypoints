@@ -42,7 +42,6 @@ public class Waypoints extends JavaPlugin {
         }
         Data.saveData();
 
-
         this.getCommand("waypoint").setExecutor((CommandExecutor)new MainCommand());
         this.getCommand("wpadmin").setExecutor((CommandExecutor)new Administration());
         Bukkit.getPluginManager().registerEvents(new Events(), this);
