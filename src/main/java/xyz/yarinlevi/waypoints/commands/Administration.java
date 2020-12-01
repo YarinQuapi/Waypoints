@@ -37,6 +37,8 @@ public class Administration implements CommandExecutor, TabCompleter {
             p.sendMessage(msg);
         } else if (args[0].equalsIgnoreCase("gui")) {
             GuiHandler.openInventory(args[1], p);
+        } else {
+            p.sendMessage(Utils.newMessage("&cInvalid usage!"));
         }
 
         return true;

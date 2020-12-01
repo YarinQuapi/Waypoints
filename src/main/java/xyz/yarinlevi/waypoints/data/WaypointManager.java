@@ -1,8 +1,5 @@
 package xyz.yarinlevi.waypoints.data;
 
-import xyz.yarinlevi.waypoints.Waypoints;
-import xyz.yarinlevi.waypoints.utils.LocationHandler;
-import xyz.yarinlevi.waypoints.utils.Utils;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.ComponentBuilder;
@@ -11,10 +8,15 @@ import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
+import xyz.yarinlevi.waypoints.Waypoints;
+import xyz.yarinlevi.waypoints.utils.LocationHandler;
+import xyz.yarinlevi.waypoints.utils.Utils;
+import xyz.yarinlevi.waypoints.waypoint.WaypointWorld;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.stream.Stream;
 
 public class WaypointManager {
 
@@ -23,6 +25,24 @@ public class WaypointManager {
             return new ArrayList<>(Data.getPlayerData().getConfigurationSection(p.getUniqueId().toString()).getKeys(false));
         }
         return new ArrayList<>();
+    }
+
+    public static ArrayList<String> listWaypointsInWorld(Player p, WaypointWorld world) {
+        Iterator<String> waypoints = Data.getPlayerData().getConfigurationSection(p.getUniqueId().toString()).getKeys(false).iterator();
+        ArrayList<String> worldRequestedWaypoints = new ArrayList<>();
+
+        String worldType = translateWorldName(world.toString());
+
+        while (waypoints.hasNext()) {
+            String wp = waypoints.next();
+            ConfigurationSection wpSection = Data.getWaypointData(p, wp);
+            HashMap<String, String> locDetail = LocationHandler.handleLocation((Location) wpSection.get("location"));
+            if(locDetail.get("world").equals(worldType)) {
+                worldRequestedWaypoints.add(wp);
+            }
+        }
+
+        return worldRequestedWaypoints;
     }
 
 
@@ -154,5 +174,46 @@ public class WaypointManager {
                 p.spigot().sendMessage(message);
             }
         }
+    }
+    private static String translateWorldName(String input) {
+        ArrayList<String> possibleOverworldNames = new ArrayList<>();
+        Stream.of(
+                "overworld",
+                "normal",
+                "world"
+        ).forEach(possibleOverworldNames::add);
+        for (String name: possibleOverworldNames) {
+            if(name.equals(input.toLowerCase())) {
+                return "NORMAL";
+            }
+        }
+
+        ArrayList<String> possibleNetherNames = new ArrayList<>();
+        Stream.of(
+                "nether",
+                "the_nether",
+                "world_nether",
+                "nether_world",
+                "netherland",
+                "hell"
+        ).forEach(possibleNetherNames::add);
+        for (String name: possibleNetherNames) {
+            if(name.equals(input.toLowerCase())) {
+                return "NETHER";
+            }
+        }
+        ArrayList<String> possibleEndNames = new ArrayList<>();
+        Stream.of(
+                "end",
+                "the_end",
+                "theend",
+                "dragonworld"
+        ).forEach(possibleEndNames::add);
+        for (String name: possibleEndNames) {
+            if(name.equals(input.toLowerCase())) {
+                return "THE_END";
+            }
+        }
+        return "NORMAL";
     }
 }

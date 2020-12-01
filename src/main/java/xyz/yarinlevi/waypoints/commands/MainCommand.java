@@ -2,6 +2,7 @@ package xyz.yarinlevi.waypoints.commands;
 
 import xyz.yarinlevi.waypoints.Waypoints;
 import xyz.yarinlevi.waypoints.data.WaypointManager;
+import xyz.yarinlevi.waypoints.gui.GuiHandler;
 import xyz.yarinlevi.waypoints.utils.LocationHandler;
 import xyz.yarinlevi.waypoints.utils.Utils;
 import org.bukkit.command.Command;
@@ -30,7 +31,9 @@ public class MainCommand implements CommandExecutor, TabCompleter {
             return false;
         }
 
-        if(args.length == 0 || args.length == 1 && args[0].equalsIgnoreCase("help")) {
+        if (args.length == 0) {
+            GuiHandler.openInventory("gui.personal.profile", p);
+        } else if(args.length == 1 && args[0].equalsIgnoreCase("help")) {
             String str = Utils.newMessage("&eCommands:\n" +
                     "&b  • &d/wp help &f- &eShow this command\n" +
                     "&b  • &d/wp check <&awaypoint&d> &f- &eCheck a certain waypoint.\n" +

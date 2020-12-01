@@ -6,14 +6,14 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.util.Vector;
 import xyz.yarinlevi.waypoints.data.Data;
 import xyz.yarinlevi.waypoints.data.WaypointManager;
 import xyz.yarinlevi.waypoints.exceptions.InventoryDoesNotExistException;
 import xyz.yarinlevi.waypoints.gui.helpers.IGui;
-import xyz.yarinlevi.waypoints.utils.LocationHandler;
+import xyz.yarinlevi.waypoints.utils.Utils;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 public class WaypointListGui extends IGui {
     @Override
@@ -22,21 +22,22 @@ public class WaypointListGui extends IGui {
         this.setSlots(9*3);
         this.setTitle("Waypoint list");
 
-        ItemStack itemStack = new ItemStack(Material.DIRT);
         int i = 0;
         for (String waypointName : WaypointManager.tabCompleterList(player)) {
+            ItemStack itemStack = new ItemStack(Material.DIRT);
             ItemMeta itemMeta = itemStack.getItemMeta();
 
             ConfigurationSection wp = Data.getWaypointData(player, waypointName);
 
             Location loc = (Location) wp.get("location");
-            HashMap<String, String> locDetail = LocationHandler.handleLocation(loc);
+            Vector vec = loc.toVector();
 
             ArrayList<String> lore = new ArrayList<>();
-            lore.add("Coordinates: " + loc.toVector());
+            String coordinatesString = String.format(Utils.newMessageNoPrefix("&eCoordinates: &bX&e: &d%s &bY&e: &d%s &bZ&e: &d%s"), vec.getBlockX(), vec.getBlockY(), vec.getBlockZ());
+            lore.add(coordinatesString);
 
             itemMeta.setLore(lore);
-            itemMeta.setDisplayName(waypointName);
+            itemMeta.setDisplayName(Utils.newMessageNoPrefix("&d" + waypointName));
 
             itemStack.setItemMeta(itemMeta);
 
@@ -49,6 +50,5 @@ public class WaypointListGui extends IGui {
         } catch (InventoryDoesNotExistException e) {
             e.printStackTrace();
         }
-        player.sendMessage("opened a gui for you.");
     }
 }
