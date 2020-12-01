@@ -82,7 +82,8 @@ public class MainCommand implements CommandExecutor, TabCompleter {
             } else if (args[0].equalsIgnoreCase("spawn")) {
                 HashMap<String, String> locDetail = LocationHandler.handleLocation(p.getWorld().getSpawnLocation());
                 String msg = Utils.newMessage("&eSpawn locator:\n" +
-                        String.format("&b  • &eCoordinates: &bX&e: &d%s &bY&e: &d%s &bZ&e: &d%s\n", locDetail.get("x"), locDetail.get("y"), locDetail.get("z")));
+                        String.format("&b  • &eCoordinates: &bX&e: &d%s &bY&e: &d%s &bZ&e: &d%s\n", locDetail.get("x"), locDetail.get("y"), locDetail.get("z")) +
+                        String.format("&b  • &eDistance to coordinates: &d%s &bblocks", Utils.calculateDistance(p.getLocation(), p.getWorld().getSpawnLocation())));
                 p.sendMessage(msg);
             } else {
                 String str = Utils.newMessage("&cInvalid usage! try: &e/wp help");
@@ -103,7 +104,8 @@ public class MainCommand implements CommandExecutor, TabCompleter {
                     "create",
                     "delete",
                     "list",
-                    "check"
+                    "check",
+                    "spawn"
             ).forEach(list::add);
             return list;
         } else if (args.length == 2) {

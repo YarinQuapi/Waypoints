@@ -49,7 +49,9 @@ public class Waypoints extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new Events(), this);
         Bukkit.getPluginManager().registerEvents(new Gui(), this);
 
-        GuiHandler.registerGui();
+        GuiHandler.registerGui().forEach((key, value) -> {
+           Bukkit.getPluginManager().registerEvents(value, this);
+        });
     }
 
     @Override

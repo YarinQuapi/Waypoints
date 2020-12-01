@@ -33,7 +33,8 @@ public class WaypointManager {
             Location loc = (Location) wp.get("location");
             HashMap<String, String> locDetail = LocationHandler.handleLocation(loc);
 
-            String msg = Utils.newMessage(String.format("&eWaypoint &f\"&d%s&f\" &eis located at &bX&e: &d%s &bY&e: &d%s &bZ&e: &d%s &ein &bworld&e: &d%s", name, locDetail.get("x"), locDetail.get("y"), locDetail.get("z"), locDetail.get("world")));
+            String msg = Utils.newMessage(String.format("&eWaypoint &f\"&d%s&f\" &eis located at &bX&e: &d%s &bY&e: &d%s &bZ&e: &d%s &ein &bworld&e: &d%s &eYou are &d%s &bblocks &eaway.", name, locDetail.get("x"), locDetail.get("y"), locDetail.get("z"), locDetail.get("world"), Utils.calculateDistance(p.getLocation(), loc)));
+
 
             p.sendMessage(msg);
             return true;

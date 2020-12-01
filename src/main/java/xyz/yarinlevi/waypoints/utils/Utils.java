@@ -2,6 +2,7 @@ package xyz.yarinlevi.waypoints.utils;
 
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Color;
+import org.bukkit.Location;
 import xyz.yarinlevi.waypoints.Waypoints;
 
 public class Utils {
@@ -22,17 +23,20 @@ public class Utils {
      * @return colored string
      */
     public static String newRGBMessage(String message, int red, int green, int blue) {
-        ChatColor color = ChatColor.of(getHexFromRGB(red, green, blue));
-        return (color + message);
+        return (ChatColor.of(getHexFromRGB(red,green,blue)) + message);
     }
 
-    private static String getHexFromRGB(int red, int green, int blue) {
-        org.bukkit.Color color = Color.fromRGB(red, green, blue);
+    public static String getHexFromRGB(int r, int g, int b) {
+        Color color = Color.fromRGB(r,g,b);
         String hex = Integer.toHexString(color.asRGB() & 0xffffff);
         if (hex.length() < 6) {
             hex = "0" + hex;
         }
         hex = "#" + hex;
         return hex;
+    }
+
+    public static int calculateDistance(Location p1, Location p2) {
+        return (int) Math.sqrt(Math.pow(p1.getX() - p2.getX(), 2.0) + Math.pow(p1.getY()-p2.getY(), 2) + Math.pow(p1.getZ() - p2.getZ(), 2));
     }
 }
