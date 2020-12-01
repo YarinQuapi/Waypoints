@@ -18,7 +18,7 @@ import java.util.HashMap;
 
 public abstract class IGui implements Listener {
     @Getter private Inventory inventory;
-    @Getter private InventoryType inventoryType = InventoryType.CHEST;
+    @Getter @Setter private InventoryType inventoryType = InventoryType.CHEST;
     @Getter @Setter private String title, key;
     @Getter @Setter private int slots;
     @Getter private final HashMap<Integer, ItemStack> items = new HashMap<>();
