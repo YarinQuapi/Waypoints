@@ -1,18 +1,17 @@
 package xyz.yarinlevi.waypoints;
 
 import lombok.Getter;
-import xyz.yarinlevi.waypoints.commands.Administration;
-import xyz.yarinlevi.waypoints.commands.MainCommand;
-import xyz.yarinlevi.waypoints.data.Data;
-import xyz.yarinlevi.waypoints.events.Events;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
+import xyz.yarinlevi.waypoints.commands.Administration;
+import xyz.yarinlevi.waypoints.commands.MainCommand;
+import xyz.yarinlevi.waypoints.data.Data;
+import xyz.yarinlevi.waypoints.events.Events;
 import xyz.yarinlevi.waypoints.gui.GuiHandler;
-import xyz.yarinlevi.waypoints.gui.helpers.Gui;
 
 import java.io.File;
 import java.io.IOException;
@@ -47,7 +46,6 @@ public class Waypoints extends JavaPlugin {
         this.getCommand("waypoint").setExecutor((CommandExecutor)new MainCommand());
         this.getCommand("wpadmin").setExecutor((CommandExecutor)new Administration());
         Bukkit.getPluginManager().registerEvents(new Events(), this);
-        Bukkit.getPluginManager().registerEvents(new Gui(), this);
 
         GuiHandler.registerGui().forEach((key, value) -> {
            Bukkit.getPluginManager().registerEvents(value, this);
