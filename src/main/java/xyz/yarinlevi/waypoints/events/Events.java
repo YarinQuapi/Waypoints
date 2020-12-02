@@ -4,6 +4,7 @@ import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.TextComponent;
+import org.bukkit.Statistic;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -12,8 +13,6 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import xyz.yarinlevi.waypoints.data.Data;
 import xyz.yarinlevi.waypoints.data.WaypointManager;
 import xyz.yarinlevi.waypoints.utils.Utils;
-
-import java.util.concurrent.ThreadLocalRandom;
 
 public class Events implements Listener {
 
@@ -34,31 +33,19 @@ public class Events implements Listener {
     public void onPlayerDeath(PlayerDeathEvent e) {
         Player p = e.getEntity();
 
-        int random = ThreadLocalRandom.current().nextInt(min, max + 1);
         TextComponent msg = new TextComponent(Utils.newMessage("&eYou died. Created waypoint: "));
         TextComponent delete = new TextComponent(Utils.newMessageNoPrefix("&cDELETE"));
 
-        if (WaypointManager.addWaypoint(p, "Death-" + random, true)) {
-            TextComponent deathPoint = new TextComponent(Utils.newMessageNoPrefix("&f\"&dDeath-" + random + "&f\" "));
+        int deathCount = p.getStatistic(Statistic.DEATHS);
 
-            deathPoint.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(Utils.newMessageNoPrefix(String.format("&eClick to check waypoint &f\"&dDeath-%s&f\"", random))).create()));
-            deathPoint.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/wp check Death-" + random));
+        if (WaypointManager.addWaypoint(p, "Death-" + deathCount, true)) {
+            TextComponent deathPoint = new TextComponent(Utils.newMessageNoPrefix("&f\"&dDeath-" + deathCount + "&f\" "));
 
-            delete.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(Utils.newMessageNoPrefix(String.format("&eClick to delete waypoint &f\"&dDeath-%s&f\"", random))).create()));
-            delete.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/wp delete Death-" + random));
+            deathPoint.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(Utils.newMessageNoPrefix(String.format("&eClick to check waypoint &f\"&dDeath-%s&f\"", deathCount))).create()));
+            deathPoint.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/wp check Death-" + deathCount));
 
-            msg.addExtra(deathPoint);
-
-        } else {
-            random = ThreadLocalRandom.current().nextInt(min, max + 1);
-
-            TextComponent deathPoint = new TextComponent(Utils.newMessageNoPrefix("&f\"&dDeath-" + random + "&f\" "));
-
-            deathPoint.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(Utils.newMessageNoPrefix(String.format("&eClick to check waypoint &f\"&dDeath-%s&f\"", random))).create()));
-            deathPoint.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/wp check Death-" + random));
-
-            delete.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(Utils.newMessageNoPrefix(String.format("&eClick to delete waypoint &f\"&dDeath-%s&f\"", random))).create()));
-            delete.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/wp delete Death-" + random));
+            delete.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(Utils.newMessageNoPrefix(String.format("&eClick to delete waypoint &f\"&dDeath-%s&f\"", deathCount))).create()));
+            delete.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/wp delete Death-" + deathCount));
 
             msg.addExtra(deathPoint);
 
