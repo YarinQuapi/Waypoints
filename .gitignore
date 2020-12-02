@@ -40,3 +40,4 @@ target/classes/xyz/yarinlevi/waypoints/waypoint/IWaypoint.class
 target/classes/xyz/yarinlevi/waypoints/waypoint/WaypointHandler.class
 target/classes/xyz/yarinlevi/waypoints/waypoint/WaypointWorld.class
 target/classes/xyz/yarinlevi/waypoints/waypoint/WaypointType.class
+target/classes/xyz/yarinlevi/waypoints/gui/inventories/EditWaypointItemGui.class

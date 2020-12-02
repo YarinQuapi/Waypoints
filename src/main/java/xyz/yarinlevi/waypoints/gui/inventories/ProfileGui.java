@@ -23,14 +23,14 @@ public class ProfileGui extends IGui implements Listener {
     public void run(Player player) {
         this.setKey("gui.personal.profile");
         this.setSlots(9*3);
-        this.setTitle("profile gui test abstract");
+        this.setTitle(Utils.newMessageNoPrefix("&bMain Profile: &d" + player.getName()));
 
         ItemStack itemStack = new ItemStack(Material.PLAYER_HEAD);
         SkullMeta skullMeta = (SkullMeta) itemStack.getItemMeta();
 
         if (skullMeta != null) {
             { // Statistics
-                skullMeta.setDisplayName(Utils.newMessageNoPrefix("&b" + player.getDisplayName() + "&e's Stats"));
+                skullMeta.setDisplayName(Utils.newMessageNoPrefix("&d" + player.getDisplayName() + "&e's Stats"));
                 skullMeta.setOwningPlayer(player);
 
                 ArrayList<String> lore = new ArrayList<>();
@@ -69,21 +69,21 @@ public class ProfileGui extends IGui implements Listener {
             }
 
             { // Create waypoint button
-                ItemStack deleteWaypointButton = new ItemStack(Material.RED_WOOL);
-                ItemMeta meta = deleteWaypointButton.getItemMeta();
+                ItemStack waypointListButton = new ItemStack(Material.YELLOW_WOOL);
+                ItemMeta meta = waypointListButton.getItemMeta();
 
                 assert meta != null;
-                meta.setDisplayName(Utils.newRGBMessage("Delete a Waypoint", 246, 30, 16));
+                meta.setDisplayName(Utils.newRGBMessage("List all waypoints", 255, 229, 28));
 
                 ArrayList<String> lore = new ArrayList<>();
-                lore.add(Utils.newRGBMessage("Click here to delete a Waypoint!", 246, 37, 60));
+                lore.add(Utils.newRGBMessage("Click here to list all waypoints!", 255, 251, 0));
 
                 meta.setLore(lore);
 
-                deleteWaypointButton.setItemMeta(meta);
+                waypointListButton.setItemMeta(meta);
 
 
-                this.getItems().put(16, deleteWaypointButton);
+                this.getItems().put(16, waypointListButton);
             }
 
             try {
@@ -102,6 +102,8 @@ public class ProfileGui extends IGui implements Listener {
             e.setCancelled(true);
             if (e.getRawSlot() == 10) {
                 GuiHandler.openInventory("gui.create.waypoint", player);
+            } else if (e.getRawSlot() == 16) {
+                GuiHandler.openInventory("gui.personal.waypointlist", player);
             }
         }
     }

@@ -26,6 +26,7 @@ public class Data {
             return false;
         } else {
             ConfigurationSection section = playerSection.createSection(name);
+            section.set("item", "DIRT");
             section.set("location", p.getLocation());
             section.set("systemInduced", systemInduced);
             saveData();
