@@ -14,6 +14,7 @@ public class Waypoints extends JavaPlugin {
     @Getter private String prefix;
     @Getter private String adminPrefix;
     @Getter private WaypointHandler waypointHandler;
+    private PlayerListener playerListener;
 
     @Override
     public void onEnable() {
@@ -24,7 +25,8 @@ public class Waypoints extends JavaPlugin {
 
         //New data methods
 
-        Bukkit.getPluginManager().registerEvents(new PlayerListener(), this);
+        playerListener = new PlayerListener();
+        Bukkit.getPluginManager().registerEvents(playerListener, this);
         waypointHandler = new WaypointHandler();
 
 
@@ -34,10 +36,17 @@ public class Waypoints extends JavaPlugin {
         GuiHandler.registerGui().forEach((key, value) -> {
            Bukkit.getPluginManager().registerEvents(value, this);
         });
+
+        Bukkit.getOnlinePlayers().forEach(player -> {
+            playerListener.loadPlayer(player);
+        });
     }
 
     @Override
     public void onDisable() {
+        Bukkit.getOnlinePlayers().forEach(player -> {
+            playerListener.unloadPlayer(player);
+        });
     }
 
     public void registerConfigData() {

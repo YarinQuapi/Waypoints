@@ -41,8 +41,25 @@ public class PlayerListener implements Listener {
 
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
-        Player player = event.getPlayer();
+        Bukkit.getScheduler().runTaskAsynchronously(Waypoints.getInstance(), new Runnable() {
+            @Override
+            public void run() {
+                loadPlayer(event.getPlayer());
+            }
+        });
+    }
 
+    @EventHandler
+    public void onPlayerLeave(PlayerQuitEvent event) {
+        Bukkit.getScheduler().runTaskAsynchronously(Waypoints.getInstance(), new Runnable() {
+            @Override
+            public void run() {
+                unloadPlayer(event.getPlayer());
+            }
+        });
+    }
+
+    public void loadPlayer(Player player) {
         if (!data.contains(player.getUniqueId().toString())) {
             data.createSection(player.getUniqueId().toString());
             data.getConfigurationSection(player.getUniqueId().toString()).createSection("waypoints");
@@ -68,10 +85,7 @@ public class PlayerListener implements Listener {
         }
     }
 
-    @EventHandler
-    public void onPlayerLeave(PlayerQuitEvent event) {
-        Player player = event.getPlayer();
-
+    public void unloadPlayer(Player player) {
         HashMap<String, Waypoint> waypoints = Waypoints.getInstance().getWaypointHandler().getWaypoints(player);
 
         ConfigurationSection playerSection = data.getConfigurationSection(player.getUniqueId().toString());
