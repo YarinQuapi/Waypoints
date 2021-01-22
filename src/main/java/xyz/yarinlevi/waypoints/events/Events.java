@@ -9,26 +9,13 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
-import org.bukkit.event.player.PlayerJoinEvent;
-import xyz.yarinlevi.waypoints.data.Data;
-import xyz.yarinlevi.waypoints.data.WaypointManager;
+import xyz.yarinlevi.waypoints.Waypoints;
+import xyz.yarinlevi.waypoints.exceptions.PlayerNotLoadedException;
+import xyz.yarinlevi.waypoints.exceptions.WaypointAlreadyExistsException;
 import xyz.yarinlevi.waypoints.utils.Utils;
+import xyz.yarinlevi.waypoints.waypoint.Waypoint;
 
 public class Events implements Listener {
-
-    private int min = 1;
-    private int max = 100;
-
-    @EventHandler
-    public void onPlayerJoin(PlayerJoinEvent e) {
-        final Player p = e.getPlayer();
-
-        if(!Data.getPlayerData().contains(p.getUniqueId().toString())) {
-            Data.getPlayerData().createSection(p.getUniqueId().toString());
-            Data.saveData();
-        }
-    }
-
     @EventHandler
     public void onPlayerDeath(PlayerDeathEvent e) {
         Player p = e.getEntity();
@@ -38,20 +25,26 @@ public class Events implements Listener {
 
         int deathCount = p.getStatistic(Statistic.DEATHS);
 
-        if (WaypointManager.addWaypoint(p, "Death-" + deathCount, true)) {
-            TextComponent deathPoint = new TextComponent(Utils.newMessageNoPrefix("&f\"&dDeath-" + deathCount + "&f\" "));
+        Waypoint waypoint = new Waypoint("Death-" + deathCount, p.getLocation(), true);
 
-            deathPoint.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(Utils.newMessageNoPrefix(String.format("&eClick to check waypoint &f\"&dDeath-%s&f\"", deathCount))).create()));
-            deathPoint.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/wp check Death-" + deathCount));
+        try {
+            if (Waypoints.getInstance().getWaypointHandler().addWaypoint(p, waypoint)) {
+                TextComponent deathPoint = new TextComponent(Utils.newMessageNoPrefix("&f\"&dDeath-" + deathCount + "&f\" "));
 
-            delete.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(Utils.newMessageNoPrefix(String.format("&eClick to delete waypoint &f\"&dDeath-%s&f\"", deathCount))).create()));
-            delete.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/wp delete Death-" + deathCount));
+                deathPoint.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(Utils.newMessageNoPrefix(String.format("&eClick to check waypoint &f\"&dDeath-%s&f\"", deathCount))).create()));
+                deathPoint.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/wp check Death-" + deathCount));
 
-            msg.addExtra(deathPoint);
+                delete.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(Utils.newMessageNoPrefix(String.format("&eClick to delete waypoint &f\"&dDeath-%s&f\"", deathCount))).create()));
+                delete.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/wp delete Death-" + deathCount));
 
+                msg.addExtra(deathPoint);
+
+                msg.addExtra(delete);
+                p.spigot().sendMessage(msg);
+            }
+        } catch (WaypointAlreadyExistsException | PlayerNotLoadedException ex) {
+            p.sendMessage(ex.getMessage());
         }
-        msg.addExtra(delete);
-        p.spigot().sendMessage(msg);
     }
 
     

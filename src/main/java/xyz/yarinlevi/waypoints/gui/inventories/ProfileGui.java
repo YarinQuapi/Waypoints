@@ -8,7 +8,7 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
-import xyz.yarinlevi.waypoints.data.WaypointManager;
+import xyz.yarinlevi.waypoints.Waypoints;
 import xyz.yarinlevi.waypoints.exceptions.InventoryDoesNotExistException;
 import xyz.yarinlevi.waypoints.gui.GuiHandler;
 import xyz.yarinlevi.waypoints.gui.helpers.IGui;
@@ -34,12 +34,13 @@ public class ProfileGui extends IGui implements Listener {
                 skullMeta.setOwningPlayer(player);
 
                 ArrayList<String> lore = new ArrayList<>();
-                String waypointCount = String.format(Utils.newMessageNoPrefix("&eNumber of &bwaypoints&e: &d%s"), WaypointManager.tabCompleterList(player).size());
+                String waypointCount = String.format(Utils.newMessageNoPrefix("&eNumber of &bwaypoints&e: &d%s"), Waypoints.getInstance().getWaypointHandler().getWaypointList(player).size());
                 lore.add(waypointCount);
 
-                String waypointsInOverWorld = String.format(Utils.newMessageNoPrefix("&eWaypoints in &bOverworld&e: &d%s"), WaypointManager.listWaypointsInWorld(player, WaypointWorld.OVERWORLD).size());
-                String waypointsInTheNether = String.format(Utils.newMessageNoPrefix("&eWaypoints in &bThe Nether&e: &d%s"), WaypointManager.listWaypointsInWorld(player, WaypointWorld.THE_NETHER).size());
-                String waypointsInTheEnd = String.format(Utils.newMessageNoPrefix("&eWaypoints in &bThe End&e: &d%s"), WaypointManager.listWaypointsInWorld(player, WaypointWorld.THE_END).size());
+
+                String waypointsInOverWorld = String.format(Utils.newMessageNoPrefix("&eWaypoints in &bOverworld&e: &d%s"), Waypoints.getInstance().getWaypointHandler().getWaypointList(player, WaypointWorld.NORMAL).size());
+                String waypointsInTheNether = String.format(Utils.newMessageNoPrefix("&eWaypoints in &bThe Nether&e: &d%s"), Waypoints.getInstance().getWaypointHandler().getWaypointList(player, WaypointWorld.THE_NETHER).size());
+                String waypointsInTheEnd = String.format(Utils.newMessageNoPrefix("&eWaypoints in &bThe End&e: &d%s"), Waypoints.getInstance().getWaypointHandler().getWaypointList(player, WaypointWorld.THE_END).size());
 
                 lore.add(waypointsInOverWorld);
                 lore.add(waypointsInTheNether);

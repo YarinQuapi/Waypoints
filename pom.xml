@@ -6,7 +6,10 @@
 
     <groupId>me.yarinlevi</groupId>
     <artifactId>Waypoints</artifactId>
-    <version>0.5-RELEASE</version>
+    <version>0.6--BETA-1</version>
+    <packaging>jar</packaging>
+
+    <name>QWaypoints</name>
 
     <properties>
         <maven.compiler.target>1.8</maven.compiler.target>
@@ -30,6 +33,12 @@
                 </executions>
             </plugin>
         </plugins>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+            </resource>
+        </resources>
     </build>
 
     <repositories>

@@ -1,9 +1,7 @@
 package xyz.yarinlevi.waypoints.gui.inventories;
 
 import org.bukkit.ChatColor;
-import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -11,12 +9,13 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.util.Vector;
-import xyz.yarinlevi.waypoints.data.Data;
-import xyz.yarinlevi.waypoints.data.WaypointManager;
+import xyz.yarinlevi.waypoints.Waypoints;
 import xyz.yarinlevi.waypoints.exceptions.InventoryDoesNotExistException;
+import xyz.yarinlevi.waypoints.exceptions.WaypointDoesNotExistException;
 import xyz.yarinlevi.waypoints.gui.GuiHandler;
 import xyz.yarinlevi.waypoints.gui.helpers.IGui;
 import xyz.yarinlevi.waypoints.utils.Utils;
+import xyz.yarinlevi.waypoints.waypoint.Waypoint;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -39,20 +38,25 @@ public class WaypointListGui extends IGui implements Listener {
 
 
         int i = 0;
-        for (String waypointName : WaypointManager.tabCompleterList(player)) {
-            ConfigurationSection wp = Data.getWaypointData(player, waypointName);
+        for (String waypointName : Waypoints.getInstance().getWaypointHandler().getWaypointList(player)) {
+            Waypoint wp;
+            try {
+                wp = Waypoints.getInstance().getWaypointHandler().getWaypoint(player, waypointName);
+            } catch (WaypointDoesNotExistException e) {
+                player.sendMessage(e.getMessage());
+                return;
+            }
 
-            ItemStack itemStack = new ItemStack(Material.valueOf(wp.getString("item", "DIRT")));
+            ItemStack itemStack = wp.getItem();
             ItemMeta itemMeta = itemStack.getItemMeta();
 
-            Location loc = (Location) wp.get("location");
-            Vector vec = loc.toVector();
+            Vector vec = wp.getVector();
 
             ArrayList<String> lore = new ArrayList<>();
             String coordinatesString = String.format(Utils.newMessageNoPrefix("&eCoordinates: &bX&e: &d%s &bY&e: &d%s &bZ&e: &d%s"), vec.getBlockX(), vec.getBlockY(), vec.getBlockZ());
             lore.add(coordinatesString);
 
-            String waypointWorld = String.format(Utils.newMessageNoPrefix("&eWorld: &d%s"), translateWorld(loc.getWorld().getEnvironment().name()));
+            String waypointWorld = String.format(Utils.newMessageNoPrefix("&eWorld: &d%s"), translateWorld(wp.getWorld().name()));
             lore.add(waypointWorld);
 
             lore.add("\n");
@@ -91,7 +95,13 @@ public class WaypointListGui extends IGui implements Listener {
 
                 Player player = (Player) e.getWhoClicked();
 
-                ConfigurationSection wp = Data.getWaypointData(player, name);
+                Waypoint wp;
+                try {
+                    wp = Waypoints.getInstance().getWaypointHandler().getWaypoint(player, name);
+                } catch (WaypointDoesNotExistException waypointDoesNotExistException) {
+                    player.sendMessage(waypointDoesNotExistException.getMessage());
+                    return;
+                }
 
                 EditWaypointItemGui.open(player, wp);
             }

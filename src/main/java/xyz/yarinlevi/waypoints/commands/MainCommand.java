@@ -1,24 +1,32 @@
 package xyz.yarinlevi.waypoints.commands;
 
-import xyz.yarinlevi.waypoints.Waypoints;
-import xyz.yarinlevi.waypoints.data.WaypointManager;
-import xyz.yarinlevi.waypoints.gui.GuiHandler;
-import xyz.yarinlevi.waypoints.utils.LocationHandler;
-import xyz.yarinlevi.waypoints.utils.Utils;
+import net.md_5.bungee.api.ChatColor;
+import net.md_5.bungee.api.chat.ClickEvent;
+import net.md_5.bungee.api.chat.ComponentBuilder;
+import net.md_5.bungee.api.chat.HoverEvent;
+import net.md_5.bungee.api.chat.TextComponent;
+import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
+import xyz.yarinlevi.waypoints.Waypoints;
+import xyz.yarinlevi.waypoints.exceptions.PlayerNotLoadedException;
+import xyz.yarinlevi.waypoints.exceptions.WaypointAlreadyExistsException;
+import xyz.yarinlevi.waypoints.exceptions.WaypointDoesNotExistException;
+import xyz.yarinlevi.waypoints.gui.GuiHandler;
+import xyz.yarinlevi.waypoints.utils.LocationHandler;
+import xyz.yarinlevi.waypoints.utils.Utils;
+import xyz.yarinlevi.waypoints.waypoint.Waypoint;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
-import java.util.stream.Stream;
+import java.util.Iterator;
 
-public class MainCommand implements CommandExecutor, TabCompleter {
+public class MainCommand implements CommandExecutor {
+
+    @SuppressWarnings("deprecation")
     @Override
-    public boolean onCommand(CommandSender sender, Command cmd, String s, String[] args) {
+    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if(!(sender instanceof Player)) {
             sender.sendMessage(Utils.newMessage("&cYou are required to be a Player to use this command."));
             return false;
@@ -33,70 +41,116 @@ public class MainCommand implements CommandExecutor, TabCompleter {
 
         if (args.length == 0) {
             GuiHandler.openInventory("gui.personal.profile", p);
-        } else if(args.length == 1 && args[0].equalsIgnoreCase("help")) {
-            String str = Utils.newMessage("&eCommands:\n" +
-                    "&b  • &d/wp help &f- &eShow this command\n" +
-                    "&b  • &d/wp check <&awaypoint&d> &f- &eCheck a certain waypoint.\n" +
-                    "&b  • &d/wp create <&aname&d> &f- &eCreate a new waypoint\n" +
-                    "&b  • &d/wp list [&aworld&d] &f- &eList all (or some) your waypoints\n" +
-                    "&b  • &d/wp delete <&awaypoint&d | &adeathpoints&d> &f- &eDelete a waypoint\n" +
-                    "&b  • &d/wp spawn &f- &eLocates the spawn of the world.\n" +
-                    "\n &b&lQWaypoints Version&e&l: &a&l" + Waypoints.getInstance().getDescription().getVersion());
-            p.sendMessage(str);
             return true;
+        } else if (args.length == 1) {
+            if (args[0].equalsIgnoreCase("list")) {
+                Iterator<String> waypointList = Waypoints.getInstance().getWaypointHandler().getWaypointList(p).iterator();
+
+                if (waypointList.hasNext()) {
+                    TextComponent message = new TextComponent(ChatColor.translateAlternateColorCodes('&', Waypoints.getInstance().getPrefix()));
+                    final TextComponent SPACE = new TextComponent(ChatColor.YELLOW + ", ");
+                    String waypoint;
+                    TextComponent waypointText;
+                    while (waypointList.hasNext()) {
+                        waypoint = waypointList.next();
+                        waypointText = new TextComponent(ChatColor.LIGHT_PURPLE + waypoint);
+                        waypointText.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/wp check " + waypoint));
+                        waypointText.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(ChatColor.RESET + "Click to check waypoint \"" + ChatColor.AQUA + waypoint + ChatColor.RESET + "\"").create()));
+                        message.addExtra(waypointText);
+                        if (waypointList.hasNext()) {
+                            message.addExtra(SPACE);
+                        }
+                    }
+                    p.spigot().sendMessage(message);
+
+                } else {
+                    p.sendMessage(Utils.newMessage("&cYou do not have any waypoints."));
+                }
+                return true;
+            } else if (args[0].equalsIgnoreCase("help")) {
+                String str = Utils.newMessage("&eCommands:\n" +
+                        "&b  • &d/wp help &f- &eShow this command\n" +
+                        "&b  • &d/wp check <&awaypoint&d> &f- &eCheck a certain waypoint.\n" +
+                        "&b  • &d/wp create <&aname&d> &f- &eCreate a new waypoint\n" +
+                        "&b  • &d/wp list [&aworld&d] &f- &eList all (or some) your waypoints\n" +
+                        "&b  • &d/wp delete <&awaypoint&d | &adeathpoints&d> &f- &eDelete a waypoint\n" +
+                        "&b  • &d/wp spawn &f- &eLocates the spawn of the world.\n" +
+                        "\n &b&lQWaypoints Version&e&l: &a&l" + Waypoints.getInstance().getDescription().getVersion());
+                p.sendMessage(str);
+                return true;
+            } else {
+                p.sendMessage(Utils.newMessage("&cSub command: \"" + args[0] + "\" was not found"));
+                return false;
+            }
         } else {
-            if(args[0].equalsIgnoreCase("create")) {
-                if(args.length == 2) {
-                    return WaypointManager.addWaypoint(p, args[1], false);
-                } else {
-                    p.sendMessage(Utils.newMessage("&cInvalid usage! try: &e/wp help"));
+            if (args[0].equalsIgnoreCase("create")) {
+                String name = args[1];
+
+                Waypoint wp = new Waypoint(name, p.getLocation(), false);
+
+                try {
+                    if(Waypoints.getInstance().getWaypointHandler().addWaypoint(p, wp)) {
+                        p.sendMessage(Utils.newMessage(String.format("&eCreated new Waypoint: &f\"&d%s&f\"", name)));
+                        return true;
+                    }
                     return false;
-                }
-            } else if (args[0].equalsIgnoreCase("delete")) {
-                if(args.length == 2 && args[1].equalsIgnoreCase("deathpoints")) {
-                    return WaypointManager.deleteAllSystemInduced(p);
-                }
-                if(args.length == 2) {
-                    return WaypointManager.deleteWaypoint(p, args[1]);
-                } else {
-                    p.sendMessage(Utils.newMessage("&cInvalid usage! try: &e/wp help"));
-                    return false;
-                }
-            } else if (args[0].equalsIgnoreCase("list")) {
-                if(args.length == 2) {
-                    WaypointManager.listWaypointsPerWorld(p, translateWorldName(args[1]));
-                    return true;
-                }
-                if(args.length == 1) {
-                    WaypointManager.listWaypoints(p);
-                    return true;
-                } else {
-                    p.sendMessage(Utils.newMessage("&cInvalid usage! try: &e/wp help"));
+                } catch (WaypointAlreadyExistsException | PlayerNotLoadedException exception) {
+                    p.sendMessage(exception.getMessage());
                     return false;
                 }
             } else if (args[0].equalsIgnoreCase("check")) {
-                if(args.length == 2) {
-                    WaypointManager.getWaypoint(p, args[1]);
+                String name = args[1];
+
+                try {
+                    Waypoint wp = Waypoints.getInstance().getWaypointHandler().getWaypoint(p, name);
+
+                    Location loc = wp.getLocation();
+                    HashMap<String, String> locDetail = LocationHandler.handleLocation(loc);
+
+                    String msg = Utils.newMessage(String.format("&eWaypoint &f\"&d%s&f\" &eis located at &bX&e: &d%s &bY&e: &d%s &bZ&e: &d%s &ein &bworld&e: &d%s &eYou are &d%s &bblocks &eaway.", name, locDetail.get("x"), locDetail.get("y"), locDetail.get("z"), locDetail.get("world"), Utils.calculateDistance(p.getLocation(), loc)));
+                    p.sendMessage(msg);
+
                     return true;
-                } else {
-                    p.sendMessage(Utils.newMessage("&cInvalid usage! try: &e/wp help"));
+                } catch (WaypointDoesNotExistException waypointDoesNotExist) {
+                    p.sendMessage(waypointDoesNotExist.getMessage());
                     return false;
                 }
-            } else if (args[0].equalsIgnoreCase("spawn")) {
-                HashMap<String, String> locDetail = LocationHandler.handleLocation(p.getWorld().getSpawnLocation());
-                String msg = Utils.newMessage("&eSpawn locator:\n" +
-                        String.format("&b  • &eCoordinates: &bX&e: &d%s &bY&e: &d%s &bZ&e: &d%s\n", locDetail.get("x"), locDetail.get("y"), locDetail.get("z")) +
-                        String.format("&b  • &eDistance to coordinates: &d%s &bblocks", Utils.calculateDistance(p.getLocation(), p.getWorld().getSpawnLocation())));
-                p.sendMessage(msg);
+            } else if (args[0].equalsIgnoreCase("delete")) {
+                String name = args[1];
+
+                try {
+                    if(Waypoints.getInstance().getWaypointHandler().removeWaypoint(p, name)) {
+                        p.sendMessage(Utils.newMessage(String.format("&eDeleted waypoint: &f\"&d%s&f\"", name)));
+                        return true;
+                    }
+                    return false;
+                } catch (PlayerNotLoadedException | WaypointDoesNotExistException exception) {
+                    p.sendMessage(exception.getMessage());
+                    return false;
+                }
+            } else if (args[0].equalsIgnoreCase("setcompass")) {
+                String name = args[1];
+
+                try {
+                    Waypoint wp = Waypoints.getInstance().getWaypointHandler().getWaypoint(p, name);
+
+                    p.setCompassTarget(wp.getLocation());
+
+                    p.sendMessage(Utils.newMessage(String.format("&eSet compass to point to waypoint: %s", name)));
+                    return true;
+                } catch (WaypointDoesNotExistException e) {
+                    p.sendMessage(Utils.newMessage(e.getMessage()));
+                    return false;
+                }
+
             } else {
-                String str = Utils.newMessage("&cInvalid usage! try: &e/wp help");
-                p.sendMessage(str);
+                p.sendMessage(Utils.newMessage("&cSub command: \"" + args[0] + "\" was not found"));
                 return false;
             }
         }
-        return false;
     }
 
+    /*
     @Override
     public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
         ArrayList<String> list = new ArrayList<>();
@@ -171,4 +225,5 @@ public class MainCommand implements CommandExecutor, TabCompleter {
         }
         return "NORMAL";
     }
+     */
 }

@@ -1,7 +1,7 @@
 package xyz.yarinlevi.waypoints.waypoint;
 
 public enum  WaypointWorld {
-    OVERWORLD,
+    NORMAL,
     THE_NETHER,
     THE_END
 }
