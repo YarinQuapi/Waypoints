@@ -87,7 +87,7 @@ public class PlayerListener implements Listener {
             FileManager.saveData(dataFile, data);
             Bukkit.getServer().getLogger().info("Saved waypoints data for player: " + player.getName());
         }
-        
+
         Waypoints.getInstance().getWaypointHandler().removePlayer(player);
     }
 }

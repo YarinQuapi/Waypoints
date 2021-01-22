@@ -3,16 +3,14 @@ package xyz.yarinlevi.waypoints.commands;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 import xyz.yarinlevi.waypoints.gui.GuiHandler;
 import xyz.yarinlevi.waypoints.utils.LocationHandler;
 import xyz.yarinlevi.waypoints.utils.Utils;
 
 import java.util.HashMap;
-import java.util.List;
 
-public class Administration implements CommandExecutor, TabCompleter {
+public class Administration implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String s, String[] args) {
         final Player p = (Player)sender;
@@ -42,10 +40,5 @@ public class Administration implements CommandExecutor, TabCompleter {
         }
 
         return true;
-    }
-
-    @Override
-    public List<String> onTabComplete(CommandSender sender, Command command, String s, String[] args) {
-        return null;
     }
 }

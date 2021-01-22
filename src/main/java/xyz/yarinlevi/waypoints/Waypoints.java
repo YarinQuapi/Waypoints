@@ -31,30 +31,6 @@ public class Waypoints extends JavaPlugin {
         this.getCommand("wpadmin").setExecutor(new Administration());
         this.getCommand("waypoint").setExecutor(new MainCommand());
 
-
-        //
-
-
-        /*
-        Data.setWaypointFile(new File(this.getDataFolder(), "Waypoints.yml"));
-        Data.setPlayerData((FileConfiguration) YamlConfiguration.loadConfiguration(Data.getWaypointFile()));
-        if (!Data.getWaypointFile().exists()) {
-            Data.getWaypointFile().getParentFile().mkdirs();
-        } else {
-            try {
-                Data.getPlayerData().load(Data.getWaypointFile());
-            }
-            catch (InvalidConfigurationException | IOException e) {
-                e.printStackTrace();
-            }
-        }
-        Data.saveData();
-
-        this.getCommand("waypoint").setExecutor((CommandExecutor)new MainCommand());
-        this.getCommand("wpadmin").setExecutor((CommandExecutor)new Administration());
-        Bukkit.getPluginManager().registerEvents(new Events(), this);
-        */
-
         GuiHandler.registerGui().forEach((key, value) -> {
            Bukkit.getPluginManager().registerEvents(value, this);
         });
