@@ -2,6 +2,7 @@ package me.yarinlevi.waypoints.waypoint;
 
 import lombok.Getter;
 import lombok.Setter;
+import me.yarinlevi.waypoints.utils.LocationData;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
@@ -39,5 +40,13 @@ public class Waypoint {
 
     public static Waypoint createWaypoint(String name, Location location, boolean systemInduced) {
         return new Waypoint(name, location, systemInduced);
+    }
+
+    public LocationData getLocationData() {
+        return new LocationData(String.valueOf(location.getBlockX()),
+                String.valueOf(location.getBlockY()),
+                String.valueOf(location.getBlockZ()),
+                location.getWorld().getEnvironment().name(),
+                location.getWorld().getChunkAt(location).isSlimeChunk());
     }
 }

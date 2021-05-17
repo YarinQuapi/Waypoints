@@ -4,6 +4,7 @@ import me.yarinlevi.waypoints.Waypoints;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Color;
 import org.bukkit.Location;
+import org.bukkit.util.Vector;
 
 public class Utils {
     public static String newMessage(String message) {
@@ -34,6 +35,11 @@ public class Utils {
         }
         hex = "#" + hex;
         return hex;
+    }
+
+
+    public static int calculateDistance(Vector p1, Vector p2) {
+        return (int) Math.sqrt(Math.pow(p1.getX() - p2.getX(), 2.0) + Math.pow(p1.getY()-p2.getY(), 2) + Math.pow(p1.getZ() - p2.getZ(), 2));
     }
 
     public static int calculateDistance(Location p1, Location p2) {

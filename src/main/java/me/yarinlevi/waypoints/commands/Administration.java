@@ -1,6 +1,7 @@
 package me.yarinlevi.waypoints.commands;
 
 import me.yarinlevi.waypoints.gui.GuiHandler;
+import me.yarinlevi.waypoints.utils.LocationData;
 import me.yarinlevi.waypoints.utils.LocationHandler;
 import me.yarinlevi.waypoints.utils.Utils;
 import org.bukkit.command.Command;
@@ -21,16 +22,16 @@ public class Administration implements CommandExecutor {
         }
 
         if(args[0].equalsIgnoreCase("chunkscan")) {
-            HashMap<String, String> locDetail = LocationHandler.handleLocation(p.getLocation());
+            LocationData locDetail = LocationHandler.handleLocation(p.getLocation());
             String msg = Utils.newMessage("&eAdvanced chunk scan:\n" +
-                    String.format("&b  • &eCoordinates: &bX&e: &d%s &bY&e: &d%s &bZ&e: &d%s\n", locDetail.get("x"), locDetail.get("y"), locDetail.get("z")) +
-                    String.format("&b  • &eIs Slime Chunk?: &d%s\n", locDetail.get("isSlimeChunk")) +
-                    String.format("&b  • &eWorld: &d%s", locDetail.get("world")));
+                    String.format("&b  • &eCoordinates: &bX&e: &d%s &bY&e: &d%s &bZ&e: &d%s\n", locDetail.getX(), locDetail.getY(), locDetail.getZ()) +
+                    String.format("&b  • &eIs Slime Chunk?: &d%s\n", locDetail.isSlimeChunk()) +
+                    String.format("&b  • &eWorld: &d%s", locDetail.getWorld()));
             p.sendMessage(msg);
         } else if (args[0].equalsIgnoreCase("spawn")) {
-            HashMap<String, String> locDetail = LocationHandler.handleLocation(p.getWorld().getSpawnLocation());
+            LocationData locDetail = LocationHandler.handleLocation(p.getWorld().getSpawnLocation());
             String msg = Utils.newMessage("&eSpawn locator:\n" +
-                    String.format("&b  • &eCoordinates: &bX&e: &d%s &bY&e: &d%s &bZ&e: &d%s\n", locDetail.get("x"), locDetail.get("y"), locDetail.get("z")) +
+                    String.format("&b  • &eCoordinates: &bX&e: &d%s &bY&e: &d%s &bZ&e: &d%s\n", locDetail.getX(), locDetail.getY(), locDetail.getZ()) +
                     String.format("&b  • &eDistance to coordinates: &d%s &bblocks", Utils.calculateDistance(p.getLocation(), p.getWorld().getSpawnLocation())));
             p.sendMessage(msg);
         } else if (args[0].equalsIgnoreCase("gui")) {

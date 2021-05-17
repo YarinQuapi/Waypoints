@@ -3,6 +3,7 @@ package me.yarinlevi.waypoints.waypoint;
 import me.yarinlevi.waypoints.exceptions.PlayerNotLoadedException;
 import me.yarinlevi.waypoints.exceptions.WaypointAlreadyExistsException;
 import me.yarinlevi.waypoints.exceptions.WaypointDoesNotExistException;
+import me.yarinlevi.waypoints.player.PlayerData;
 import me.yarinlevi.waypoints.utils.Utils;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -10,18 +11,25 @@ import org.bukkit.entity.Player;
 
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Set;
+import java.util.Map;
+import java.util.*;
 
 public class WaypointHandler {
     private final HashMap<Player, HashMap<String, Waypoint>> playerWaypoints = new HashMap<>();
+
+    private final Map<Player, PlayerData> playerDataMap = new HashMap<>();
+
+
 
     public HashMap<String, Waypoint> getWaypoints(Player player) {
         return playerWaypoints.getOrDefault(player, new HashMap<>());
     }
 
+
     public Set<String> getWaypointList(Player player) {
         return playerWaypoints.containsKey(player) ? playerWaypoints.get(player).keySet() : new HashSet<>();
     }
+
 
     public Set<String> getWaypointList(Player player, WaypointWorld world) {
         Set<String> list = new HashSet<>();

@@ -5,7 +5,7 @@ import me.yarinlevi.waypoints.exceptions.PlayerNotLoadedException;
 import me.yarinlevi.waypoints.exceptions.WaypointAlreadyExistsException;
 import me.yarinlevi.waypoints.exceptions.WaypointDoesNotExistException;
 import me.yarinlevi.waypoints.gui.GuiHandler;
-import me.yarinlevi.waypoints.utils.LocationHandler;
+import me.yarinlevi.waypoints.utils.LocationData;
 import me.yarinlevi.waypoints.utils.Utils;
 import me.yarinlevi.waypoints.waypoint.Waypoint;
 import net.md_5.bungee.api.ChatColor;
@@ -13,13 +13,11 @@ import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.TextComponent;
-import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import java.util.HashMap;
 import java.util.Iterator;
 
 public class MainCommand implements CommandExecutor {
@@ -104,10 +102,10 @@ public class MainCommand implements CommandExecutor {
                 try {
                     Waypoint wp = Waypoints.getInstance().getWaypointHandler().getWaypoint(p, name);
 
-                    Location loc = wp.getLocation();
-                    HashMap<String, String> locDetail = LocationHandler.handleLocation(loc);
+                    LocationData locationData = wp.getLocationData();
 
-                    String msg = Utils.newMessage(String.format("&eWaypoint &f\"&d%s&f\" &eis located at &bX&e: &d%s &bY&e: &d%s &bZ&e: &d%s &ein &bworld&e: &d%s &eYou are &d%s &bblocks &eaway.", name, locDetail.get("x"), locDetail.get("y"), locDetail.get("z"), locDetail.get("world"), Utils.calculateDistance(p.getLocation(), loc)));
+                    String msg = Utils.newMessage(String.format("&eWaypoint &f\"&d%s&f\" &eis located at &bX&e: &d%s &bY&e: &d%s &bZ&e: &d%s &ein &bworld&e: &d%s &eYou are &d%s &bblocks &eaway.",
+                            name, locationData.getX(), locationData.getY(), locationData.getZ(), locationData.getWorld(), Utils.calculateDistance(p.getLocation().toVector(), wp.getVector())));
                     p.sendMessage(msg);
 
                     return true;

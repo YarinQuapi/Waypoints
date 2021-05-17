@@ -5,13 +5,11 @@ import org.bukkit.Location;
 import java.util.HashMap;
 
 public class LocationHandler {
-    public static HashMap<String, String> handleLocation(Location loc) {
-        HashMap<String, String> locDetail = new HashMap<>();
-        locDetail.put("x", String.valueOf(loc.getBlockX()));
-        locDetail.put("y", String.valueOf(loc.getBlockY()));
-        locDetail.put("z", String.valueOf(loc.getBlockZ()));
-        locDetail.put("world", loc.getWorld().getEnvironment().name());
-        locDetail.put("isSlimeChunk", String.valueOf(loc.getWorld().getChunkAt(loc.getBlock()).isSlimeChunk()));
-        return locDetail;
+    public static LocationData handleLocation(Location loc) {
+        return new LocationData(String.valueOf(loc.getBlockX()),
+                String.valueOf(loc.getBlockY()),
+                String.valueOf(loc.getBlockZ()),
+                loc.getWorld().getEnvironment().name(),
+                loc.getWorld().getChunkAt(loc).isSlimeChunk());
     }
 }
