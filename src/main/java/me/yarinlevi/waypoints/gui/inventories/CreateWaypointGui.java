@@ -25,9 +25,9 @@ public class CreateWaypointGui extends AbstractGui {
                     }
                     return AnvilGUI.Response.close();
                 })
-                .text("Enter a name: ")
+                .text("")
                 .itemLeft(new ItemStack(Material.PAPER))
-                .title("Create waypoint")
+                .title("Enter a waypoint name")
                 .plugin(Waypoints.getInstance())
                 .open(player);
     }

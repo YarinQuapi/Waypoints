@@ -3,6 +3,7 @@ package me.yarinlevi.waypoints;
 import lombok.Getter;
 import me.yarinlevi.waypoints.commands.Administration;
 import me.yarinlevi.waypoints.commands.MainCommand;
+import me.yarinlevi.waypoints.waypoint.NewWaypointHandler;
 import me.yarinlevi.waypoints.waypoint.PlayerListener;
 import me.yarinlevi.waypoints.waypoint.WaypointHandler;
 import org.bukkit.Bukkit;
@@ -12,7 +13,7 @@ public class Waypoints extends JavaPlugin {
     @Getter private static Waypoints instance;
     @Getter private String prefix;
     @Getter private String adminPrefix;
-    @Getter private WaypointHandler waypointHandler;
+    @Getter private NewWaypointHandler waypointHandler;
     private PlayerListener playerListener;
 
     @Override
@@ -26,7 +27,7 @@ public class Waypoints extends JavaPlugin {
 
         playerListener = new PlayerListener();
         Bukkit.getPluginManager().registerEvents(playerListener, this);
-        waypointHandler = new WaypointHandler();
+        waypointHandler = new NewWaypointHandler();
 
 
         this.getCommand("wpadmin").setExecutor(new Administration());

@@ -3,6 +3,7 @@ package me.yarinlevi.waypoints.waypoint;
 import lombok.Getter;
 import me.yarinlevi.waypoints.Waypoints;
 import me.yarinlevi.waypoints.data.FileManager;
+import me.yarinlevi.waypoints.player.PlayerData;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -17,7 +18,8 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.ItemStack;
 
 import java.io.File;
-import java.util.HashMap;
+import java.util.ArrayList;
+import java.util.List;
 
 public class PlayerListener implements Listener {
     private final File dataFile;
@@ -29,34 +31,23 @@ public class PlayerListener implements Listener {
         data = YamlConfiguration.loadConfiguration(dataFile);
         FileManager.registerData(dataFile, data);
 
-        Bukkit.getScheduler().runTaskTimerAsynchronously(Waypoints.getInstance(), new Runnable() {
-            @Override
-            public void run() {
-                Bukkit.getServer().getLogger().info("Saving data...");
-                FileManager.saveData(dataFile, data);
-                Bukkit.getServer().getLogger().info("Saved data.");
-            }
+        Bukkit.getScheduler().runTaskTimerAsynchronously(Waypoints.getInstance(), () -> {
+
+            Bukkit.getServer().getLogger().info("Saving data...");
+            FileManager.saveData(dataFile, data);
+            Bukkit.getServer().getLogger().info("Saved data.");
+
         }, 0L, (300 * 20));
     }
 
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
-        Bukkit.getScheduler().runTaskAsynchronously(Waypoints.getInstance(), new Runnable() {
-            @Override
-            public void run() {
-                loadPlayer(event.getPlayer());
-            }
-        });
+        Bukkit.getScheduler().runTaskAsynchronously(Waypoints.getInstance(), () -> loadPlayer(event.getPlayer()));
     }
 
     @EventHandler
     public void onPlayerLeave(PlayerQuitEvent event) {
-        Bukkit.getScheduler().runTaskAsynchronously(Waypoints.getInstance(), new Runnable() {
-            @Override
-            public void run() {
-                unloadPlayer(event.getPlayer());
-            }
-        });
+        Bukkit.getScheduler().runTaskAsynchronously(Waypoints.getInstance(), () -> unloadPlayer(event.getPlayer()));
     }
 
     public void loadPlayer(Player player) {
@@ -64,9 +55,9 @@ public class PlayerListener implements Listener {
             data.createSection(player.getUniqueId().toString());
             data.getConfigurationSection(player.getUniqueId().toString()).createSection("waypoints");
 
-            Waypoints.getInstance().getWaypointHandler().insertPlayer(player, new HashMap<>());
+            Waypoints.getInstance().getWaypointHandler().insertPlayer(player, new ArrayList<>());
         } else {
-            HashMap<String, Waypoint> waypoints = new HashMap<>();
+            List<Waypoint> waypoints = new ArrayList<>();
             ConfigurationSection waypointSection = data.getConfigurationSection(player.getUniqueId().toString()).getConfigurationSection("waypoints");
 
             ConfigurationSection waypoint;
@@ -74,9 +65,9 @@ public class PlayerListener implements Listener {
                 waypoint = waypointSection.getConfigurationSection(key);
 
                 if (waypoint.getString("item").equals("DIRT")) {
-                    waypoints.put(key, new Waypoint(key, (Location) waypoint.get("location"), waypoint.getBoolean("systemInduced")));
+                    waypoints.add(new Waypoint(key, (Location) waypoint.get("location"), waypoint.getBoolean("systemInduced")));
                 } else {
-                    waypoints.put(key, new Waypoint(key, (Location) waypoint.get("location"), new ItemStack(Material.getMaterial(waypoint.getString("item").toUpperCase())), waypoint.getBoolean("systemInduced")));
+                    waypoints.add(new Waypoint(key, (Location) waypoint.get("location"), new ItemStack(Material.getMaterial(waypoint.getString("item").toUpperCase())), waypoint.getBoolean("systemInduced")));
                 }
             }
 
@@ -86,18 +77,19 @@ public class PlayerListener implements Listener {
     }
 
     public void unloadPlayer(Player player) {
-        HashMap<String, Waypoint> waypoints = Waypoints.getInstance().getWaypointHandler().getWaypoints(player);
+        PlayerData playerData = Waypoints.getInstance().getWaypointHandler().getPlayerData(player);
 
         ConfigurationSection playerSection = data.getConfigurationSection(player.getUniqueId().toString());
 
-        if (!waypoints.isEmpty()) {
+        if (!playerData.getWaypointList().isEmpty()) {
             ConfigurationSection waypointSection = playerSection.getConfigurationSection("waypoints");
 
-            for (Waypoint waypoint : waypoints.values()) {
+            for (Waypoint waypoint : playerData.getWaypointList()) {
                 waypointSection.set(waypoint.getName() + ".location", waypoint.getLocation());
                 waypointSection.set(waypoint.getName() + ".systemInduced", waypoint.isSystemInduced());
                 waypointSection.set(waypoint.getName() + ".item", waypoint.getItem().getType().name());
             }
+
             FileManager.saveData(dataFile, data);
             Bukkit.getServer().getLogger().info("Saved waypoints data for player: " + player.getName());
         }

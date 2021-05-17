@@ -8,7 +8,7 @@ import java.io.IOException;
 
 public class FileManager {
     public static void registerData(File file, FileConfiguration data) {
-        if(!file.exists()) {
+        if (!file.exists()) {
             file.getParentFile().mkdirs();
         } else {
             try {

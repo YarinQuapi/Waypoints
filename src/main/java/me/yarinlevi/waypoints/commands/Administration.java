@@ -14,14 +14,14 @@ import java.util.HashMap;
 public class Administration implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String s, String[] args) {
-        final Player p = (Player)sender;
+        final Player p = (Player) sender;
 
-        if(args.length == 0) {
+        if (args.length == 0) {
             p.sendMessage(Utils.newMessage("&eMissing arguments."));
             return false;
         }
 
-        if(args[0].equalsIgnoreCase("chunkscan")) {
+        if (args[0].equalsIgnoreCase("chunkscan")) {
             LocationData locDetail = LocationHandler.handleLocation(p.getLocation());
             String msg = Utils.newMessage("&eAdvanced chunk scan:\n" +
                     String.format("&b  • &eCoordinates: &bX&e: &d%s &bY&e: &d%s &bZ&e: &d%s\n", locDetail.getX(), locDetail.getY(), locDetail.getZ()) +

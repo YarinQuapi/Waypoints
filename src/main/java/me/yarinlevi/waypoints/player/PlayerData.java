@@ -8,4 +8,8 @@ import java.util.ArrayList;
 
 public class PlayerData {
     @Getter private final List<Waypoint> waypointList = new ArrayList<>();
+
+    public PlayerData(List<Waypoint> waypoints) {
+        this.waypointList.addAll(waypoints);
+    }
 }

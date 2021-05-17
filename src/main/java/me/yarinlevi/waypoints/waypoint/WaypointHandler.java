@@ -12,7 +12,7 @@ import org.bukkit.entity.Player;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
-import java.util.*;
+import java.util.Set;
 
 public class WaypointHandler {
     private final HashMap<Player, HashMap<String, Waypoint>> playerWaypoints = new HashMap<>();

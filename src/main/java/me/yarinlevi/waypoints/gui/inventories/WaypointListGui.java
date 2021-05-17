@@ -40,39 +40,37 @@ public class WaypointListGui extends AbstractGui implements Listener {
         int i = 0;
         for (String waypointName : Waypoints.getInstance().getWaypointHandler().getWaypointList(player)) {
             Waypoint wp;
-            try {
-                wp = Waypoints.getInstance().getWaypointHandler().getWaypoint(player, waypointName);
-            } catch (WaypointDoesNotExistException e) {
-                player.sendMessage(e.getMessage());
-                return;
-            }
+            wp = Waypoints.getInstance().getWaypointHandler().getWaypoint(player, waypointName);
 
-            ItemStack itemStack = wp.getItem();
-            ItemMeta itemMeta = itemStack.getItemMeta();
+            if (wp != null) {
 
-            Vector vec = wp.getVector();
+                ItemStack itemStack = wp.getItem();
+                ItemMeta itemMeta = itemStack.getItemMeta();
 
-            ArrayList<String> lore = new ArrayList<>();
-            String coordinatesString = String.format(Utils.newMessageNoPrefix("&eCoordinates: &bX&e: &d%s &bY&e: &d%s &bZ&e: &d%s"), vec.getBlockX(), vec.getBlockY(), vec.getBlockZ());
-            lore.add(coordinatesString);
+                Vector vec = wp.getVector();
 
-            String waypointWorld = String.format(Utils.newMessageNoPrefix("&eWorld: &d%s"), wp.getWorld().getName());
-            lore.add(waypointWorld);
+                ArrayList<String> lore = new ArrayList<>();
+                String coordinatesString = String.format(Utils.newMessageNoPrefix("&eCoordinates: &bX&e: &d%s &bY&e: &d%s &bZ&e: &d%s"), vec.getBlockX(), vec.getBlockY(), vec.getBlockZ());
+                lore.add(coordinatesString);
 
-            lore.add("\n");
+                String waypointWorld = String.format(Utils.newMessageNoPrefix("&eWorld: &d%s"), wp.getWorld().getName());
+                lore.add(waypointWorld);
 
-            String rightClickToEdit = Utils.newMessageNoPrefix("&bRight click to edit item!");
-            lore.add(rightClickToEdit);
+                lore.add("\n");
 
-            itemMeta.setLore(lore);
-            itemMeta.setDisplayName(Utils.newMessageNoPrefix("&d" + waypointName));
+                String rightClickToEdit = Utils.newMessageNoPrefix("&bRight click to edit item!");
+                lore.add(rightClickToEdit);
 
-            itemStack.setItemMeta(itemMeta);
+                itemMeta.setLore(lore);
+                itemMeta.setDisplayName(Utils.newMessageNoPrefix("&d" + waypointName));
 
-            this.getItems().put(i, itemStack);
-            i++;
-            if (i == 22) {
+                itemStack.setItemMeta(itemMeta);
+
+                this.getItems().put(i, itemStack);
                 i++;
+                if (i == 22) {
+                    i++;
+                }
             }
         }
 
@@ -96,14 +94,11 @@ public class WaypointListGui extends AbstractGui implements Listener {
                 Player player = (Player) e.getWhoClicked();
 
                 Waypoint wp;
-                try {
-                    wp = Waypoints.getInstance().getWaypointHandler().getWaypoint(player, name);
-                } catch (WaypointDoesNotExistException waypointDoesNotExistException) {
-                    player.sendMessage(waypointDoesNotExistException.getMessage());
-                    return;
-                }
+                wp = Waypoints.getInstance().getWaypointHandler().getWaypoint(player, name);
 
-                EditWaypointItemGui.open(player, wp);
+                if (wp != null) {
+                    EditWaypointItemGui.open(player, wp);
+                }
             }
 
             if (e.getRawSlot() == 22) {
