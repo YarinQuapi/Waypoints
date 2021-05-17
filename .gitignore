@@ -1,13 +1,5 @@
 
-.idea/Waypoints.iml
-.idea/vcs.xml
-.idea/jarRepositories.xml
-.idea/compiler.xml
-.idea/artifacts/Waypoints_jar.xml
-.idea/uiDesigner.xml
-.idea/misc.xml
-.idea/dictionaries/yarin.xml
-.idea/libraries/ProtocolLib.xml
+.idea/
 out/artifacts/Waypoints_jar/Waypoints.jar
 dependency-reduced-pom.xml
 target/

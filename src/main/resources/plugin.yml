@@ -1,7 +1,6 @@
 name: QWaypoints
 version: ${project.version}
-main: xyz.yarinlevi.waypoints.Waypoints
-api-version: 1.16
+main: me.yarinlevi.waypoints.Waypoints
 author: Quapi
 
 commands:
@@ -11,6 +10,3 @@ commands:
   wpadmin:
     aliases: [wpa, waypointadmin, qwaypointadmin, wpadmin]
     permission: waypoints.admin
-  wpdebug:
-    aliases: [wpd, waypointdebug]
-    permission: waypoints.debug
