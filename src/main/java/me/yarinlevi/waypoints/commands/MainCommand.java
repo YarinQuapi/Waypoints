@@ -4,7 +4,7 @@ import me.yarinlevi.waypoints.Waypoints;
 import me.yarinlevi.waypoints.exceptions.PlayerNotLoadedException;
 import me.yarinlevi.waypoints.exceptions.WaypointAlreadyExistsException;
 import me.yarinlevi.waypoints.exceptions.WaypointDoesNotExistException;
-import me.yarinlevi.waypoints.gui.GuiHandler;
+import me.yarinlevi.waypoints.gui.GuiUtils;
 import me.yarinlevi.waypoints.utils.LocationData;
 import me.yarinlevi.waypoints.utils.Utils;
 import me.yarinlevi.waypoints.waypoint.Waypoint;
@@ -38,7 +38,7 @@ public class MainCommand implements CommandExecutor {
         }
 
         if (args.length == 0) {
-            GuiHandler.openInventory("gui.personal.profile", p);
+            GuiUtils.openInventory("gui.personal.profile", p);
             return true;
         } else if (args.length == 1) {
             if (args[0].equalsIgnoreCase("list")) {

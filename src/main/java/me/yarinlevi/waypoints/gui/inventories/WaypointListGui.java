@@ -2,8 +2,7 @@ package me.yarinlevi.waypoints.gui.inventories;
 
 import me.yarinlevi.waypoints.Waypoints;
 import me.yarinlevi.waypoints.exceptions.InventoryDoesNotExistException;
-import me.yarinlevi.waypoints.exceptions.WaypointDoesNotExistException;
-import me.yarinlevi.waypoints.gui.GuiHandler;
+import me.yarinlevi.waypoints.gui.GuiUtils;
 import me.yarinlevi.waypoints.gui.helpers.AbstractGui;
 import me.yarinlevi.waypoints.utils.Utils;
 import me.yarinlevi.waypoints.waypoint.Waypoint;
@@ -102,7 +101,7 @@ public class WaypointListGui extends AbstractGui implements Listener {
             }
 
             if (e.getRawSlot() == 22) {
-                GuiHandler.openInventory("gui.personal.profile", (Player) e.getWhoClicked());
+                GuiUtils.openInventory("gui.personal.profile", (Player) e.getWhoClicked());
             }
         }
     }

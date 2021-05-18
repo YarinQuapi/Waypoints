@@ -5,63 +5,57 @@ import me.yarinlevi.waypoints.exceptions.WaypointAlreadyExistsException;
 import me.yarinlevi.waypoints.exceptions.WaypointDoesNotExistException;
 import me.yarinlevi.waypoints.player.PlayerData;
 import me.yarinlevi.waypoints.utils.Utils;
-import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.entity.Player;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import org.bukkit.entity.Player;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.*;
 
 public class WaypointHandler {
-    private final HashMap<Player, HashMap<String, Waypoint>> playerWaypoints = new HashMap<>();
-
     private final Map<Player, PlayerData> playerDataMap = new HashMap<>();
 
-
-
-    public HashMap<String, Waypoint> getWaypoints(Player player) {
-        return playerWaypoints.getOrDefault(player, new HashMap<>());
+    public List<Waypoint> getWaypoints(Player player) {
+        return playerDataMap.get(player).getWaypointList();
     }
 
+    public PlayerData getPlayerData(Player player) {
+        return playerDataMap.get(player);
+    }
 
     public Set<String> getWaypointList(Player player) {
-        return playerWaypoints.containsKey(player) ? playerWaypoints.get(player).keySet() : new HashSet<>();
+        Set<String> waypoints = new HashSet<>();
+        playerDataMap.get(player).getWaypointList().forEach(x -> {
+            waypoints.add(x.getName());
+        });
+        return waypoints;
     }
-
 
     public Set<String> getWaypointList(Player player, WaypointWorld world) {
         Set<String> list = new HashSet<>();
 
-        if (playerWaypoints.containsKey(player)) {
-            HashMap<String, Waypoint> waypoints = playerWaypoints.get(player);
-
-            for (Waypoint wp : waypoints.values()) {
-                if (wp.getWorld().equals(world)) {
+        if (playerDataMap.containsKey(player)) {
+            for (Waypoint wp : playerDataMap.get(player).getWaypointList()) {
+                if (wp.getWorld().equals(world))
                     list.add(wp.getName());
-                }
             }
         }
+
         return list;
     }
 
-    public Waypoint getWaypoint(Player player, String name) throws WaypointDoesNotExistException {
-        HashMap<String, Waypoint> waypoints = playerWaypoints.get(player);
-        if (waypoints.containsKey(name)) {
-            return waypoints.get(name);
-        } else {
-            throw new WaypointDoesNotExistException(Utils.newMessage(String.format("&cNo waypoint found with name: &f\"&d%s&f\"", name)));
-        }
+    @Nullable
+    public Waypoint getWaypoint(Player player, String name) {
+        return playerDataMap.containsKey(player) && playerDataMap.get(player).getWaypointList().stream().anyMatch(x -> x.getName().equalsIgnoreCase(name)) ?
+                playerDataMap.get(player).getWaypointList().stream().filter(x -> x.getName().equalsIgnoreCase(name)).findAny().get() : null;
     }
 
     public boolean addWaypoint(Player player, Waypoint waypoint) throws WaypointAlreadyExistsException, PlayerNotLoadedException {
-        if (this.playerWaypoints.containsKey(player)) {
-            HashMap<String, Waypoint> waypoints = playerWaypoints.get(player);
-            if (waypoints.containsKey(waypoint.getName())) {
-                throw new WaypointAlreadyExistsException(Utils.newMessage(String.format("&eWaypoint with name: &f\"&d%s&f\" &ealready exists.", waypoint)));
+        if (this.playerDataMap.containsKey(player)) {
+            PlayerData data = playerDataMap.get(player);
+            if (data.getWaypointList().stream().anyMatch(x -> x.getName().equalsIgnoreCase(waypoint.getName()))) {
+                throw new WaypointAlreadyExistsException(Utils.newMessage(String.format("&eWaypoint with name: &f\"&d%s&f\" &ealready exists.", waypoint.getName())));
             } else {
-                waypoints.put(waypoint.getName(), waypoint);
+                data.getWaypointList().add(waypoint);
                 return true;
             }
         } else {
@@ -70,10 +64,10 @@ public class WaypointHandler {
     }
 
     public boolean removeWaypoint(Player player, String waypointName) throws PlayerNotLoadedException, WaypointDoesNotExistException {
-        if (this.playerWaypoints.containsKey(player)) {
-            HashMap<String, Waypoint> waypoints = playerWaypoints.get(player);
-            if (waypoints.containsKey(waypointName)) {
-                waypoints.remove(waypointName);
+        if (this.playerDataMap.containsKey(player)) {
+            PlayerData data = playerDataMap.get(player);
+            if (data.getWaypointList().stream().anyMatch(x -> x.getName().equalsIgnoreCase(waypointName))) {
+                data.getWaypointList().remove(data.getWaypointList().stream().filter(x -> x.getName().equalsIgnoreCase(waypointName)).findAny().get());
                 return true;
             } else {
                 throw new WaypointDoesNotExistException(Utils.newMessage(String.format("&cNo waypoint found with name: &f\"&d%s&f\"", waypointName)));
@@ -83,9 +77,9 @@ public class WaypointHandler {
         }
     }
 
-    public boolean insertPlayer(Player player, HashMap<String, Waypoint> waypoints) {
-        if (!this.playerWaypoints.containsKey(player)) {
-            this.playerWaypoints.put(player, waypoints);
+    public boolean insertPlayer(Player player, List<Waypoint> waypoints) {
+        if (!this.playerDataMap.containsKey(player)) {
+            this.playerDataMap.put(player, new PlayerData(waypoints));
             return true;
         } else {
             return false;
@@ -93,27 +87,11 @@ public class WaypointHandler {
     }
 
     public boolean removePlayer(Player player) {
-        if (this.playerWaypoints.containsKey(player)) {
-            this.playerWaypoints.remove(player);
+        if (this.playerDataMap.containsKey(player)) {
+            this.playerDataMap.remove(player);
             return true;
         } else {
             return false;
         }
-    }
-
-    public FileConfiguration dumpToFile(FileConfiguration data) {
-        for (Player player : playerWaypoints.keySet()) {
-            HashMap<String, Waypoint> waypoints = playerWaypoints.get(player);
-            ConfigurationSection playerSection = data.getConfigurationSection(player.getUniqueId().toString());
-            ConfigurationSection waypointSection = playerSection.getConfigurationSection("waypoints");
-
-            for (Waypoint waypoint : waypoints.values()) {
-                waypointSection.set(waypoint.getName() + ".location", waypoint.getLocation());
-                waypointSection.set(waypoint.getName() + ".systemInduced", waypoint.isSystemInduced());
-                waypointSection.set(waypoint.getName() + ".item", waypoint.getItem().getType().name());
-            }
-        }
-
-        return data;
     }
 }

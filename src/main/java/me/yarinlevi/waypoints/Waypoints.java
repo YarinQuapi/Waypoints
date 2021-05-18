@@ -3,9 +3,9 @@ package me.yarinlevi.waypoints;
 import lombok.Getter;
 import me.yarinlevi.waypoints.commands.Administration;
 import me.yarinlevi.waypoints.commands.MainCommand;
-import me.yarinlevi.waypoints.waypoint.NewWaypointHandler;
-import me.yarinlevi.waypoints.waypoint.PlayerListener;
+import me.yarinlevi.waypoints.gui.GuiUtils;
 import me.yarinlevi.waypoints.waypoint.WaypointHandler;
+import me.yarinlevi.waypoints.waypoint.PlayerListener;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -13,7 +13,7 @@ public class Waypoints extends JavaPlugin {
     @Getter private static Waypoints instance;
     @Getter private String prefix;
     @Getter private String adminPrefix;
-    @Getter private NewWaypointHandler waypointHandler;
+    @Getter private WaypointHandler waypointHandler;
     private PlayerListener playerListener;
 
     @Override
@@ -27,22 +27,20 @@ public class Waypoints extends JavaPlugin {
 
         playerListener = new PlayerListener();
         Bukkit.getPluginManager().registerEvents(playerListener, this);
-        waypointHandler = new NewWaypointHandler();
+        waypointHandler = new WaypointHandler();
 
 
         this.getCommand("wpadmin").setExecutor(new Administration());
         this.getCommand("waypoint").setExecutor(new MainCommand());
 
-        Bukkit.getOnlinePlayers().forEach(player -> {
-            playerListener.loadPlayer(player);
-        });
+        Bukkit.getOnlinePlayers().forEach(player -> playerListener.loadPlayer(player));
+
+        GuiUtils.registerGui();
     }
 
     @Override
     public void onDisable() {
-        Bukkit.getOnlinePlayers().forEach(player -> {
-            playerListener.unloadPlayer(player);
-        });
+        Bukkit.getOnlinePlayers().forEach(player -> playerListener.unloadPlayer(player));
     }
 
     public void registerConfigData() {

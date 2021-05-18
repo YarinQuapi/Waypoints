@@ -4,7 +4,7 @@ import org.bukkit.Location;
 
 import java.util.HashMap;
 
-public class LocationHandler {
+public class LocationUtils {
     public static LocationData handleLocation(Location loc) {
         return new LocationData(String.valueOf(loc.getBlockX()),
                 String.valueOf(loc.getBlockY()),
