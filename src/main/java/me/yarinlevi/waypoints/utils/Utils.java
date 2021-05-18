@@ -39,10 +39,14 @@ public class Utils {
 
 
     public static int calculateDistance(Vector p1, Vector p2) {
-        return (int) Math.sqrt(Math.pow(p1.getX() - p2.getX(), 2.0) + Math.pow(p1.getY()-p2.getY(), 2) + Math.pow(p1.getZ() - p2.getZ(), 2));
+        return calculateDistance(p1.getBlockX(), p1.getBlockY(), p1.getBlockZ(), p2.getBlockX(), p2.getBlockY(), p2.getBlockZ());
     }
 
     public static int calculateDistance(Location p1, Location p2) {
-        return (int) Math.sqrt(Math.pow(p1.getX() - p2.getX(), 2.0) + Math.pow(p1.getY()-p2.getY(), 2) + Math.pow(p1.getZ() - p2.getZ(), 2));
+        return calculateDistance(p1.getBlockX(), p1.getBlockY(), p1.getBlockZ(), p2.getBlockX(), p2.getBlockY(), p2.getBlockZ());
+    }
+    
+    private static int calculateDistance(int x1, int y1, int z1, int x2, int y2, int z2) {
+        return (int) Math.sqrt(Math.pow(x1 - x2, 2) + Math.pow(y1 - y2, 2) + Math.pow(z1 - z2, 2));
     }
 }
