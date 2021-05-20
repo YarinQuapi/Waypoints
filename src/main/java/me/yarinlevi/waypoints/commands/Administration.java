@@ -24,10 +24,10 @@ public class Administration implements CommandExecutor {
 
         if (args[0].equalsIgnoreCase("chunkscan")) {
             LocationData locDetail = LocationUtils.handleLocation(p.getLocation());
-            String msg = Utils.newMessage("&eAdvanced chunk scan:\n" +
-                    String.format("&a  • &eCoordinates: &bX&e: &d%s &bY&e: &d%s &bZ&e: &d%s\n", locDetail.getX(), locDetail.getY(), locDetail.getZ()) +
-                    String.format("&a  • &eIs Slime Chunk?: &d%s\n", locDetail.isSlimeChunk()) +
-                    String.format("&a  • &eWorld: &d%s", locDetail.getWorld()));
+            String msg = Utils.newMessage("&7Advanced chunk scan:\n" +
+                    String.format("&a  • &7Coordinates &bX &a%s &bY &a%s &bZ &a%s\n", locDetail.getX(), locDetail.getY(), locDetail.getZ()) +
+                    String.format("&a  • &7Is Slime Chunk?: &b%s\n", locDetail.isSlimeChunk()) +
+                    String.format("&a  • &7World &b%s", locDetail.getWorld()));
             p.sendMessage(msg);
         } else if (args[0].equalsIgnoreCase("spawn")) {
             LocationData locDetail = LocationUtils.handleLocation(p.getWorld().getSpawnLocation());
