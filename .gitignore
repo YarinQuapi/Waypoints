@@ -4,3 +4,4 @@ out/artifacts/Waypoints_jar/Waypoints.jar
 dependency-reduced-pom.xml
 target/
 *.jar
+*.iml
