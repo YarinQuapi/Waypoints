@@ -1,9 +1,10 @@
-package me.yarinlevi.waypoints.waypoint;
+package me.yarinlevi.waypoints.listeners;
 
 import lombok.Getter;
 import me.yarinlevi.waypoints.Waypoints;
 import me.yarinlevi.waypoints.data.FileManager;
 import me.yarinlevi.waypoints.player.PlayerData;
+import me.yarinlevi.waypoints.waypoint.Waypoint;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -33,9 +34,9 @@ public class PlayerListener implements Listener {
 
         Bukkit.getScheduler().runTaskTimerAsynchronously(Waypoints.getInstance(), () -> {
 
-            Bukkit.getServer().getLogger().info("Saving data...");
+            Waypoints.getInstance().getLogger().info("Saving data...");
             FileManager.saveData(dataFile, data);
-            Bukkit.getServer().getLogger().info("Saved data.");
+            Waypoints.getInstance().getLogger().info("Saved data.");
 
         }, 0L, (300 * 20));
     }
@@ -72,7 +73,7 @@ public class PlayerListener implements Listener {
             }
 
             Waypoints.getInstance().getWaypointHandler().insertPlayer(player, waypoints);
-            Bukkit.getServer().getLogger().info("Loaded waypoints data for player: " + player.getName());
+            Waypoints.getInstance().getLogger().info("Loaded waypoints data for player: " + player.getName());
         }
     }
 
@@ -82,7 +83,7 @@ public class PlayerListener implements Listener {
         ConfigurationSection playerSection = data.getConfigurationSection(player.getUniqueId().toString());
 
         if (!playerData.getWaypointList().isEmpty()) {
-            ConfigurationSection waypointSection = playerSection.getConfigurationSection("waypoints");
+            ConfigurationSection waypointSection = playerSection.createSection("waypoints");
 
             for (Waypoint waypoint : playerData.getWaypointList()) {
                 waypointSection.set(waypoint.getName() + ".location", waypoint.getLocation());
@@ -91,7 +92,7 @@ public class PlayerListener implements Listener {
             }
 
             FileManager.saveData(dataFile, data);
-            Bukkit.getServer().getLogger().info("Saved waypoints data for player: " + player.getName());
+            Waypoints.getInstance().getLogger().info("Saved waypoints data for player: " + player.getName());
         }
 
         Waypoints.getInstance().getWaypointHandler().removePlayer(player);

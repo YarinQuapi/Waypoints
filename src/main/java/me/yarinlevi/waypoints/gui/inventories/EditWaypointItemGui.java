@@ -14,13 +14,13 @@ public class EditWaypointItemGui {
                 .onComplete((player2, text) -> {
                     if (Material.getMaterial(text.toUpperCase()) != null) {
                         wp.editItem(new ItemStack(Material.getMaterial(text.toUpperCase())));
-                        player2.sendMessage(Utils.newMessage("&eSuccessfully changed waypoint's item to: &d" + text.toUpperCase()));
+                        player2.sendMessage(Utils.newMessage("&7Successfully changed waypoint's item to: &b" + text.toUpperCase()));
                     } else {
-                        player2.sendMessage(Utils.newMessage("&eThe item id was not found, please try again."));
+                        player2.sendMessage(Utils.newMessage("&7The item id was not found, please try again."));
                     }
                     return AnvilGUI.Response.close();
                 })
-                .text("Enter item id ")
+                .text(" ")
                 .itemLeft(new ItemStack(Material.PAPER))
                 .title("Edit waypoint")
                 .plugin(Waypoints.getInstance())

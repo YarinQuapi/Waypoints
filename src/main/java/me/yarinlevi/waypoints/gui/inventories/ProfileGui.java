@@ -23,7 +23,7 @@ public class ProfileGui extends AbstractGui implements Listener {
     public void run(Player player) {
         this.setKey("gui.personal.profile");
         this.setSlots(9*3);
-        this.setTitle(Utils.newMessageNoPrefix("Main Profile: &d" + player.getName()));
+        this.setTitle(Utils.newMessageNoPrefix("&7Main Profile: &b" + player.getName()));
 
         ItemStack itemStack = new ItemStack(Material.PLAYER_HEAD);
         SkullMeta skullMeta = (SkullMeta) itemStack.getItemMeta();
@@ -34,12 +34,13 @@ public class ProfileGui extends AbstractGui implements Listener {
                 skullMeta.setOwningPlayer(player);
 
                 ArrayList<String> lore = new ArrayList<>();
-                String waypointCount = String.format(Utils.newMessageNoPrefix("&eNumber of &bwaypoints&e: &d%s"), Waypoints.getInstance().getWaypointHandler().getWaypointList(player).size());
+                String waypointCount = String.format(Utils.newMessageNoPrefix("&b%s &7Waypoints"), Waypoints.getInstance().getWaypointHandler().getWaypointList(player).size());
                 lore.add(waypointCount);
 
                 int overworldCount = Waypoints.getInstance().getWaypointHandler().getWaypointList(player, WaypointWorld.NORMAL).size();
                 int netherCount = Waypoints.getInstance().getWaypointHandler().getWaypointList(player, WaypointWorld.THE_NETHER).size();
                 int endCount = Waypoints.getInstance().getWaypointHandler().getWaypointList(player, WaypointWorld.THE_END).size();
+                int systemInduced = Waypoints.getInstance().getWaypointHandler().getSystemInducedWaypointList(player).size();
 
                 if (overworldCount > 0) {
                     lore.add(String.format(Utils.newMessageNoPrefix("&a%s &7Waypoints in &bOverworld"), overworldCount));
@@ -51,6 +52,10 @@ public class ProfileGui extends AbstractGui implements Listener {
 
                 if (endCount > 0) {
                     lore.add(String.format(Utils.newMessageNoPrefix("&a%s &7Waypoints in &bThe End"), endCount));
+                }
+
+                if (systemInduced > 0) {
+                    lore.add(String.format(Utils.newMessageNoPrefix("&4%s &cDeathpoints"), systemInduced));
                 }
 
                 skullMeta.setLore(lore);

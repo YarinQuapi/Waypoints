@@ -24,7 +24,7 @@ public class WaypointListGui extends AbstractGui implements Listener {
     public void run(Player player) {
         this.setKey("gui.personal.waypointlist");
         this.setSlots(9*3);
-        this.setTitle(Utils.newMessageNoPrefix("&b&lWaypoint List"));
+        this.setTitle(Utils.newMessageNoPrefix("&7Waypoint List"));
 
         ItemStack backItem = new ItemStack(Material.NETHER_STAR);
         ItemMeta meta = backItem.getItemMeta();
@@ -49,19 +49,19 @@ public class WaypointListGui extends AbstractGui implements Listener {
                 Vector vec = wp.getVector();
 
                 ArrayList<String> lore = new ArrayList<>();
-                String coordinatesString = String.format(Utils.newMessageNoPrefix("&eCoordinates: &bX&e: &d%s &bY&e: &d%s &bZ&e: &d%s"), vec.getBlockX(), vec.getBlockY(), vec.getBlockZ());
+                String coordinatesString = String.format(Utils.newMessageNoPrefix("&7Coordinates &bX &a%s &bY &a%s &bZ &a%s"), vec.getBlockX(), vec.getBlockY(), vec.getBlockZ());
                 lore.add(coordinatesString);
 
-                String waypointWorld = String.format(Utils.newMessageNoPrefix("&eWorld: &d%s"), wp.getWorld().getName());
+                String waypointWorld = String.format(Utils.newMessageNoPrefix("&7World &a%s"), wp.getWorld().getName());
                 lore.add(waypointWorld);
 
                 lore.add("\n");
 
-                String rightClickToEdit = Utils.newMessageNoPrefix("&bRight click to edit item!");
+                String rightClickToEdit = Utils.newMessageNoPrefix("&7Right click to edit item!");
                 lore.add(rightClickToEdit);
 
                 itemMeta.setLore(lore);
-                itemMeta.setDisplayName(Utils.newMessageNoPrefix("&d" + waypointName));
+                itemMeta.setDisplayName(Utils.newMessageNoPrefix("&b" + waypointName));
 
                 itemStack.setItemMeta(itemMeta);
 

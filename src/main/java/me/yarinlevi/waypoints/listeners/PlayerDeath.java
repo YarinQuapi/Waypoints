@@ -1,4 +1,4 @@
-package me.yarinlevi.waypoints.events;
+package me.yarinlevi.waypoints.listeners;
 
 import me.yarinlevi.waypoints.Waypoints;
 import me.yarinlevi.waypoints.exceptions.PlayerNotLoadedException;
@@ -20,7 +20,7 @@ public class PlayerDeath implements Listener {
     public void onPlayerDeath(PlayerDeathEvent e) {
         Player p = e.getEntity();
 
-        TextComponent msg = new TextComponent(Utils.newMessage("&eYou died. Created waypoint: "));
+        TextComponent msg = new TextComponent(Utils.newMessage("&7You died. Created waypoint "));
         TextComponent delete = new TextComponent(Utils.newMessageNoPrefix("&cDELETE"));
 
         int deathCount = p.getStatistic(Statistic.DEATHS);
@@ -29,12 +29,12 @@ public class PlayerDeath implements Listener {
 
         try {
             if (Waypoints.getInstance().getWaypointHandler().addWaypoint(p, waypoint)) {
-                TextComponent deathPoint = new TextComponent(Utils.newMessageNoPrefix("&f\"&dDeath-" + deathCount + "&f\" "));
+                TextComponent deathPoint = new TextComponent(Utils.newMessageNoPrefix("&bDeath-" + deathCount));
 
-                deathPoint.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(Utils.newMessageNoPrefix(String.format("&eClick to check waypoint &f\"&dDeath-%s&f\"", deathCount))).create()));
+                deathPoint.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(Utils.newMessageNoPrefix(String.format("&eClick to check waypoint &bDeath-%s", deathCount))).create()));
                 deathPoint.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/wp check Death-" + deathCount));
 
-                delete.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(Utils.newMessageNoPrefix(String.format("&eClick to delete waypoint &f\"&dDeath-%s&f\"", deathCount))).create()));
+                delete.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(Utils.newMessageNoPrefix(String.format("&7Click to delete waypoint &bDeath-%s", deathCount))).create()));
                 delete.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/wp delete Death-" + deathCount));
 
                 msg.addExtra(deathPoint);

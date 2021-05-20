@@ -19,13 +19,13 @@ public class CreateWaypointGui extends AbstractGui {
                     Waypoint waypoint = new Waypoint(text, player2.getLocation(), false);
                     try {
                         Waypoints.getInstance().getWaypointHandler().addWaypoint(player2, waypoint);
-                        player2.sendMessage(Utils.newMessage(String.format("&eCreated new Waypoint: &f\"&d%s&f\"", text)));
+                        player2.sendMessage(Utils.newMessage(String.format("&7Created new waypoint &b%s", text)));
                     } catch (WaypointAlreadyExistsException | PlayerNotLoadedException e) {
                         player2.sendMessage(e.getMessage());
                     }
                     return AnvilGUI.Response.close();
                 })
-                .text("")
+                .text(" ")
                 .itemLeft(new ItemStack(Material.PAPER))
                 .title("Enter a waypoint name")
                 .plugin(Waypoints.getInstance())

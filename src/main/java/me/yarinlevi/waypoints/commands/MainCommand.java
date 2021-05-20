@@ -8,6 +8,7 @@ import me.yarinlevi.waypoints.gui.GuiUtils;
 import me.yarinlevi.waypoints.utils.LocationData;
 import me.yarinlevi.waypoints.utils.Utils;
 import me.yarinlevi.waypoints.waypoint.Waypoint;
+import me.yarinlevi.waypoints.waypoint.WaypointWorld;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.ComponentBuilder;
@@ -32,7 +33,7 @@ public class MainCommand implements CommandExecutor {
 
         final Player p = (Player) sender;
 
-        if (args.length > 2) {
+        if (args.length > 3) {
             p.sendMessage(Utils.newMessage("&cExcessive arguments."));
             return false;
         }
@@ -67,13 +68,13 @@ public class MainCommand implements CommandExecutor {
                 return true;
             } else if (args[0].equalsIgnoreCase("help")) {
                 String str = Utils.newMessage("&eCommands:\n" +
-                        "&b  • &d/wp help &f- &eShow this command\n" +
-                        "&b  • &d/wp check <&awaypoint&d> &f- &eCheck a certain waypoint.\n" +
-                        "&b  • &d/wp create <&aname&d> &f- &eCreate a new waypoint\n" +
-                        "&b  • &d/wp list [&aworld&d] &f- &eList all (or some) your waypoints\n" +
-                        "&b  • &d/wp delete <&awaypoint&d | &adeathpoints&d> &f- &eDelete a waypoint\n" +
-                        "&b  • &d/wp spawn &f- &eLocates the spawn of the world.\n" +
-                        "\n &b&lQWaypoints Version&e&l: &a&l" + Waypoints.getInstance().getDescription().getVersion());
+                        "&a  • &b/wp help &f- &7Show this command\n" +
+                        "&a  • &b/wp check <&awaypoint&b> &f- &7Check a certain waypoint.\n" +
+                        "&a  • &b/wp create <&aname&b> &f- &7Create a new waypoint\n" +
+                        "&a  • &b/wp list [&aworld&b] &f- &7List all (or some) your waypoints\n" +
+                        "&a  • &b/wp delete <&awaypoint&b | &adeathpoints&b> &f- &7Delete a waypoint\n" +
+                        "&a  • &b/wp spawn &f- &7Locates the spawn of the world.\n" +
+                        "\n &b&lQWaypoints Version&7&l: &a&l" + Waypoints.getInstance().getDescription().getVersion());
                 p.sendMessage(str);
                 return true;
             } else {
@@ -88,7 +89,7 @@ public class MainCommand implements CommandExecutor {
 
                 try {
                     if (Waypoints.getInstance().getWaypointHandler().addWaypoint(p, wp)) {
-                        p.sendMessage(Utils.newMessage(String.format("&eCreated new Waypoint: &f\"&d%s&f\"", name)));
+                        p.sendMessage(Utils.newMessage(String.format("&7Created new waypoint: &f\"&b%s&f\"", name)));
                         return true;
                     }
                     return false;
@@ -103,8 +104,8 @@ public class MainCommand implements CommandExecutor {
 
                 LocationData locationData = wp.getLocationData();
 
-                String msg = Utils.newMessage(String.format("&eWaypoint &f\"&d%s&f\" &eis located at &bX&e: &d%s &bY&e: &d%s &bZ&e: &d%s &ein &bworld&e: &d%s &eYou are &d%s &bblocks &eaway.",
-                        name, locationData.getX(), locationData.getY(), locationData.getZ(), locationData.getWorld(), Utils.calculateDistance(p.getLocation().toVector(), wp.getVector())));
+                String msg = Utils.newMessage(String.format("&7Waypoint &b%s &7is located at &bX &a%s &bY &a%s &bZ &a%s &7in world &b%s &7You are &b%s &7blocks away.",
+                        name, locationData.getX(), locationData.getY(), locationData.getZ(), WaypointWorld.valueOf(locationData.getWorld()).getName(), Utils.calculateDistance(p.getLocation().toVector(), wp.getVector())));
                 p.sendMessage(msg);
 
                 return true;
@@ -113,7 +114,7 @@ public class MainCommand implements CommandExecutor {
 
                 try {
                     if (Waypoints.getInstance().getWaypointHandler().removeWaypoint(p, name)) {
-                        p.sendMessage(Utils.newMessage(String.format("&eDeleted waypoint: &f\"&d%s&f\"", name)));
+                        p.sendMessage(Utils.newMessage(String.format("&7Deleted waypoint &b%s", name)));
                         return true;
                     }
                     return false;
@@ -121,16 +122,43 @@ public class MainCommand implements CommandExecutor {
                     p.sendMessage(exception.getMessage());
                     return false;
                 }
-            } else if (args[0].equalsIgnoreCase("setcompass")) {
+            } else if (args[0].equalsIgnoreCase("setcompass") && p.hasPermission("qwaypoints.compass")) {
                 String name = args[1];
 
                 Waypoint wp = Waypoints.getInstance().getWaypointHandler().getWaypoint(p, name);
 
                 p.setCompassTarget(wp.getLocation());
 
-                p.sendMessage(Utils.newMessage(String.format("&eSet compass to point to waypoint: %s", name)));
+                p.sendMessage(Utils.newMessage(String.format("&7Set compass to point to waypoint &b%s", name)));
                 return true;
 
+            } else if (args[0].equalsIgnoreCase("distance")) {
+                if (args.length == 3) {
+                    String waypointA = args[1];
+                    String waypointB = args[2];
+
+                    Waypoint wpA = Waypoints.getInstance().getWaypointHandler().getWaypoint(p, waypointA);
+
+                    if (wpA != null) {
+                        Waypoint wpB = Waypoints.getInstance().getWaypointHandler().getWaypoint(p, waypointB);
+
+                        if (wpB != null) {
+                            int distance = Utils.calculateDistance(wpA.getVector(), wpB.getVector());
+
+                            p.sendMessage(Utils.newMessage(String.format("&7The distance between waypoint &b%s &7and &b%s &7is &b%s &7blocks", wpA.getName(), wpB.getName(), distance)));
+                            return true;
+                        } else {
+                            p.sendMessage(Utils.newMessage(String.format("&cWaypoint %s doesn't exist!", waypointB)));
+                            return false;
+                        }
+                    } else {
+                        p.sendMessage(Utils.newMessage(String.format("&cWaypoint %s doesn't exist!", waypointA)));
+                        return false;
+                    }
+                } else {
+                    p.sendMessage(Utils.newMessage("Wrong argument syntax!"));
+                    return false;
+                }
             } else {
                 p.sendMessage(Utils.newMessage("&cSub command: \"" + args[0] + "\" was not found"));
                 return false;

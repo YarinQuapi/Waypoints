@@ -4,8 +4,8 @@ import lombok.Getter;
 import me.yarinlevi.waypoints.commands.Administration;
 import me.yarinlevi.waypoints.commands.MainCommand;
 import me.yarinlevi.waypoints.gui.GuiUtils;
+import me.yarinlevi.waypoints.listeners.PlayerListener;
 import me.yarinlevi.waypoints.waypoint.WaypointHandler;
-import me.yarinlevi.waypoints.waypoint.PlayerListener;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 

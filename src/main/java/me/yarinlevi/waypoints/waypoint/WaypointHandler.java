@@ -5,7 +5,6 @@ import me.yarinlevi.waypoints.exceptions.WaypointAlreadyExistsException;
 import me.yarinlevi.waypoints.exceptions.WaypointDoesNotExistException;
 import me.yarinlevi.waypoints.player.PlayerData;
 import me.yarinlevi.waypoints.utils.Utils;
-
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.Nullable;
 
@@ -24,24 +23,27 @@ public class WaypointHandler {
 
     public Set<String> getWaypointList(Player player) {
         Set<String> waypoints = new HashSet<>();
-        playerDataMap.get(player).getWaypointList().forEach(x -> {
-            waypoints.add(x.getName());
-        });
+        playerDataMap.get(player).getWaypointList().stream().filter(x -> !x.isSystemInduced()).forEach(x -> waypoints.add(x.getName()));
+
         return waypoints;
     }
 
     public Set<String> getWaypointList(Player player, WaypointWorld world) {
         Set<String> list = new HashSet<>();
 
-        if (playerDataMap.containsKey(player)) {
-            for (Waypoint wp : playerDataMap.get(player).getWaypointList()) {
-                if (wp.getWorld().equals(world))
-                    list.add(wp.getName());
-            }
-        }
+        playerDataMap.get(player).getWaypointList().stream().filter(x -> x.getWorld().equals(world)).filter(x -> !x.isSystemInduced()).forEach(x -> list.add(x.getName()));
 
         return list;
     }
+
+    public Set<String> getSystemInducedWaypointList(Player player) {
+        Set<String> list = new HashSet<>();
+
+        playerDataMap.get(player).getWaypointList().stream().filter(Waypoint::isSystemInduced).forEach(x -> list.add(x.getName()));
+
+        return list;
+    }
+
 
     @Nullable
     public Waypoint getWaypoint(Player player, String name) {

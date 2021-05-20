@@ -5,7 +5,6 @@ import me.yarinlevi.waypoints.gui.helpers.AbstractGui;
 import me.yarinlevi.waypoints.gui.inventories.CreateWaypointGui;
 import me.yarinlevi.waypoints.gui.inventories.ProfileGui;
 import me.yarinlevi.waypoints.gui.inventories.WaypointListGui;
-import me.yarinlevi.waypoints.waypoint.Waypoint;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 
