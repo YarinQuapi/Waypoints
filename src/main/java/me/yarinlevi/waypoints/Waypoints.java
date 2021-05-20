@@ -9,6 +9,9 @@ import me.yarinlevi.waypoints.waypoint.WaypointHandler;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
+/**
+ * @author YarinQuapi
+ */
 public class Waypoints extends JavaPlugin {
     @Getter private static Waypoints instance;
     @Getter private String prefix;

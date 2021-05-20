@@ -2,6 +2,9 @@ package me.yarinlevi.waypoints.utils;
 
 import lombok.Getter;
 
+/**
+ * @author YarinQuapi
+ */
 public class LocationData {
 
     @Getter private final String x;

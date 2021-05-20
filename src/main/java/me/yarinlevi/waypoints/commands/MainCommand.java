@@ -21,6 +21,9 @@ import org.bukkit.entity.Player;
 
 import java.util.Iterator;
 
+/**
+ * @author YarinQuapi
+ */
 public class MainCommand implements CommandExecutor {
 
     @SuppressWarnings("deprecation")
@@ -47,14 +50,14 @@ public class MainCommand implements CommandExecutor {
 
                 if (waypointList.hasNext()) {
                     TextComponent message = new TextComponent(ChatColor.translateAlternateColorCodes('&', Waypoints.getInstance().getPrefix()));
-                    final TextComponent SPACE = new TextComponent(ChatColor.YELLOW + ", ");
+                    final TextComponent SPACE = new TextComponent(ChatColor.GRAY + ", ");
                     String waypoint;
                     TextComponent waypointText;
                     while (waypointList.hasNext()) {
                         waypoint = waypointList.next();
-                        waypointText = new TextComponent(ChatColor.LIGHT_PURPLE + waypoint);
+                        waypointText = new TextComponent(ChatColor.AQUA + waypoint);
                         waypointText.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/wp check " + waypoint));
-                        waypointText.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(ChatColor.RESET + "Click to check waypoint \"" + ChatColor.AQUA + waypoint + ChatColor.RESET + "\"").create()));
+                        waypointText.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(ChatColor.GRAY + "Click to check waypoint " + ChatColor.AQUA + waypoint).create()));
                         message.addExtra(waypointText);
                         if (waypointList.hasNext()) {
                             message.addExtra(SPACE);
@@ -67,16 +70,30 @@ public class MainCommand implements CommandExecutor {
                 }
                 return true;
             } else if (args[0].equalsIgnoreCase("help")) {
-                String str = Utils.newMessage("&eCommands:\n" +
+                String str = Utils.newMessage("&7Commands:\n" +
                         "&a  • &b/wp help &f- &7Show this command\n" +
                         "&a  • &b/wp check <&awaypoint&b> &f- &7Check a certain waypoint.\n" +
                         "&a  • &b/wp create <&aname&b> &f- &7Create a new waypoint\n" +
                         "&a  • &b/wp list [&aworld&b] &f- &7List all (or some) your waypoints\n" +
                         "&a  • &b/wp delete <&awaypoint&b | &adeathpoints&b> &f- &7Delete a waypoint\n" +
                         "&a  • &b/wp spawn &f- &7Locates the spawn of the world.\n" +
+                        "&a  • &b/wp nearest &f- &7Locates the nearest waypoint.\n" +
+                        "&a  • &b/wp distance <&awaypointA&b> <&awaypointB&b> &f- &7Calculates the distance between two waypoints" +
                         "\n &b&lQWaypoints Version&7&l: &a&l" + Waypoints.getInstance().getDescription().getVersion());
                 p.sendMessage(str);
                 return true;
+            } else if (args[0].equalsIgnoreCase("nearest")) {
+                Waypoint nearest = Waypoints.getInstance().getWaypointHandler().getNearestWaypoint(p);
+
+                if (nearest != null) {
+                    String msg = Utils.newMessage(String.format("&7The closest waypoint to you is &b%s &7at &b%s &7blocks away from you, located at %s", nearest.getName(), nearest.getDistance(), nearest.getFormattedCoordinates()));
+
+                    p.sendMessage(msg);
+                    return true;
+                } else {
+                    p.sendMessage(Utils.newMessage("&cYou do not have any waypoints in this world."));
+                    return false;
+                }
             } else {
                 p.sendMessage(Utils.newMessage("&cSub command: \"" + args[0] + "\" was not found"));
                 return false;
@@ -85,11 +102,11 @@ public class MainCommand implements CommandExecutor {
             if (args[0].equalsIgnoreCase("create")) {
                 String name = args[1];
 
-                Waypoint wp = new Waypoint(name, p.getLocation(), false);
+                Waypoint wp = new Waypoint(p, name, p.getLocation(), false);
 
                 try {
                     if (Waypoints.getInstance().getWaypointHandler().addWaypoint(p, wp)) {
-                        p.sendMessage(Utils.newMessage(String.format("&7Created new waypoint: &f\"&b%s&f\"", name)));
+                        p.sendMessage(Utils.newMessage(String.format("&7Created new waypoint: &b%s", name)));
                         return true;
                     }
                     return false;
@@ -159,7 +176,8 @@ public class MainCommand implements CommandExecutor {
                     p.sendMessage(Utils.newMessage("Wrong argument syntax!"));
                     return false;
                 }
-            } else {
+            }
+            else {
                 p.sendMessage(Utils.newMessage("&cSub command: \"" + args[0] + "\" was not found"));
                 return false;
             }

@@ -10,6 +10,9 @@ import org.bukkit.event.Listener;
 
 import java.util.HashMap;
 
+/**
+ * @author YarinQuapi
+ */
 public class GuiUtils implements Listener {
     private static final HashMap<String, Class<? extends AbstractGui>> guiList = new HashMap<>();
 

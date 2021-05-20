@@ -16,6 +16,9 @@ import org.bukkit.inventory.ItemStack;
 
 import java.util.HashMap;
 
+/**
+ * @author YarinQuapi
+ */
 public abstract class AbstractGui implements Listener, IGui {
     @Getter private Inventory inventory;
     @Getter @Setter private InventoryType inventoryType = InventoryType.CHEST;

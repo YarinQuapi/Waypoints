@@ -22,6 +22,9 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @author YarinQuapi
+ */
 public class PlayerListener implements Listener {
     private final File dataFile;
     @Getter private final FileConfiguration data;
@@ -66,9 +69,9 @@ public class PlayerListener implements Listener {
                 waypoint = waypointSection.getConfigurationSection(key);
 
                 if (waypoint.getString("item").equals("DIRT")) {
-                    waypoints.add(new Waypoint(key, (Location) waypoint.get("location"), waypoint.getBoolean("systemInduced")));
+                    waypoints.add(new Waypoint(player, key, (Location) waypoint.get("location"), waypoint.getBoolean("systemInduced")));
                 } else {
-                    waypoints.add(new Waypoint(key, (Location) waypoint.get("location"), new ItemStack(Material.getMaterial(waypoint.getString("item").toUpperCase())), waypoint.getBoolean("systemInduced")));
+                    waypoints.add(new Waypoint(player, key, (Location) waypoint.get("location"), new ItemStack(Material.getMaterial(waypoint.getString("item").toUpperCase())), waypoint.getBoolean("systemInduced")));
                 }
             }
 

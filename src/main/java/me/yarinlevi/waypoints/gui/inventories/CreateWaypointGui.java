@@ -11,12 +11,15 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
+/**
+ * @author YarinQuapi
+ */
 public class CreateWaypointGui extends AbstractGui {
     @Override
     public void run(Player player) {
         new AnvilGUI.Builder()
                 .onComplete((player2, text) -> {
-                    Waypoint waypoint = new Waypoint(text, player2.getLocation(), false);
+                    Waypoint waypoint = new Waypoint(player, text, player2.getLocation(), false);
                     try {
                         Waypoints.getInstance().getWaypointHandler().addWaypoint(player2, waypoint);
                         player2.sendMessage(Utils.newMessage(String.format("&7Created new waypoint &b%s", text)));

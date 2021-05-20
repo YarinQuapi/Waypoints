@@ -18,6 +18,9 @@ import org.bukkit.inventory.meta.SkullMeta;
 import java.util.ArrayList;
 import java.util.Objects;
 
+/**
+ * @author YarinQuapi
+ */
 public class ProfileGui extends AbstractGui implements Listener {
     @Override
     public void run(Player player) {
@@ -38,7 +41,7 @@ public class ProfileGui extends AbstractGui implements Listener {
                 lore.add(waypointCount);
 
                 int overworldCount = Waypoints.getInstance().getWaypointHandler().getWaypointList(player, WaypointWorld.NORMAL).size();
-                int netherCount = Waypoints.getInstance().getWaypointHandler().getWaypointList(player, WaypointWorld.THE_NETHER).size();
+                int netherCount = Waypoints.getInstance().getWaypointHandler().getWaypointList(player, WaypointWorld.NETHER).size();
                 int endCount = Waypoints.getInstance().getWaypointHandler().getWaypointList(player, WaypointWorld.THE_END).size();
                 int systemInduced = Waypoints.getInstance().getWaypointHandler().getSystemInducedWaypointList(player).size();
 

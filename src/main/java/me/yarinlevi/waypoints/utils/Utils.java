@@ -6,6 +6,9 @@ import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.util.Vector;
 
+/**
+ * @author YarinQuapi
+ */
 public class Utils {
     public static String newMessage(String message) {
         return ChatColor.translateAlternateColorCodes('&', Waypoints.getInstance().getPrefix()) + ChatColor.translateAlternateColorCodes('&', message);

@@ -19,6 +19,9 @@ import org.bukkit.util.Vector;
 import java.util.ArrayList;
 import java.util.Collections;
 
+/**
+ * @author YarinQuapi
+ */
 public class WaypointListGui extends AbstractGui implements Listener {
     @Override
     public void run(Player player) {

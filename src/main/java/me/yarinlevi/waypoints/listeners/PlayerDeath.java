@@ -15,6 +15,9 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
 
+/**
+ * @author YarinQuapi
+ */
 public class PlayerDeath implements Listener {
     @EventHandler
     public void onPlayerDeath(PlayerDeathEvent e) {
@@ -25,7 +28,7 @@ public class PlayerDeath implements Listener {
 
         int deathCount = p.getStatistic(Statistic.DEATHS);
 
-        Waypoint waypoint = new Waypoint("Death-" + deathCount, p.getLocation(), true);
+        Waypoint waypoint = new Waypoint(p, "Death-" + deathCount, p.getLocation(), true);
 
         try {
             if (Waypoints.getInstance().getWaypointHandler().addWaypoint(p, waypoint)) {

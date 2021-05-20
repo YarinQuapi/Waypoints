@@ -10,6 +10,9 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 
+/**
+ * @author YarinQuapi
+ */
 public class WaypointHandler {
     private final Map<Player, PlayerData> playerDataMap = new HashMap<>();
 
@@ -19,6 +22,18 @@ public class WaypointHandler {
 
     public PlayerData getPlayerData(Player player) {
         return playerDataMap.get(player);
+    }
+
+    public Waypoint getNearestWaypoint(Player player) {
+        WaypointWorld waypointWorld = WaypointWorld.valueOf(player.getLocation().getWorld().getEnvironment().name());
+
+        if (playerDataMap.get(player).getWaypointList().stream().anyMatch(x -> x.getWorld().equals(waypointWorld))) {
+            return playerDataMap.get(player).getWaypointList().stream()
+                    .filter(x -> x.getWorld().equals(waypointWorld))
+                    .sorted(Comparator.comparingInt(Waypoint::getDistance)).findFirst().get();
+        }
+
+        return null;
     }
 
     public Set<String> getWaypointList(Player player) {
@@ -55,7 +70,7 @@ public class WaypointHandler {
         if (this.playerDataMap.containsKey(player)) {
             PlayerData data = playerDataMap.get(player);
             if (data.getWaypointList().stream().anyMatch(x -> x.getName().equalsIgnoreCase(waypoint.getName()))) {
-                throw new WaypointAlreadyExistsException(Utils.newMessage(String.format("&eWaypoint with name: &f\"&d%s&f\" &ealready exists.", waypoint.getName())));
+                throw new WaypointAlreadyExistsException(Utils.newMessage(String.format("&7Waypoint with name &b%s &7already exists.", waypoint.getName())));
             } else {
                 data.getWaypointList().add(waypoint);
                 return true;

@@ -6,6 +6,9 @@ import org.bukkit.configuration.file.FileConfiguration;
 import java.io.File;
 import java.io.IOException;
 
+/**
+ * @author YarinQuapi
+ */
 public class FileManager {
     public static void registerData(File file, FileConfiguration data) {
         if (!file.exists()) {
