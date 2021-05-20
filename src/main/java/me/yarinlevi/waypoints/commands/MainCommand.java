@@ -6,6 +6,7 @@ import me.yarinlevi.waypoints.exceptions.WaypointAlreadyExistsException;
 import me.yarinlevi.waypoints.exceptions.WaypointDoesNotExistException;
 import me.yarinlevi.waypoints.gui.GuiUtils;
 import me.yarinlevi.waypoints.utils.LocationData;
+import me.yarinlevi.waypoints.utils.LocationUtils;
 import me.yarinlevi.waypoints.utils.Utils;
 import me.yarinlevi.waypoints.waypoint.Waypoint;
 import me.yarinlevi.waypoints.waypoint.WaypointWorld;
@@ -19,6 +20,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import java.util.Arrays;
 import java.util.Iterator;
 
 /**
@@ -46,32 +48,23 @@ public class MainCommand implements CommandExecutor {
             return true;
         } else if (args.length == 1) {
             if (args[0].equalsIgnoreCase("list")) {
-                Iterator<String> waypointList = Waypoints.getInstance().getWaypointHandler().getWaypointList(p).iterator();
-
-                if (waypointList.hasNext()) {
-                    TextComponent message = new TextComponent(ChatColor.translateAlternateColorCodes('&', Waypoints.getInstance().getPrefix()));
-                    final TextComponent SPACE = new TextComponent(ChatColor.GRAY + ", ");
-                    String waypoint;
-                    TextComponent waypointText;
-                    while (waypointList.hasNext()) {
-                        waypoint = waypointList.next();
-                        waypointText = new TextComponent(ChatColor.AQUA + waypoint);
-                        waypointText.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/wp check " + waypoint));
-                        waypointText.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(ChatColor.GRAY + "Click to check waypoint " + ChatColor.AQUA + waypoint).create()));
-                        message.addExtra(waypointText);
-                        if (waypointList.hasNext()) {
-                            message.addExtra(SPACE);
-                        }
-                    }
-                    p.spigot().sendMessage(message);
-
+                if (Waypoints.getInstance().getWaypointHandler().getWaypoints(p).size() > 0) {
+                    this.list(p, Waypoints.getInstance().getWaypointHandler().getWaypointList(p).iterator());
+                    return true;
                 } else {
                     p.sendMessage(Utils.newMessage("&cYou do not have any waypoints."));
+                    return false;
                 }
+            } else if (args[0].equalsIgnoreCase("spawn") && p.hasPermission("qwaypoints.commands.spawn")) {
+                LocationData locDetail = LocationUtils.handleLocation(p.getWorld().getSpawnLocation());
+                String msg = Utils.newMessage("&7Spawn locator:\n" +
+                        String.format("&a  • &7Coordinates &bX &a%s &bY &a%s &bZ &a%s\n", locDetail.getX(), locDetail.getY(), locDetail.getZ()) +
+                        String.format("&a  • &7Distance to coordinates &b%s &7blocks", Utils.calculateDistance(p.getLocation(), p.getWorld().getSpawnLocation())));
+                p.sendMessage(msg);
                 return true;
             } else if (args[0].equalsIgnoreCase("help")) {
                 String str = Utils.newMessage("&7Commands:\n" +
-                        "&a  • &b/wp help &f- &7Show this command\n" +
+                        "&a  • &b/wp help &f- &7Show this help menu\n" +
                         "&a  • &b/wp check <&awaypoint&b> &f- &7Check a certain waypoint.\n" +
                         "&a  • &b/wp create <&aname&b> &f- &7Create a new waypoint\n" +
                         "&a  • &b/wp list [&aworld&b] &f- &7List all (or some) your waypoints\n" +
@@ -114,6 +107,25 @@ public class MainCommand implements CommandExecutor {
                     p.sendMessage(exception.getMessage());
                     return false;
                 }
+            } else if (args[0].equalsIgnoreCase("list")) {
+              String world = args[1];
+
+              if (Arrays.stream(WaypointWorld.values()).anyMatch(x-> x.getKeys().contains(world.toLowerCase()))) {
+                  WaypointWorld waypointWorld = Arrays.stream(WaypointWorld.values()).filter(x -> x.getKeys().contains(world.toLowerCase())).findFirst().get();
+
+                  Iterator<String> waypoints = Waypoints.getInstance().getWaypointHandler().getWaypointList(p, waypointWorld).iterator();
+
+                  if (waypoints.hasNext()) {
+                      this.list(p, waypoints);
+                      return true;
+                  } else {
+                      p.sendMessage(Utils.newMessage("&cNo waypoints detected in world &4" + waypointWorld.getName()));
+                      return false;
+                  }
+              } else {
+                  p.sendMessage(Utils.newMessage("&cUnknown world type. "));
+                  return true;
+              }
             } else if (args[0].equalsIgnoreCase("check")) {
                 String name = args[1];
 
@@ -182,5 +194,25 @@ public class MainCommand implements CommandExecutor {
                 return false;
             }
         }
+    }
+
+    private void list(Player p, Iterator<String> waypointList) {
+        TextComponent message = new TextComponent(ChatColor.translateAlternateColorCodes('&', Waypoints.getInstance().getPrefix()));
+        final TextComponent SPACE = new TextComponent(ChatColor.DARK_GRAY + ", ");
+        String waypoint;
+        TextComponent waypointText;
+        while (waypointList.hasNext()) {
+            waypoint = waypointList.next();
+
+            waypointText = new TextComponent(ChatColor.GRAY + waypoint);
+            waypointText.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/wp check " + waypoint));
+            waypointText.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(ChatColor.GRAY + "Click to check waypoint " + ChatColor.AQUA + waypoint).create()));
+            message.addExtra(waypointText);
+
+            if (waypointList.hasNext()) {
+                message.addExtra(SPACE);
+            }
+        }
+        p.spigot().sendMessage(message);
     }
 }

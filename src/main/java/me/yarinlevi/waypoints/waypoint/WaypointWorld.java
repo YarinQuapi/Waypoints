@@ -2,17 +2,21 @@ package me.yarinlevi.waypoints.waypoint;
 
 import lombok.Getter;
 
+import java.util.*;
+
 /**
  * @author YarinQuapi
  */
 public enum WaypointWorld {
-    NORMAL("Overworld"),
-    NETHER("The Nether"),
-    THE_END("The End");
+    NORMAL("Overworld", Arrays.asList("overworld", "normal")),
+    NETHER("The Nether", Arrays.asList("nether", "thenether")),
+    THE_END("The End", Arrays.asList("end", "theend"));
 
     @Getter String name;
+    @Getter List<String> keys;
 
-    WaypointWorld(String name) {
+    WaypointWorld(String name, List<String> keys) {
         this.name = name;
+        this.keys = keys;
     }
 }

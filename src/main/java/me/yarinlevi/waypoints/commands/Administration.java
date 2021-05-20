@@ -18,7 +18,7 @@ public class Administration implements CommandExecutor {
         final Player p = (Player) sender;
 
         if (args.length == 0) {
-            p.sendMessage(Utils.newMessage("&eMissing arguments."));
+            p.sendMessage(Utils.newMessage("&cMissing arguments."));
             return false;
         }
 
@@ -32,7 +32,7 @@ public class Administration implements CommandExecutor {
         } else if (args[0].equalsIgnoreCase("spawn")) {
             LocationData locDetail = LocationUtils.handleLocation(p.getWorld().getSpawnLocation());
             String msg = Utils.newMessage("&7Spawn locator:\n" +
-                    String.format("&a  • &7Coordinates &bX& &a%s &bY &a%s &bZ &a%s\n", locDetail.getX(), locDetail.getY(), locDetail.getZ()) +
+                    String.format("&a  • &7Coordinates &bX &a%s &bY &a%s &bZ &a%s\n", locDetail.getX(), locDetail.getY(), locDetail.getZ()) +
                     String.format("&a  • &7Distance to coordinates &b%s &7blocks", Utils.calculateDistance(p.getLocation(), p.getWorld().getSpawnLocation())));
             p.sendMessage(msg);
         } else if (args[0].equalsIgnoreCase("gui")) {
