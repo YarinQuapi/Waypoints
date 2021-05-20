@@ -22,15 +22,15 @@ public class Administration implements CommandExecutor {
         if (args[0].equalsIgnoreCase("chunkscan")) {
             LocationData locDetail = LocationUtils.handleLocation(p.getLocation());
             String msg = Utils.newMessage("&eAdvanced chunk scan:\n" +
-                    String.format("&b  • &eCoordinates: &bX&e: &d%s &bY&e: &d%s &bZ&e: &d%s\n", locDetail.getX(), locDetail.getY(), locDetail.getZ()) +
-                    String.format("&b  • &eIs Slime Chunk?: &d%s\n", locDetail.isSlimeChunk()) +
-                    String.format("&b  • &eWorld: &d%s", locDetail.getWorld()));
+                    String.format("&a  • &eCoordinates: &bX&e: &d%s &bY&e: &d%s &bZ&e: &d%s\n", locDetail.getX(), locDetail.getY(), locDetail.getZ()) +
+                    String.format("&a  • &eIs Slime Chunk?: &d%s\n", locDetail.isSlimeChunk()) +
+                    String.format("&a  • &eWorld: &d%s", locDetail.getWorld()));
             p.sendMessage(msg);
         } else if (args[0].equalsIgnoreCase("spawn")) {
             LocationData locDetail = LocationUtils.handleLocation(p.getWorld().getSpawnLocation());
-            String msg = Utils.newMessage("&eSpawn locator:\n" +
-                    String.format("&b  • &eCoordinates: &bX&e: &d%s &bY&e: &d%s &bZ&e: &d%s\n", locDetail.getX(), locDetail.getY(), locDetail.getZ()) +
-                    String.format("&b  • &eDistance to coordinates: &d%s &bblocks", Utils.calculateDistance(p.getLocation(), p.getWorld().getSpawnLocation())));
+            String msg = Utils.newMessage("&7Spawn locator:\n" +
+                    String.format("&a  • &7Coordinates &bX& &a%s &bY &a%s &bZ &a%s\n", locDetail.getX(), locDetail.getY(), locDetail.getZ()) +
+                    String.format("&a  • &7Distance to coordinates &b%s &7blocks", Utils.calculateDistance(p.getLocation(), p.getWorld().getSpawnLocation())));
             p.sendMessage(msg);
         } else if (args[0].equalsIgnoreCase("gui")) {
             GuiUtils.openInventory(args[1], p);
