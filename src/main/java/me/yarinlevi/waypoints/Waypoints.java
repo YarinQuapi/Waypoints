@@ -15,7 +15,6 @@ import org.bukkit.plugin.java.JavaPlugin;
 public class Waypoints extends JavaPlugin {
     @Getter private static Waypoints instance;
     @Getter private String prefix;
-    @Getter private String adminPrefix;
     @Getter private WaypointHandler waypointHandler;
     private PlayerListener playerListener;
 
@@ -48,6 +47,5 @@ public class Waypoints extends JavaPlugin {
 
     public void registerConfigData() {
        prefix = getConfig().getString("Prefix");
-       adminPrefix = getConfig().getString("AdminPrefix");
     }
 }
