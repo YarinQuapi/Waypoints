@@ -55,12 +55,12 @@ public class WaypointListGui extends AbstractGui implements Listener {
                 String coordinatesString = String.format(Utils.newMessageNoPrefix("&7Coordinates &bX &a%s &bY &a%s &bZ &a%s"), vec.getBlockX(), vec.getBlockY(), vec.getBlockZ());
                 lore.add(coordinatesString);
 
-                String waypointWorld = String.format(Utils.newMessageNoPrefix("&7World &a%s"), wp.getWorld().getName());
+                String waypointWorld = String.format(Utils.newMessageNoPrefix("&7World &b%s"), wp.getWorld().getName());
                 lore.add(waypointWorld);
 
                 lore.add("\n");
 
-                String rightClickToEdit = Utils.newMessageNoPrefix("&7Right click to edit item!");
+                String rightClickToEdit = Utils.newMessageNoPrefix("&eRight click to edit item!");
                 lore.add(rightClickToEdit);
 
                 itemMeta.setLore(lore);

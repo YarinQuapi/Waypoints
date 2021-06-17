@@ -19,14 +19,19 @@ public class CreateWaypointGui extends AbstractGui {
     public void run(Player player) {
         new AnvilGUI.Builder()
                 .onComplete((player2, text) -> {
-                    Waypoint waypoint = new Waypoint(player, text, player2.getLocation(), false);
-                    try {
-                        Waypoints.getInstance().getWaypointHandler().addWaypoint(player2, waypoint);
-                        player2.sendMessage(Utils.newMessage(String.format("&7Created new waypoint &b%s", text)));
-                    } catch (WaypointAlreadyExistsException | PlayerNotLoadedException e) {
-                        player2.sendMessage(e.getMessage());
+                    if (Utils.allowedCharacters.matcher(text.trim()).matches()) {
+                        Waypoint waypoint = new Waypoint(player, text.trim(), player2.getLocation(), false);
+                        try {
+                            Waypoints.getInstance().getWaypointHandler().addWaypoint(player2, waypoint);
+                            player2.sendMessage(Utils.newMessage(String.format("&7Created new waypoint &b%s", text.trim())));
+                        } catch (WaypointAlreadyExistsException | PlayerNotLoadedException e) {
+                            player2.sendMessage(e.getMessage());
+                        }
+                    } else {
+                        player2.sendMessage(Utils.newMessage("&cIllegal characters found (Allowed: A-z,0-9)"));
                     }
                     return AnvilGUI.Response.close();
+
                 })
                 .text(" ")
                 .itemLeft(new ItemStack(Material.PAPER))

@@ -15,9 +15,9 @@ public class EditWaypointItemGui {
     public static void open(Player player, Waypoint wp) {
         new AnvilGUI.Builder()
                 .onComplete((player2, text) -> {
-                    if (Material.getMaterial(text.toUpperCase()) != null) {
-                        wp.editItem(new ItemStack(Material.getMaterial(text.toUpperCase())));
-                        player2.sendMessage(Utils.newMessage("&7Successfully changed waypoint's item to: &b" + text.toUpperCase()));
+                    if (Material.getMaterial(text.trim().toUpperCase()) != null) {
+                        wp.editItem(new ItemStack(Material.getMaterial(text.trim().toUpperCase())));
+                        player2.sendMessage(Utils.newMessage("&7Successfully changed waypoint's item to: &b" + text.trim().toUpperCase()));
                     } else {
                         player2.sendMessage(Utils.newMessage("&7The item id was not found, please try again."));
                     }

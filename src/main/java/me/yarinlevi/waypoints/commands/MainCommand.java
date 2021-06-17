@@ -22,12 +22,13 @@ import org.bukkit.entity.Player;
 
 import java.util.Arrays;
 import java.util.Iterator;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * @author YarinQuapi
  */
 public class MainCommand implements CommandExecutor {
-
     @SuppressWarnings("deprecation")
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
@@ -93,18 +94,24 @@ public class MainCommand implements CommandExecutor {
             }
         } else {
             if (args[0].equalsIgnoreCase("create")) {
-                String name = args[1];
+                String name = args[1].trim();
 
-                Waypoint wp = new Waypoint(p, name, p.getLocation(), false);
+                if (Utils.allowedCharacters.matcher(name).matches()) {
 
-                try {
-                    if (Waypoints.getInstance().getWaypointHandler().addWaypoint(p, wp)) {
-                        p.sendMessage(Utils.newMessage(String.format("&7Created new waypoint: &b%s", name)));
-                        return true;
+                    Waypoint wp = new Waypoint(p, name, p.getLocation(), false);
+
+                    try {
+                        if (Waypoints.getInstance().getWaypointHandler().addWaypoint(p, wp)) {
+                            p.sendMessage(Utils.newMessage(String.format("&7Created new waypoint: &b%s", name)));
+                            return true;
+                        }
+                        return false;
+                    } catch (WaypointAlreadyExistsException | PlayerNotLoadedException exception) {
+                        p.sendMessage(exception.getMessage());
+                        return false;
                     }
-                    return false;
-                } catch (WaypointAlreadyExistsException | PlayerNotLoadedException exception) {
-                    p.sendMessage(exception.getMessage());
+                } else {
+                    p.sendMessage(Utils.newMessage("&cIllegal characters found (Allowed: A-z,0-9)"));
                     return false;
                 }
             } else if (args[0].equalsIgnoreCase("list")) {

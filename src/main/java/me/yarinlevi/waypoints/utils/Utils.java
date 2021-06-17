@@ -6,10 +6,15 @@ import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.util.Vector;
 
+import java.util.regex.Pattern;
+
 /**
  * @author YarinQuapi
  */
 public class Utils {
+    public static final Pattern allowedCharacters = Pattern.compile("[A-z0-9]");
+
+
     public static String newMessage(String message) {
         return ChatColor.translateAlternateColorCodes('&', Waypoints.getInstance().getPrefix()) + ChatColor.translateAlternateColorCodes('&', message);
     }
