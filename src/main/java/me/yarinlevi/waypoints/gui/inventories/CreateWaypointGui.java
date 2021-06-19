@@ -28,7 +28,7 @@ public class CreateWaypointGui extends AbstractGui {
                             player2.sendMessage(e.getMessage());
                         }
                     } else {
-                        player2.sendMessage(Utils.newMessage("&cIllegal characters found (Allowed: A-z,0-9)"));
+                        player2.sendMessage(Utils.newMessage("&cIllegal characters found (Allowed: A-z0-9)"));
                     }
                     return AnvilGUI.Response.close();
 

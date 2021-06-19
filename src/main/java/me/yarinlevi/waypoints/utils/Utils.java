@@ -12,7 +12,7 @@ import java.util.regex.Pattern;
  * @author YarinQuapi
  */
 public class Utils {
-    public static final Pattern allowedCharacters = Pattern.compile("[A-z0-9]");
+    public static final Pattern allowedCharacters = Pattern.compile("([A-z0-9]\\w+)");
 
 
     public static String newMessage(String message) {
