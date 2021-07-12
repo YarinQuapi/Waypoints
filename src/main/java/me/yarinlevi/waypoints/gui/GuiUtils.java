@@ -1,5 +1,6 @@
 package me.yarinlevi.waypoints.gui;
 
+import lombok.Getter;
 import me.yarinlevi.waypoints.Waypoints;
 import me.yarinlevi.waypoints.gui.helpers.AbstractGui;
 import me.yarinlevi.waypoints.gui.inventories.CreateWaypointGui;
@@ -13,12 +14,15 @@ import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.Inventory;
 
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author YarinQuapi
  */
 public class GuiUtils implements Listener {
     private static final HashMap<String, Class<? extends AbstractGui>> guiList = new HashMap<>();
+    @Getter private static final Map<Player, AbstractGui> unregisterNext = new HashMap<>();
 
     public static void openInventory(String key, Player player) {
         player.closeInventory();
@@ -30,7 +34,7 @@ public class GuiUtils implements Listener {
 
             gui.run(player);
 
-            HandlerList.unregisterAll(gui);
+            unregisterNext.put(player, gui);
 
         } catch (InstantiationException | IllegalAccessException e) {
             e.printStackTrace();
