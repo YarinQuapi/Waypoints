@@ -6,7 +6,11 @@ import me.yarinlevi.waypoints.gui.inventories.CreateWaypointGui;
 import me.yarinlevi.waypoints.gui.inventories.ProfileGui;
 import me.yarinlevi.waypoints.gui.inventories.WaypointListGui;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
+import org.bukkit.event.inventory.InventoryCloseEvent;
+import org.bukkit.inventory.Inventory;
 
 import java.util.HashMap;
 
@@ -17,7 +21,6 @@ public class GuiUtils implements Listener {
     private static final HashMap<String, Class<? extends AbstractGui>> guiList = new HashMap<>();
 
     public static void openInventory(String key, Player player) {
-
         player.closeInventory();
 
         try {
@@ -26,6 +29,9 @@ public class GuiUtils implements Listener {
             Waypoints.getInstance().getServer().getPluginManager().registerEvents(gui, Waypoints.getInstance());
 
             gui.run(player);
+
+            HandlerList.unregisterAll(gui);
+
         } catch (InstantiationException | IllegalAccessException e) {
             e.printStackTrace();
         }

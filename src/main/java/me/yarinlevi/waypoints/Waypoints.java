@@ -35,14 +35,14 @@ public class Waypoints extends JavaPlugin {
         this.getCommand("wpadmin").setExecutor(new Administration());
         this.getCommand("waypoint").setExecutor(new MainCommand());
 
-        Bukkit.getOnlinePlayers().forEach(player -> playerListener.loadPlayer(player));
+        Bukkit.getOnlinePlayers().forEach(player -> playerListener.loadPlayer(player.getUniqueId()));
 
         GuiUtils.registerGui();
     }
 
     @Override
     public void onDisable() {
-        Bukkit.getOnlinePlayers().forEach(player -> playerListener.unloadPlayer(player));
+        Bukkit.getOnlinePlayers().forEach(player -> playerListener.unloadPlayer(player.getUniqueId()));
     }
 
     public void registerConfigData() {

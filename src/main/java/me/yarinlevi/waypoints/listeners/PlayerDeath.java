@@ -28,10 +28,10 @@ public class PlayerDeath implements Listener {
 
         int deathCount = p.getStatistic(Statistic.DEATHS);
 
-        Waypoint waypoint = new Waypoint(p, "Death-" + deathCount, p.getLocation(), true);
+        Waypoint waypoint = new Waypoint(p.getUniqueId(), "Death-" + deathCount, p.getLocation(), true);
 
         try {
-            if (Waypoints.getInstance().getWaypointHandler().addWaypoint(p, waypoint)) {
+            if (Waypoints.getInstance().getWaypointHandler().addWaypoint(p.getUniqueId(), waypoint)) {
                 TextComponent deathPoint = new TextComponent(Utils.newMessageNoPrefix("&bDeath-" + deathCount));
 
                 deathPoint.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(Utils.newMessageNoPrefix(String.format("&eClick to check waypoint &bDeath-%s", deathCount))).create()));

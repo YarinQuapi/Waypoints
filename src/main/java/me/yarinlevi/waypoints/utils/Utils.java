@@ -26,9 +26,9 @@ public class Utils {
     /**
      * 1.16.2 ABOVE ONLY!
      * @param message message
-     * @param red red volume
-     * @param green green volume
-     * @param blue blue volume
+     * @param red volume
+     * @param green volume
+     * @param blue volume
      * @return colored string
      */
     public static String newRGBMessage(String message, int red, int green, int blue) {

@@ -5,6 +5,7 @@ import me.yarinlevi.waypoints.exceptions.PlayerNotLoadedException;
 import me.yarinlevi.waypoints.exceptions.WaypointAlreadyExistsException;
 import me.yarinlevi.waypoints.exceptions.WaypointDoesNotExistException;
 import me.yarinlevi.waypoints.waypoint.Waypoint;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.Nullable;
 
@@ -30,7 +31,7 @@ public final class QWaypointsAPI {
      * @param player The player
      * @return A list with all of his waypoints
      */
-    public static List<Waypoint> getPlayerWaypoints(Player player) {
+    public static List<Waypoint> getPlayerWaypoints(OfflinePlayer player) {
         return Waypoints.getInstance().getWaypointHandler().getWaypoints(player);
     }
 
@@ -41,7 +42,7 @@ public final class QWaypointsAPI {
      * @return The waypoint requested, null if not found
      */
     @Nullable
-    public static Waypoint getPlayerWaypoint(Player player, String waypoint) {
+    public static Waypoint getPlayerWaypoint(OfflinePlayer player, String waypoint) {
         return Waypoints.getInstance().getWaypointHandler().getWaypoint(player, waypoint);
     }
 
@@ -64,7 +65,7 @@ public final class QWaypointsAPI {
      * @throws PlayerNotLoadedException The player is offline or bugged, a re-log should fix
      * @throws WaypointDoesNotExistException The player already has a waypoint with that name
      */
-    public static boolean removeWaypoint(Player player, String waypoint) throws PlayerNotLoadedException, WaypointDoesNotExistException {
+    public static boolean removeWaypoint(OfflinePlayer player, String waypoint) throws PlayerNotLoadedException, WaypointDoesNotExistException {
         return Waypoints.getInstance().getWaypointHandler().removeWaypoint(player, waypoint);
     }
 }

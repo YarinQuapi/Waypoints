@@ -19,25 +19,21 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
 import java.util.Iterator;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * @author YarinQuapi
  */
 public class MainCommand implements CommandExecutor {
-    @SuppressWarnings("deprecation")
     @Override
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (!(sender instanceof Player)) {
+    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
+        if (!(sender instanceof final Player p)) {
             sender.sendMessage(Utils.newMessage("&cYou are required to be a Player to use this command."));
             return false;
         }
-
-        final Player p = (Player) sender;
 
         if (args.length > 3) {
             p.sendMessage(Utils.newMessage("&cExcessive arguments."));
@@ -59,7 +55,7 @@ public class MainCommand implements CommandExecutor {
             } else if (args[0].equalsIgnoreCase("spawn") && p.hasPermission("qwaypoints.commands.spawn")) {
                 LocationData locDetail = LocationUtils.handleLocation(p.getWorld().getSpawnLocation());
                 String msg = Utils.newMessage("&7Spawn locator:\n" +
-                        String.format("&a  • &7Coordinates &bX &a%s &bY &a%s &bZ &a%s\n", locDetail.getX(), locDetail.getY(), locDetail.getZ()) +
+                        String.format("&a  • &7Coordinates &bX &a%s &bY &a%s &bZ &a%s\n", locDetail.x(), locDetail.y(), locDetail.z()) +
                         String.format("&a  • &7Distance to coordinates &b%s &7blocks", Utils.calculateDistance(p.getLocation(), p.getWorld().getSpawnLocation())));
                 p.sendMessage(msg);
                 return true;
@@ -98,10 +94,10 @@ public class MainCommand implements CommandExecutor {
 
                 if (Utils.allowedCharacters.matcher(name).matches()) {
 
-                    Waypoint wp = new Waypoint(p, name, p.getLocation(), false);
+                    Waypoint wp = new Waypoint(p.getUniqueId(), name, p.getLocation(), false);
 
                     try {
-                        if (Waypoints.getInstance().getWaypointHandler().addWaypoint(p, wp)) {
+                        if (Waypoints.getInstance().getWaypointHandler().addWaypoint(p.getUniqueId(), wp)) {
                             p.sendMessage(Utils.newMessage(String.format("&7Created new waypoint: &b%s", name)));
                             return true;
                         }
@@ -141,7 +137,7 @@ public class MainCommand implements CommandExecutor {
                 LocationData locationData = wp.getLocationData();
 
                 String msg = Utils.newMessage(String.format("&7Waypoint &b%s &7is located at &bX &a%s &bY &a%s &bZ &a%s &7in world &b%s &7You are &b%s &7blocks away.",
-                        name, locationData.getX(), locationData.getY(), locationData.getZ(), WaypointWorld.valueOf(locationData.getWorld()).getName(), Utils.calculateDistance(p.getLocation().toVector(), wp.getVector())));
+                        name, locationData.x(), locationData.y(), locationData.z(), WaypointWorld.valueOf(locationData.world()).getName(), Utils.calculateDistance(p.getLocation().toVector(), wp.getVector())));
                 p.sendMessage(msg);
 
                 return true;

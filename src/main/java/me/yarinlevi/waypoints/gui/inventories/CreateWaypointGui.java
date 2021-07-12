@@ -20,9 +20,9 @@ public class CreateWaypointGui extends AbstractGui {
         new AnvilGUI.Builder()
                 .onComplete((player2, text) -> {
                     if (Utils.allowedCharacters.matcher(text.trim()).matches()) {
-                        Waypoint waypoint = new Waypoint(player, text.trim(), player2.getLocation(), false);
+                        Waypoint waypoint = new Waypoint(player.getUniqueId(), text.trim(), player2.getLocation(), false);
                         try {
-                            Waypoints.getInstance().getWaypointHandler().addWaypoint(player2, waypoint);
+                            Waypoints.getInstance().getWaypointHandler().addWaypoint(player2.getUniqueId(), waypoint);
                             player2.sendMessage(Utils.newMessage(String.format("&7Created new waypoint &b%s", text.trim())));
                         } catch (WaypointAlreadyExistsException | PlayerNotLoadedException e) {
                             player2.sendMessage(e.getMessage());

@@ -21,6 +21,7 @@ import org.bukkit.inventory.ItemStack;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * @author YarinQuapi
@@ -46,44 +47,44 @@ public class PlayerListener implements Listener {
 
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
-        Bukkit.getScheduler().runTaskAsynchronously(Waypoints.getInstance(), () -> loadPlayer(event.getPlayer()));
+        Bukkit.getScheduler().runTaskAsynchronously(Waypoints.getInstance(), () -> loadPlayer(event.getPlayer().getUniqueId()));
     }
 
     @EventHandler
     public void onPlayerLeave(PlayerQuitEvent event) {
-        Bukkit.getScheduler().runTaskAsynchronously(Waypoints.getInstance(), () -> unloadPlayer(event.getPlayer()));
+        Bukkit.getScheduler().runTaskAsynchronously(Waypoints.getInstance(), () -> unloadPlayer(event.getPlayer().getUniqueId()));
     }
 
-    public void loadPlayer(Player player) {
-        if (!data.contains(player.getUniqueId().toString())) {
-            data.createSection(player.getUniqueId().toString());
-            data.getConfigurationSection(player.getUniqueId().toString()).createSection("waypoints");
+    public void loadPlayer(UUID uuid) {
+        if (!data.contains(uuid.toString())) {
+            data.createSection(uuid.toString());
+            data.getConfigurationSection(uuid.toString()).createSection("waypoints");
 
-            Waypoints.getInstance().getWaypointHandler().insertPlayer(player, new ArrayList<>());
+            Waypoints.getInstance().getWaypointHandler().insertPlayer(uuid, new ArrayList<>());
         } else {
             List<Waypoint> waypoints = new ArrayList<>();
-            ConfigurationSection waypointSection = data.getConfigurationSection(player.getUniqueId().toString()).getConfigurationSection("waypoints");
+            ConfigurationSection waypointSection = data.getConfigurationSection(uuid.toString()).getConfigurationSection("waypoints");
 
             ConfigurationSection waypoint;
             for (String key : waypointSection.getKeys(false)) {
                 waypoint = waypointSection.getConfigurationSection(key);
 
                 if (waypoint.getString("item").equals("DIRT")) {
-                    waypoints.add(new Waypoint(player, key, (Location) waypoint.get("location"), waypoint.getBoolean("systemInduced")));
+                    waypoints.add(new Waypoint(uuid, key, (Location) waypoint.get("location"), waypoint.getBoolean("systemInduced")));
                 } else {
-                    waypoints.add(new Waypoint(player, key, (Location) waypoint.get("location"), new ItemStack(Material.getMaterial(waypoint.getString("item").toUpperCase())), waypoint.getBoolean("systemInduced")));
+                    waypoints.add(new Waypoint(uuid, key, (Location) waypoint.get("location"), new ItemStack(Material.getMaterial(waypoint.getString("item").toUpperCase())), waypoint.getBoolean("systemInduced")));
                 }
             }
 
-            Waypoints.getInstance().getWaypointHandler().insertPlayer(player, waypoints);
-            Waypoints.getInstance().getLogger().info("Loaded waypoints data for player: " + player.getName());
+            Waypoints.getInstance().getWaypointHandler().insertPlayer(uuid, waypoints);
+            Waypoints.getInstance().getLogger().info("Loaded waypoints data for uuid: " + uuid);
         }
     }
 
-    public void unloadPlayer(Player player) {
-        PlayerData playerData = Waypoints.getInstance().getWaypointHandler().getPlayerData(player);
+    public void unloadPlayer(UUID uuid) {
+        PlayerData playerData = Waypoints.getInstance().getWaypointHandler().getPlayerData(uuid);
 
-        ConfigurationSection playerSection = data.getConfigurationSection(player.getUniqueId().toString());
+        ConfigurationSection playerSection = data.getConfigurationSection(uuid.toString());
 
         if (!playerData.getWaypointList().isEmpty()) {
             ConfigurationSection waypointSection = playerSection.createSection("waypoints");
@@ -95,14 +96,14 @@ public class PlayerListener implements Listener {
             }
 
             FileManager.saveData(dataFile, data);
-            Waypoints.getInstance().getLogger().info("Saved waypoints data for player: " + player.getName());
+            Waypoints.getInstance().getLogger().info("Saved waypoints data for uuid: " + uuid);
         } else {
             if (playerSection.contains("waypoints")) {
-                data.set(player.getUniqueId().toString(), null);
+                data.set(uuid.toString(), null);
             }
             FileManager.saveData(dataFile, data);
         }
 
-        Waypoints.getInstance().getWaypointHandler().removePlayer(player);
+        Waypoints.getInstance().getWaypointHandler().removePlayer(uuid);
     }
 }
