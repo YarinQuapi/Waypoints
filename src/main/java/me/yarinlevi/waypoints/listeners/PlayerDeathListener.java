@@ -18,7 +18,7 @@ import org.bukkit.event.entity.PlayerDeathEvent;
 /**
  * @author YarinQuapi
  */
-public class PlayerDeath implements Listener {
+public class PlayerDeathListener implements Listener {
     @EventHandler
     public void onPlayerDeath(PlayerDeathEvent e) {
         Player p = e.getEntity();
