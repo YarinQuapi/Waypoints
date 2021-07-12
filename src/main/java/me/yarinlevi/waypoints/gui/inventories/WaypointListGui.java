@@ -63,6 +63,9 @@ public class WaypointListGui extends AbstractGui implements Listener {
                 String rightClickToEdit = Utils.newMessageNoPrefix("&eRight click to edit item!");
                 lore.add(rightClickToEdit);
 
+                String leftClickToEdit = Utils.newMessageNoPrefix("&eLeft click to rename!");
+                lore.add(leftClickToEdit);
+
                 itemMeta.setLore(lore);
                 itemMeta.setDisplayName(Utils.newMessageNoPrefix("&b" + waypointName));
 
@@ -86,20 +89,23 @@ public class WaypointListGui extends AbstractGui implements Listener {
     @EventHandler
     public void inventoryClick(InventoryClickEvent e) {
         if (e.getInventory() == this.getInventory()) {
-            if (e.getClick().isRightClick()) {
-                ItemStack item = e.getInventory().getItem(e.getRawSlot());
+            ItemStack item = e.getInventory().getItem(e.getRawSlot());
 
-                assert item != null;
-                assert item.getItemMeta() != null;
-                String name = ChatColor.stripColor(item.getItemMeta().getDisplayName());
+            assert item != null;
+            assert item.getItemMeta() != null;
+            String name = ChatColor.stripColor(item.getItemMeta().getDisplayName());
 
-                Player player = (Player) e.getWhoClicked();
+            Player player = (Player) e.getWhoClicked();
 
-                Waypoint wp;
-                wp = Waypoints.getInstance().getWaypointHandler().getWaypoint(player, name);
+            Waypoint wp;
+            wp = Waypoints.getInstance().getWaypointHandler().getWaypoint(player, name);
 
-                if (wp != null) {
-                    EditWaypointItemGui.open(player, wp);
+            if (wp != null) {
+                switch (e.getClick()) {
+                    case RIGHT:
+                        EditWaypointItemGui.open(player, wp);
+                    case LEFT:
+                        RenameWaypointGUI.open(player, wp);
                 }
             }
 

@@ -8,24 +8,22 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-/**
- * @author YarinQuapi
- */
-public class EditWaypointItemGui {
+public class RenameWaypointGUI {
     public static void open(Player player, Waypoint wp) {
         new AnvilGUI.Builder()
                 .onComplete((player2, text) -> {
-                    if (Material.getMaterial(text.trim().toUpperCase()) != null) {
-                        wp.editItem(new ItemStack(Material.getMaterial(text.trim().toUpperCase())));
-                        player2.sendMessage(Utils.newMessage("&7Successfully changed waypoint's item to: &b" + text.trim().toUpperCase()));
+                    if (Utils.allowedCharacters.matcher(text.trim()).matches()) {
+                        wp.setName(text.trim());
+                        player2.sendMessage(Utils.newMessage("&7Successfully changed waypoint's name to: &b" + text.trim()));
                     } else {
-                        player2.sendMessage(Utils.newMessage("&cEdit failed! &7The item id was not found."));
+                        player2.sendMessage(Utils.newMessage("&cRename failed! &7illegal characters were found."));
+
                     }
                     return AnvilGUI.Response.close();
                 })
                 .text(" ")
                 .itemLeft(new ItemStack(Material.PAPER))
-                .title("Edit waypoint icon")
+                .title("Rename waypoint")
                 .plugin(Waypoints.getInstance())
                 .open(player);
     }

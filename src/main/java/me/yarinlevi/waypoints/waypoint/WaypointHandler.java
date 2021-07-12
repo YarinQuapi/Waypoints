@@ -36,6 +36,14 @@ public class WaypointHandler {
         return null;
     }
 
+    public void renameWaypoint(Player player, String waypoint, String newWaypointName) {
+        if (playerDataMap.get(player).getWaypointList().stream().anyMatch(x -> x.getName().equals(waypoint))) {
+            playerDataMap.get(player).getWaypointList().stream()
+                    .filter(x -> x.getName().equals(waypoint))
+                    .findFirst().get().setName(newWaypointName);
+        }
+    }
+
     public Set<String> getWaypointList(Player player) {
         Set<String> waypoints = new HashSet<>();
         playerDataMap.get(player).getWaypointList().stream().filter(x -> !x.isSystemInduced()).forEach(x -> waypoints.add(x.getName()));

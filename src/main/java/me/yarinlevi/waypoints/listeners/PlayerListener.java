@@ -96,6 +96,11 @@ public class PlayerListener implements Listener {
 
             FileManager.saveData(dataFile, data);
             Waypoints.getInstance().getLogger().info("Saved waypoints data for player: " + player.getName());
+        } else {
+            if (playerSection.contains("waypoints")) {
+                data.set(player.getUniqueId().toString(), null);
+            }
+            FileManager.saveData(dataFile, data);
         }
 
         Waypoints.getInstance().getWaypointHandler().removePlayer(player);
