@@ -7,14 +7,9 @@ import me.yarinlevi.waypoints.gui.inventories.CreateWaypointGui;
 import me.yarinlevi.waypoints.gui.inventories.ProfileGui;
 import me.yarinlevi.waypoints.gui.inventories.WaypointListGui;
 import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
-import org.bukkit.event.inventory.InventoryCloseEvent;
-import org.bukkit.inventory.Inventory;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**

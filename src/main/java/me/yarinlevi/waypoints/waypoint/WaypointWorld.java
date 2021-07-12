@@ -2,7 +2,8 @@ package me.yarinlevi.waypoints.waypoint;
 
 import lombok.Getter;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * @author YarinQuapi
