@@ -47,6 +47,12 @@ public class Administration implements CommandExecutor {
                 Waypoints.getInstance().getPlayerListener().loadPlayer(offlinePlayer.getUniqueId());
                 p.sendMessage(Utils.newMessage("&7Successfully loaded player " + offlinePlayer.getPlayer()));
             }
+        } else if (args[0].equalsIgnoreCase("unload")) {
+            OfflinePlayer offlinePlayer;
+            if ((offlinePlayer = Bukkit.getOfflinePlayer(args[0])) != null) {
+                Waypoints.getInstance().getPlayerListener().unloadPlayer(offlinePlayer.getUniqueId());
+                p.sendMessage(Utils.newMessage("&7Successfully unloaded player " + offlinePlayer.getPlayer()));
+            }
         } else {
             p.sendMessage(Utils.newMessage("&cInvalid usage!"));
         }
