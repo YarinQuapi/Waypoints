@@ -1,9 +1,12 @@
 package me.yarinlevi.waypoints.commands;
 
+import me.yarinlevi.waypoints.Waypoints;
 import me.yarinlevi.waypoints.gui.GuiUtils;
 import me.yarinlevi.waypoints.utils.LocationData;
 import me.yarinlevi.waypoints.utils.LocationUtils;
 import me.yarinlevi.waypoints.utils.Utils;
+import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -37,6 +40,13 @@ public class Administration implements CommandExecutor {
             p.sendMessage(msg);
         } else if (args[0].equalsIgnoreCase("gui")) {
             GuiUtils.openInventory(args[1], p);
+
+        } else if (args[0].equalsIgnoreCase("load")) {
+            OfflinePlayer offlinePlayer;
+            if ((offlinePlayer = Bukkit.getOfflinePlayer(args[0])) != null) {
+                Waypoints.getInstance().getPlayerListener().loadPlayer(offlinePlayer.getUniqueId());
+                p.sendMessage(Utils.newMessage("&7Successfully loaded player " + offlinePlayer.getPlayer()));
+            }
         } else {
             p.sendMessage(Utils.newMessage("&cInvalid usage!"));
         }

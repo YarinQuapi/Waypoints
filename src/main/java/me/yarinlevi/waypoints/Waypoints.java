@@ -16,7 +16,7 @@ public class Waypoints extends JavaPlugin {
     @Getter private static Waypoints instance;
     @Getter private String prefix;
     @Getter private WaypointHandler waypointHandler;
-    private PlayerListener playerListener;
+    @Getter private PlayerListener playerListener;
 
     @Override
     public void onEnable() {
