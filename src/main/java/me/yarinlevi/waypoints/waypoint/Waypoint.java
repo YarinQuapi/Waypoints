@@ -23,6 +23,7 @@ public class Waypoint {
     @Getter private ItemStack item = new ItemStack(Material.DIRT);
     @Getter private final WaypointWorld world;
     @Getter private final UUID owner;
+    @Getter private WaypointState state = WaypointState.PRIVATE;
 
     public Waypoint(UUID owner, String name, Location location, boolean systemInduced) {
         this.owner = owner;
@@ -38,6 +39,25 @@ public class Waypoint {
         this.location = location;
         this.item = item;
         this.systemInduced = systemInduced;
+        world = WaypointWorld.valueOf(location.getWorld().getEnvironment().name());
+    }
+
+    public Waypoint(UUID owner, String name, Location location, WaypointState state, boolean systemInduced) {
+        this.owner = owner;
+        this.name = name;
+        this.location = location;
+        this.systemInduced = systemInduced;
+        this.state = state;
+        world = WaypointWorld.valueOf(location.getWorld().getEnvironment().name());
+    }
+
+    public Waypoint(UUID owner, String name, Location location, ItemStack item, WaypointState state, boolean systemInduced) {
+        this.owner = owner;
+        this.name = name;
+        this.location = location;
+        this.item = item;
+        this.systemInduced = systemInduced;
+        this.state = state;
         world = WaypointWorld.valueOf(location.getWorld().getEnvironment().name());
     }
 

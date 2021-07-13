@@ -58,6 +58,9 @@ public class WaypointListGui extends AbstractGui implements Listener {
                 String waypointWorld = String.format(Utils.newMessageNoPrefix("&7World &b%s"), wp.getWorld().getName());
                 lore.add(waypointWorld);
 
+                String waypointState = String.format(Utils.newMessageNoPrefix("&7State %s"), wp.getState().name());
+                lore.add(waypointState);
+
                 lore.add("\n");
 
                 String rightClickToEdit = Utils.newMessageNoPrefix("&eRight click to edit item!");

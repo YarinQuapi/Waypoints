@@ -5,6 +5,7 @@ import me.yarinlevi.waypoints.Waypoints;
 import me.yarinlevi.waypoints.gui.helpers.AbstractGui;
 import me.yarinlevi.waypoints.gui.inventories.CreateWaypointGui;
 import me.yarinlevi.waypoints.gui.inventories.ProfileGui;
+import me.yarinlevi.waypoints.gui.inventories.WaypointBrowser;
 import me.yarinlevi.waypoints.gui.inventories.WaypointListGui;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
@@ -40,6 +41,7 @@ public class GuiUtils implements Listener {
         guiList.put("gui.personal.profile", ProfileGui.class);
         guiList.put("gui.personal.waypointlist", WaypointListGui.class);
         guiList.put("gui.create.waypoint", CreateWaypointGui.class);
+        guiList.put("gui.public.browser", WaypointBrowser.class);
 
         return guiList;
     }

@@ -37,6 +37,22 @@ public class WaypointHandler {
         return null;
     }
 
+    /**
+     * Get all public waypoints (Loaded players only!)
+     * @return Waypoint list
+     */
+    public List<Waypoint> getAllPublicWaypoints() {
+        List<Waypoint> waypointList = new ArrayList<>();
+
+        playerDataMap.forEach((x, y) -> y.getWaypointList().forEach(z -> {
+            if (z.getState() == WaypointState.PUBLIC) {
+                waypointList.add(z);
+            }
+        }));
+
+        return waypointList;
+    }
+
     public void renameWaypoint(OfflinePlayer player, String waypoint, String newWaypointName) {
         if (playerDataMap.get(player.getUniqueId()).getWaypointList().stream().anyMatch(x -> x.getName().equals(waypoint))) {
             playerDataMap.get(player.getUniqueId()).getWaypointList().stream()
