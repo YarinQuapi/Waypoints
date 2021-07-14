@@ -1,6 +1,8 @@
 package me.yarinlevi.waypoints.commands;
 
+import jdk.jshell.execution.Util;
 import me.yarinlevi.waypoints.Waypoints;
+import me.yarinlevi.waypoints.exceptions.PlayerDoesNotExistException;
 import me.yarinlevi.waypoints.exceptions.PlayerNotLoadedException;
 import me.yarinlevi.waypoints.exceptions.WaypointAlreadyExistsException;
 import me.yarinlevi.waypoints.exceptions.WaypointDoesNotExistException;
@@ -9,12 +11,14 @@ import me.yarinlevi.waypoints.utils.LocationData;
 import me.yarinlevi.waypoints.utils.LocationUtils;
 import me.yarinlevi.waypoints.utils.Utils;
 import me.yarinlevi.waypoints.waypoint.Waypoint;
+import me.yarinlevi.waypoints.waypoint.WaypointState;
 import me.yarinlevi.waypoints.waypoint.WaypointWorld;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.TextComponent;
+import org.apache.commons.lang.NotImplementedException;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -111,24 +115,24 @@ public class MainCommand implements CommandExecutor {
                     return false;
                 }
             } else if (args[0].equalsIgnoreCase("list")) {
-              String world = args[1];
+                String world = args[1];
 
-              if (Arrays.stream(WaypointWorld.values()).anyMatch(x-> x.getKeys().contains(world.toLowerCase()))) {
-                  WaypointWorld waypointWorld = Arrays.stream(WaypointWorld.values()).filter(x -> x.getKeys().contains(world.toLowerCase())).findFirst().get();
+                if (Arrays.stream(WaypointWorld.values()).anyMatch(x -> x.getKeys().contains(world.toLowerCase()))) {
+                    WaypointWorld waypointWorld = Arrays.stream(WaypointWorld.values()).filter(x -> x.getKeys().contains(world.toLowerCase())).findFirst().get();
 
-                  Iterator<String> waypoints = Waypoints.getInstance().getWaypointHandler().getWaypointList(p, waypointWorld).iterator();
+                    Iterator<String> waypoints = Waypoints.getInstance().getWaypointHandler().getWaypointList(p, waypointWorld).iterator();
 
-                  if (waypoints.hasNext()) {
-                      this.list(p, waypoints);
-                      return true;
-                  } else {
-                      p.sendMessage(Utils.newMessage("&cNo waypoints detected in world &4" + waypointWorld.getName()));
-                      return false;
-                  }
-              } else {
-                  p.sendMessage(Utils.newMessage("&cUnknown world type. "));
-                  return true;
-              }
+                    if (waypoints.hasNext()) {
+                        this.list(p, waypoints);
+                        return true;
+                    } else {
+                        p.sendMessage(Utils.newMessage("&cNo waypoints detected in world &4" + waypointWorld.getName()));
+                        return false;
+                    }
+                } else {
+                    p.sendMessage(Utils.newMessage("&cUnknown world type. "));
+                    return true;
+                }
             } else if (args[0].equalsIgnoreCase("check")) {
                 String name = args[1];
 
@@ -154,6 +158,26 @@ public class MainCommand implements CommandExecutor {
                     p.sendMessage(exception.getMessage());
                     return false;
                 }
+            } else if (args[0].equalsIgnoreCase("setstate")) {
+                String waypoint = args[1];
+                WaypointState state = WaypointState.valueOf(args[2].toUpperCase());
+
+                switch (state) {
+                    case PRIVATE -> throw new NotImplementedException();
+                    case SERVER -> throw new NotImplementedException();
+                    case PUBLIC -> {
+                        try {
+                            Waypoints.getInstance().getPlayerListener().setWaypointState(p.getUniqueId(), waypoint, state);
+                            Waypoints.getInstance().getWaypointHandler().getWaypoint(p, waypoint).setState(state);
+
+                            p.sendMessage(Utils.newMessage("&7Successfully set waypoint state to " + state.name()));
+                        } catch (PlayerDoesNotExistException | WaypointDoesNotExistException e) {
+                            p.sendMessage(e.getMessage());
+                        }
+                    }
+                }
+
+                return false;
             } else if (args[0].equalsIgnoreCase("setcompass") && p.hasPermission("qwaypoints.compass")) {
                 String name = args[1];
 
@@ -191,13 +215,13 @@ public class MainCommand implements CommandExecutor {
                     p.sendMessage(Utils.newMessage("Wrong argument syntax!"));
                     return false;
                 }
-            }
-            else {
+            } else {
                 p.sendMessage(Utils.newMessage("&cSub command: \"" + args[0] + "\" was not found"));
                 return false;
             }
         }
     }
+
 
     private void list(Player p, Iterator<String> waypointList) {
         TextComponent message = new TextComponent(ChatColor.translateAlternateColorCodes('&', Waypoints.getInstance().getPrefix()));
