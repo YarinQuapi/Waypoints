@@ -23,7 +23,7 @@ public class Waypoint {
     @Getter private ItemStack item = new ItemStack(Material.DIRT);
     @Getter private final WaypointWorld world;
     @Getter private final UUID owner;
-    @Getter private WaypointState state = WaypointState.PRIVATE;
+    @Getter @Setter private WaypointState state = WaypointState.PRIVATE;
 
     public Waypoint(UUID owner, String name, Location location, boolean systemInduced) {
         this.owner = owner;
