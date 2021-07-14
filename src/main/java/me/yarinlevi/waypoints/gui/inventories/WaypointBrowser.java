@@ -54,14 +54,6 @@ public class WaypointBrowser extends AbstractGui implements Listener {
             String waypointState = String.format(Utils.newMessageNoPrefix("&7State %s"), wp.getState().name());
             lore.add(waypointState);
 
-            lore.add("\n");
-
-            String rightClickToEdit = Utils.newMessageNoPrefix("&eRight click to edit item!");
-            lore.add(rightClickToEdit);
-
-            String leftClickToEdit = Utils.newMessageNoPrefix("&eLeft click to rename!");
-            lore.add(leftClickToEdit);
-
             itemMeta.setLore(lore);
             itemMeta.setDisplayName(Utils.newMessageNoPrefix("&b" + wp.getName()));
 
