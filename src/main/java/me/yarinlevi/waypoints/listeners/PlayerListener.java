@@ -3,8 +3,12 @@ package me.yarinlevi.waypoints.listeners;
 import lombok.Getter;
 import me.yarinlevi.waypoints.Waypoints;
 import me.yarinlevi.waypoints.data.FileManager;
+import me.yarinlevi.waypoints.exceptions.PlayerDoesNotExistException;
+import me.yarinlevi.waypoints.exceptions.WaypointDoesNotExistException;
 import me.yarinlevi.waypoints.player.PlayerData;
+import me.yarinlevi.waypoints.utils.Utils;
 import me.yarinlevi.waypoints.waypoint.Waypoint;
+import me.yarinlevi.waypoints.waypoint.WaypointState;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -54,6 +58,52 @@ public class PlayerListener implements Listener {
         Bukkit.getScheduler().runTaskAsynchronously(Waypoints.getInstance(), () -> unloadPlayer(event.getPlayer().getUniqueId()));
     }
 
+    public List<Waypoint> getPublicWaypointsFromData() {
+        List<Waypoint> list = new ArrayList<>();
+
+        if (data.contains("public_waypoints")) {
+            for (String uuid : data.getConfigurationSection("public_waypoints").getKeys(false)) {
+                for (String waypoint : data.getConfigurationSection("public_waypoints." + uuid).getKeys(false)) {
+                    ConfigurationSection waypointSection = data.getConfigurationSection(uuid + ".waypoints." + waypoint);
+
+                    WaypointState state;
+
+                    if (waypoint.contains("state")) {
+                        state = WaypointState.valueOf(waypointSection.getString("state"));
+                    } else {
+                        state = WaypointState.PRIVATE;
+                    }
+
+                    if (waypointSection.getString("item").equals("DIRT")) {
+                        list.add(new Waypoint(UUID.fromString(uuid), waypoint, (Location) waypointSection.get("location"), state, waypointSection.getBoolean("systemInduced")));
+                    } else {
+                        list.add(new Waypoint(UUID.fromString(uuid), waypoint, (Location) waypointSection.get("location"), new ItemStack(Material.getMaterial(waypointSection.getString("item").toUpperCase())), state, waypointSection.getBoolean("systemInduced")));
+                    }
+                }
+            }
+        }
+
+        return list;
+    }
+
+    public void setWaypointState(UUID uuid, String waypoint, WaypointState state) throws PlayerDoesNotExistException, WaypointDoesNotExistException {
+        if (!data.contains(uuid.toString())) {
+            throw new PlayerDoesNotExistException(Utils.newMessage(String.format("&cNo waypoint found with name: &f\"&d%s&f\"", waypoint)));
+        }
+
+        ConfigurationSection waypointSection = data.getConfigurationSection(uuid.toString()).getConfigurationSection("waypoints");
+
+        if (waypointSection.contains(waypoint)) {
+            ConfigurationSection waypointConfiguration = waypointSection.getConfigurationSection(waypoint);
+
+            waypointConfiguration.set("state", state);
+
+            if (state.equals(WaypointState.PUBLIC)) {
+                data.set("public_waypoints." + uuid + "." + waypoint, "PUBLIC");
+            }
+        } else throw new WaypointDoesNotExistException(Utils.newMessage(String.format("&cNo waypoint found with name: &f\"&d%s&f\"", waypoint)));
+    }
+
     public void loadPlayer(UUID uuid) {
         if (!data.contains(uuid.toString())) {
             data.createSection(uuid.toString());
@@ -68,10 +118,18 @@ public class PlayerListener implements Listener {
             for (String key : waypointSection.getKeys(false)) {
                 waypoint = waypointSection.getConfigurationSection(key);
 
-                if (waypoint.getString("item").equals("DIRT")) {
-                    waypoints.add(new Waypoint(uuid, key, (Location) waypoint.get("location"), waypoint.getBoolean("systemInduced")));
+                WaypointState state;
+
+                if (waypoint.contains("state")) {
+                    state = WaypointState.valueOf(waypoint.getString("state"));
                 } else {
-                    waypoints.add(new Waypoint(uuid, key, (Location) waypoint.get("location"), new ItemStack(Material.getMaterial(waypoint.getString("item").toUpperCase())), waypoint.getBoolean("systemInduced")));
+                    state = WaypointState.PRIVATE;
+                }
+
+                if (waypoint.getString("item").equals("DIRT")) {
+                    waypoints.add(new Waypoint(uuid, key, (Location) waypoint.get("location"), state, waypoint.getBoolean("systemInduced")));
+                } else {
+                    waypoints.add(new Waypoint(uuid, key, (Location) waypoint.get("location"), new ItemStack(Material.getMaterial(waypoint.getString("item").toUpperCase())), state, waypoint.getBoolean("systemInduced")));
                 }
             }
 
@@ -92,6 +150,7 @@ public class PlayerListener implements Listener {
                 waypointSection.set(waypoint.getName() + ".location", waypoint.getLocation());
                 waypointSection.set(waypoint.getName() + ".systemInduced", waypoint.isSystemInduced());
                 waypointSection.set(waypoint.getName() + ".item", waypoint.getItem().getType().name());
+                waypointSection.set(waypoint.getName() + ".state", waypoint.getState().toString().toUpperCase());
             }
 
             FileManager.saveData(dataFile, data);

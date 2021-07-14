@@ -1,5 +1,6 @@
 package me.yarinlevi.waypoints.waypoint;
 
+import me.yarinlevi.waypoints.Waypoints;
 import me.yarinlevi.waypoints.exceptions.PlayerNotLoadedException;
 import me.yarinlevi.waypoints.exceptions.WaypointAlreadyExistsException;
 import me.yarinlevi.waypoints.exceptions.WaypointDoesNotExistException;
@@ -42,15 +43,7 @@ public class WaypointHandler {
      * @return Waypoint list
      */
     public List<Waypoint> getAllPublicWaypoints() {
-        List<Waypoint> waypointList = new ArrayList<>();
-
-        playerDataMap.forEach((x, y) -> y.getWaypointList().forEach(z -> {
-            if (z.getState() == WaypointState.PUBLIC) {
-                waypointList.add(z);
-            }
-        }));
-
-        return waypointList;
+        return Waypoints.getInstance().getPlayerListener().getPublicWaypointsFromData();
     }
 
     public void renameWaypoint(OfflinePlayer player, String waypoint, String newWaypointName) {
