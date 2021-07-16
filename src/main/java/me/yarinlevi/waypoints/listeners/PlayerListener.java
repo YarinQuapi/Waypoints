@@ -40,10 +40,8 @@ public class PlayerListener implements Listener {
         FileManager.registerData(dataFile, data);
 
         Bukkit.getScheduler().runTaskTimerAsynchronously(Waypoints.getInstance(), () -> {
-
-            Waypoints.getInstance().getLogger().info("Saving data...");
+            
             FileManager.saveData(dataFile, data);
-            Waypoints.getInstance().getLogger().info("Saved data.");
 
         }, 0L, (300 * 20));
     }
