@@ -1,9 +1,11 @@
 package me.yarinlevi.waypoints.player.actionbar;
 
+import me.yarinlevi.waypoints.Waypoints;
 import me.yarinlevi.waypoints.utils.Utils;
 import me.yarinlevi.waypoints.waypoint.Waypoint;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
+import org.bukkit.Bukkit;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -25,29 +27,49 @@ public class ActionBarHandler implements Listener {
         this.tracked.put(player, waypoint);
     }
 
-    @EventHandler
-    public void onPlayerMove(PlayerMoveEvent event) {
-        Player p = event.getPlayer();
+    private int tick = 0;
 
-        if (tracked.containsKey(p)) {
-            Waypoint wp = tracked.get(p);
+    public void update() {
+        ++tick;
+        if (tick == 40) {
+            tick = 0;
 
-            if (wp.get2DDistance() > 10) {
-                int distance = wp.get2DDistance();
+            Bukkit.getScheduler().runTaskAsynchronously(Waypoints.getInstance(), () -> tracked.forEach((p, wp) -> {
+                if (wp.get2DDistance() > 10) {
+                    int distance = wp.get2DDistance();
 
-                Vector direction = wp.getLocation().clone().subtract(p.getLocation()).toVector().normalize();
+                    Vector direction = wp.getLocation().clone().subtract(p.getLocation()).toVector().normalize();
 
-                Vector cardinalDirectionVector = getClosestCardinalVectorFrom(direction);
+                    Vector cardinalDirectionVector = getClosestCardinalVectorFrom(direction);
 
-                BlockFace face = Arrays.stream(cardinalVectors).filter(x -> x.getDirection().equals(cardinalDirectionVector)).findAny().get();
+                    BlockFace face = Arrays.stream(cardinalVectors).filter(x -> x.getDirection().equals(cardinalDirectionVector)).findAny().get();
 
-                p.sendMessage("Heading: " + face.name());
+                    String cardinalDirection = translateCardinalDirection(face);
 
-                p.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent("Distance: " + distance + ", Heading: "));
-            } else {
-                p.sendMessage(Utils.newMessage("&7You've reached your destination!"));
-                tracked.remove(p);
-            }
+                    Bukkit.getScheduler().runTask(Waypoints.getInstance(), () -> p.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(distance + "m, direction -> " + cardinalDirection)));
+                } else {
+                    Bukkit.getScheduler().runTask(Waypoints.getInstance(), () -> tracked.remove(p));
+                    p.sendMessage(Utils.newMessage("&7You've reached your destination!"));
+                }
+            }));
+        }
+    }
+
+    private String translateCardinalDirection(BlockFace face) {
+        switch (face) {
+            case NORTH_WEST -> { return "NW"; }
+            case NORTH -> { return "N"; }
+            case NORTH_EAST -> { return "NE"; }
+
+            case EAST -> { return "E"; }
+
+            case SOUTH_EAST -> { return "SE"; }
+            case SOUTH -> { return "S"; }
+            case SOUTH_WEST -> { return "SW"; }
+
+            case WEST -> { return "W"; }
+
+            default -> { return "ERROR, PLEASE REPORT"; }
         }
     }
 
@@ -74,10 +96,10 @@ public class ActionBarHandler implements Listener {
     public Vector getClosestCardinalVectorFrom(Vector movedDir) {
         Vector closest = null;
         double lowestAmountChangedDir = -Double.MIN_VALUE;
-        for(BlockFace cardinalVec : cardinalVectors) {
+        for (BlockFace cardinalVec : cardinalVectors) {
             double tempChangedDir = cardinalVec.getDirection().dot(movedDir);
-            if(tempChangedDir >= TIPPING_LIMIT) return cardinalVec.getDirection();
-            if(tempChangedDir > lowestAmountChangedDir) {
+            if (tempChangedDir >= TIPPING_LIMIT) return cardinalVec.getDirection();
+            if (tempChangedDir > lowestAmountChangedDir) {
                 lowestAmountChangedDir = tempChangedDir;
                 closest = cardinalVec.getDirection();
             }

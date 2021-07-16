@@ -42,6 +42,8 @@ public class Waypoints extends JavaPlugin {
         Bukkit.getOnlinePlayers().forEach(player -> playerListener.loadPlayer(player.getUniqueId()));
 
         GuiUtils.registerGui();
+
+        Bukkit.getScheduler().runTaskTimer(this, () -> actionBarHandler.update(), 1L, 1L);
     }
 
     @Override
