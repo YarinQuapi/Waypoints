@@ -105,10 +105,8 @@ public class WaypointListGui extends AbstractGui implements Listener {
 
             if (wp != null) {
                 switch (e.getClick()) {
-                    case RIGHT:
-                        EditWaypointItemGui.open(player, wp);
-                    case LEFT:
-                        RenameWaypointGUI.open(player, wp);
+                    case RIGHT -> EditWaypointItemGui.open(player, wp);
+                    case LEFT -> RenameWaypointGUI.open(player, wp);
                 }
             }
 
