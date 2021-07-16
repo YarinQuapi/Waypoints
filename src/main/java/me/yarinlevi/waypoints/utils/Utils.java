@@ -46,6 +46,10 @@ public class Utils {
     }
 
 
+    public static int calculate2DDistance(Vector p1, Vector p2) {
+        return calculate2DDistance(p1.getBlockX(), p1.getBlockZ(), p2.getBlockX(), p2.getBlockZ());
+    }
+
     public static int calculateDistance(Vector p1, Vector p2) {
         return calculateDistance(p1.getBlockX(), p1.getBlockY(), p1.getBlockZ(), p2.getBlockX(), p2.getBlockY(), p2.getBlockZ());
     }
@@ -56,5 +60,9 @@ public class Utils {
 
     private static int calculateDistance(int x1, int y1, int z1, int x2, int y2, int z2) {
         return (int) Math.sqrt(Math.pow(x1 - x2, 2) + Math.pow(y1 - y2, 2) + Math.pow(z1 - z2, 2));
+    }
+
+    private static int calculate2DDistance(int x1, int z1, int x2, int z2) {
+        return (int) Math.sqrt(Math.pow(x1 - x2, 2) + Math.pow(z1 - z2, 2));
     }
 }

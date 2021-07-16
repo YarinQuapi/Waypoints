@@ -66,24 +66,25 @@ public class PlayerListener implements Listener {
                 for (String waypoint : data.getConfigurationSection("public_waypoints." + uuid).getKeys(false)) {
                     ConfigurationSection waypointSection = data.getConfigurationSection(uuid + ".waypoints." + waypoint);
 
-                    WaypointState state;
-
-                    if (waypoint.contains("state")) {
-                        state = WaypointState.valueOf(waypointSection.getString("state"));
-                    } else {
-                        state = WaypointState.PRIVATE;
-                    }
-
                     if (waypointSection.getString("item").equals("DIRT")) {
-                        list.add(new Waypoint(UUID.fromString(uuid), waypoint, (Location) waypointSection.get("location"), state, waypointSection.getBoolean("systemInduced")));
+                        list.add(new Waypoint(UUID.fromString(uuid), waypoint, (Location) waypointSection.get("location"), WaypointState.PUBLIC, waypointSection.getBoolean("systemInduced")));
                     } else {
-                        list.add(new Waypoint(UUID.fromString(uuid), waypoint, (Location) waypointSection.get("location"), new ItemStack(Material.getMaterial(waypointSection.getString("item").toUpperCase())), state, waypointSection.getBoolean("systemInduced")));
+                        list.add(new Waypoint(UUID.fromString(uuid), waypoint, (Location) waypointSection.get("location"), new ItemStack(Material.getMaterial(waypointSection.getString("item").toUpperCase())), WaypointState.PUBLIC, waypointSection.getBoolean("systemInduced")));
                     }
                 }
             }
         }
 
         return list;
+    }
+
+    public void renamePublicWaypoint(UUID uuid, String waypoint, String name) throws PlayerDoesNotExistException {
+        if (!data.contains(uuid.toString())) {
+            throw new PlayerDoesNotExistException(Utils.newMessage(String.format("&cNo waypoint found with name: &f\"&d%s&f\"", waypoint)));
+        }
+
+        data.set("public_waypoints." + uuid + "." + waypoint, null);
+        data.set("public_waypoints." + uuid + "." + name, "PUBLIC");
     }
 
     public void setWaypointState(UUID uuid, String waypoint, WaypointState state) throws PlayerDoesNotExistException, WaypointDoesNotExistException {
@@ -100,7 +101,10 @@ public class PlayerListener implements Listener {
 
             if (state.equals(WaypointState.PUBLIC)) {
                 data.set("public_waypoints." + uuid + "." + waypoint, "PUBLIC");
+            } else if (state.equals(WaypointState.PRIVATE)) {
+                data.set("public_waypoints." + uuid + "." + waypoint, null);
             }
+
         } else throw new WaypointDoesNotExistException(Utils.newMessage(String.format("&cNo waypoint found with name: &f\"&d%s&f\"", waypoint)));
     }
 

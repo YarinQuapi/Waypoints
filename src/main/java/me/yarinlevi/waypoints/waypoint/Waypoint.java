@@ -3,6 +3,8 @@ package me.yarinlevi.waypoints.waypoint;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
+import me.yarinlevi.waypoints.Waypoints;
+import me.yarinlevi.waypoints.exceptions.PlayerDoesNotExistException;
 import me.yarinlevi.waypoints.utils.LocationData;
 import me.yarinlevi.waypoints.utils.Utils;
 import org.bukkit.Bukkit;
@@ -17,7 +19,7 @@ import java.util.UUID;
  * @author YarinQuapi
  */
 public class Waypoint {
-    @Getter @Setter private String name;
+    @Getter private String name;
     @Getter private final Location location;
     @Getter private final boolean systemInduced;
     @Getter private ItemStack item = new ItemStack(Material.DIRT);
@@ -81,6 +83,15 @@ public class Waypoint {
         return Utils.calculateDistance(getVector(), Bukkit.getPlayer(owner).getLocation().toVector());
     }
 
+    /**
+     * Only run if player is online, check online status on YOUR side!
+     * @return distance between the waypoint and the player
+     */
+    public int get2DDistance() {
+        return Utils.calculate2DDistance(getVector(), Bukkit.getPlayer(owner).getLocation().toVector());
+    }
+
+
     @NonNull
     public LocationData getLocationData() {
         return new LocationData(String.valueOf(location.getBlockX()),
@@ -88,5 +99,18 @@ public class Waypoint {
                 String.valueOf(location.getBlockZ()),
                 location.getWorld().getEnvironment().name(),
                 location.getWorld().getChunkAt(location).isSlimeChunk());
+    }
+
+    public void setName(String name) {
+        String oldName = this.name;
+        this.name = name;
+        
+        if (state == WaypointState.PUBLIC) {
+            try {
+                Waypoints.getInstance().getPlayerListener().renamePublicWaypoint(owner, oldName, name);
+            } catch (PlayerDoesNotExistException e) {
+                e.printStackTrace();
+            }
+        }
     }
 }

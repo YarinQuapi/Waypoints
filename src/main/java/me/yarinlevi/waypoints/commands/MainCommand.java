@@ -19,6 +19,7 @@ import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.apache.commons.lang.NotImplementedException;
+import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -70,9 +71,11 @@ public class MainCommand implements CommandExecutor {
                         "&a  • &b/wp create <&aname&b> &f- &7Create a new waypoint\n" +
                         "&a  • &b/wp list [&aworld&b] &f- &7List all (or some) your waypoints\n" +
                         "&a  • &b/wp delete <&awaypoint&b | &adeathpoints&b> &f- &7Delete a waypoint\n" +
-                        "&a  • &b/wp spawn &f- &7Locates the spawn of the world.\n" +
-                        "&a  • &b/wp nearest &f- &7Locates the nearest waypoint.\n" +
-                        "&a  • &b/wp distance <&awaypointA&b> <&awaypointB&b> &f- &7Calculates the distance between two waypoints" +
+                        "&a  • &b/wp spawn &f- &7Locates the spawn of the world\n" +
+                        "&a  • &b/wp nearest &f- &7Locates the nearest waypoint\n" +
+                        "&a  • &b/wp distance <&awaypointA&b> <&awaypointB&b> &f- &7Calculates the distance between two waypoints\n" +
+                        "&a  • &b/wp set <&awaypoint&b> &<&astate&b> &f- &7Changes the state of the waypoint\n" +
+                        "&a  • &b/wp track <&awaypoint&b> &f- &7Tracks a waypoints" +
                         "\n &b&lQWaypoints Version&7&l: &a&l" + Waypoints.getInstance().getDescription().getVersion());
                 p.sendMessage(str);
                 return true;
@@ -158,26 +161,48 @@ public class MainCommand implements CommandExecutor {
                     p.sendMessage(exception.getMessage());
                     return false;
                 }
-            } else if (args[0].equalsIgnoreCase("setstate")) {
+            } else if (args[0].equalsIgnoreCase("set")) {
                 String waypoint = args[1];
                 WaypointState state = WaypointState.valueOf(args[2].toUpperCase());
 
                 switch (state) {
-                    case PRIVATE -> throw new NotImplementedException();
-                    case SERVER -> throw new NotImplementedException();
-                    case PUBLIC -> {
-                        try {
-                            Waypoints.getInstance().getPlayerListener().setWaypointState(p.getUniqueId(), waypoint, state);
-                            Waypoints.getInstance().getWaypointHandler().getWaypoint(p, waypoint).setState(state);
+                    case PRIVATE, PUBLIC -> {
+                        if (Waypoints.getInstance().getConfig().getBoolean("PublicWaypoints")) {
+                            try {
+                                Waypoints.getInstance().getPlayerListener().setWaypointState(p.getUniqueId(), waypoint, state);
+                                Waypoints.getInstance().getWaypointHandler().getWaypoint(p, waypoint).setState(state);
 
-                            p.sendMessage(Utils.newMessage("&7Successfully set waypoint state to " + state.name()));
-                        } catch (PlayerDoesNotExistException | WaypointDoesNotExistException e) {
-                            p.sendMessage(e.getMessage());
+                                p.sendMessage(Utils.newMessage("&7Successfully set waypoint state to " + state.getState()));
+
+                            } catch (PlayerDoesNotExistException | WaypointDoesNotExistException e) {
+                                p.sendMessage(e.getMessage());
+                            }
+                        } else {
+                            p.sendMessage(Utils.newMessage("&cSorry, changing waypoint state is not allowed."));
                         }
                     }
+
+                    case SERVER -> {
+                        if (p.hasPermission("qwaypoints.admin.serverwaypoints")) {
+                            throw new NotImplementedException();
+                        } else p.sendMessage(Utils.newMessage("&cSorry, you do not have the required permission."));
+                    }
+
                 }
 
                 return false;
+            } else if (args[0].equalsIgnoreCase("track")) {
+              Waypoint wp = Waypoints.getInstance().getWaypointHandler().getWaypoint(p, args[1]);
+
+              if (wp != null) {
+                  Waypoints.getInstance().getActionBarHandler().track(p, wp);
+
+                  p.sendMessage(Utils.newMessage("&7Tracking - " + wp.getName()));
+                  p.setCompassTarget(wp.getLocation());
+
+                  return true;
+              } else return false;
+
             } else if (args[0].equalsIgnoreCase("setcompass") && p.hasPermission("qwaypoints.compass")) {
                 String name = args[1];
 
