@@ -7,6 +7,9 @@ import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 
+/**
+ * @author YarinQuapi
+ */
 public class InventoryCloseListener implements Listener {
     @EventHandler
     public void inventoryCloseEvent(InventoryCloseEvent event) {

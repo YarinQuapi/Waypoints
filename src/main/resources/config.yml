@@ -1,9 +1,12 @@
-#Plugin prefix:
+# Plugin prefix:
 Prefix: "&b&lQWaypoints &f&l> &r"
 
-#Death points? true : false
+# Death points? true : false
 DeathPoints: true
 
+# Should public waypoints be available?
+PublicWaypoints: true
 
 
-#     Config Version: 0.1-RELEASE    #
+
+#     Config Version: 0.2-ALPHA1    #
