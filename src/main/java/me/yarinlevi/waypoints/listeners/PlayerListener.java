@@ -39,11 +39,7 @@ public class PlayerListener implements Listener {
         data = YamlConfiguration.loadConfiguration(dataFile);
         FileManager.registerData(dataFile, data);
 
-        Bukkit.getScheduler().runTaskTimerAsynchronously(Waypoints.getInstance(), () -> {
-            
-            FileManager.saveData(dataFile, data);
-
-        }, 0L, (300 * 20));
+        Bukkit.getScheduler().runTaskTimerAsynchronously(Waypoints.getInstance(), () -> FileManager.saveData(dataFile, data), 0L, (300 * 20));
     }
 
     @EventHandler
@@ -64,7 +60,7 @@ public class PlayerListener implements Listener {
                 for (String waypoint : data.getConfigurationSection("public_waypoints." + uuid).getKeys(false)) {
                     ConfigurationSection waypointSection = data.getConfigurationSection(uuid + ".waypoints." + waypoint);
 
-                    if (waypointSection.getString("item").equals("DIRT")) {
+                    if (waypointSection.getString("item").equalsIgnoreCase("DIRT")) {
                         list.add(new Waypoint(UUID.fromString(uuid), waypoint, (Location) waypointSection.get("location"), WaypointState.PUBLIC, waypointSection.getBoolean("systemInduced")));
                     } else {
                         list.add(new Waypoint(UUID.fromString(uuid), waypoint, (Location) waypointSection.get("location"), new ItemStack(Material.getMaterial(waypointSection.getString("item").toUpperCase())), WaypointState.PUBLIC, waypointSection.getBoolean("systemInduced")));
