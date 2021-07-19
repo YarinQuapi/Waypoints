@@ -7,6 +7,7 @@ import me.yarinlevi.waypoints.gui.GuiUtils;
 import me.yarinlevi.waypoints.listeners.PlayerListener;
 import me.yarinlevi.waypoints.player.actionbar.ActionBarHandler;
 import me.yarinlevi.waypoints.waypoint.WaypointHandler;
+import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -28,6 +29,8 @@ public class Waypoints extends JavaPlugin {
         registerConfigData();
 
         //New data methods
+
+        Metrics metrics = new Metrics(this, 12124);
 
         playerListener = new PlayerListener();
         Bukkit.getPluginManager().registerEvents(playerListener, this);
