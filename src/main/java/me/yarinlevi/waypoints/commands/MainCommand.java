@@ -1,6 +1,5 @@
 package me.yarinlevi.waypoints.commands;
 
-import jdk.jshell.execution.Util;
 import me.yarinlevi.waypoints.Waypoints;
 import me.yarinlevi.waypoints.exceptions.PlayerDoesNotExistException;
 import me.yarinlevi.waypoints.exceptions.PlayerNotLoadedException;
@@ -19,7 +18,6 @@ import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.apache.commons.lang.NotImplementedException;
-import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -57,6 +55,9 @@ public class MainCommand implements CommandExecutor {
                     p.sendMessage(Utils.newMessage("&cYou do not have any waypoints."));
                     return false;
                 }
+            } else if (args[0].equalsIgnoreCase("public") && Waypoints.getInstance().getConfig().getBoolean("PublicWaypoints")) {
+                GuiUtils.openInventory("gui.public.browser", p);
+                return true;
             } else if (args[0].equalsIgnoreCase("spawn") && p.hasPermission("qwaypoints.commands.spawn")) {
                 LocationData locDetail = LocationUtils.handleLocation(p.getWorld().getSpawnLocation());
                 String msg = Utils.newMessage("&7Spawn locator:\n" +
@@ -74,7 +75,7 @@ public class MainCommand implements CommandExecutor {
                         "&a  • &b/wp spawn &f- &7Locates the spawn of the world\n" +
                         "&a  • &b/wp nearest &f- &7Locates the nearest waypoint\n" +
                         "&a  • &b/wp distance <&awaypointA&b> <&awaypointB&b> &f- &7Calculates the distance between two waypoints\n" +
-                        "&a  • &b/wp set <&awaypoint&b> &<&astate&b> &f- &7Changes the state of the waypoint\n" +
+                        "&a  • &b/wp set <&awaypoint&b> <&astate&b> &f- &7Changes the state of the waypoint\n" +
                         "&a  • &b/wp track <&awaypoint&b> &f- &7Tracks a waypoints" +
                         "\n &b&lQWaypoints Version&7&l: &a&l" + Waypoints.getInstance().getDescription().getVersion());
                 p.sendMessage(str);
