@@ -6,7 +6,6 @@ import me.yarinlevi.waypoints.gui.GuiUtils;
 import me.yarinlevi.waypoints.gui.helpers.AbstractGui;
 import me.yarinlevi.waypoints.utils.Utils;
 import me.yarinlevi.waypoints.waypoint.Waypoint;
-import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;

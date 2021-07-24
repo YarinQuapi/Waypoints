@@ -30,7 +30,7 @@ import java.util.UUID;
  * @author YarinQuapi
  */
 public class PlayerListener implements Listener {
-    private final File dataFile;
+    @Getter private final File dataFile;
     @Getter private final FileConfiguration data;
 
 
