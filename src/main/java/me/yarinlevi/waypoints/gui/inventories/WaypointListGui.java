@@ -4,8 +4,10 @@ import me.yarinlevi.waypoints.Waypoints;
 import me.yarinlevi.waypoints.exceptions.InventoryDoesNotExistException;
 import me.yarinlevi.waypoints.gui.GuiUtils;
 import me.yarinlevi.waypoints.gui.helpers.AbstractGui;
+import me.yarinlevi.waypoints.utils.LocationData;
 import me.yarinlevi.waypoints.utils.Utils;
 import me.yarinlevi.waypoints.waypoint.Waypoint;
+import me.yarinlevi.waypoints.waypoint.WaypointWorld;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -63,6 +65,8 @@ public class WaypointListGui extends AbstractGui implements Listener {
 
                 lore.add("\n");
 
+                lore.add(Utils.newMessageNoPrefix("&eShift Left click to display in chat!"));
+
                 String rightClickToEdit = Utils.newMessageNoPrefix("&eRight click to edit item!");
                 lore.add(rightClickToEdit);
 
@@ -107,6 +111,15 @@ public class WaypointListGui extends AbstractGui implements Listener {
                 switch (e.getClick()) {
                     case RIGHT -> EditWaypointItemGui.open(player, wp);
                     case LEFT -> RenameWaypointGUI.open(player, wp);
+                    case SHIFT_LEFT -> {
+                        LocationData locationData = wp.getLocationData();
+
+                        String msg = Utils.newMessage(String.format("&7Waypoint &b%s &7is located at &bX &a%s &bY &a%s &bZ &a%s &7in world &b%s &7You are &b%s &7blocks away.",
+                                name, locationData.x(), locationData.y(), locationData.z(), WaypointWorld.valueOf(locationData.world()).getName(), Utils.calculateDistance(player.getLocation().toVector(), wp.getVector())));
+                        player.sendMessage(msg);
+
+                        player.closeInventory();
+                    }
                 }
             }
 

@@ -4,9 +4,14 @@ import me.yarinlevi.waypoints.Waypoints;
 import me.yarinlevi.waypoints.exceptions.InventoryDoesNotExistException;
 import me.yarinlevi.waypoints.gui.GuiUtils;
 import me.yarinlevi.waypoints.gui.helpers.AbstractGui;
+import me.yarinlevi.waypoints.utils.LocationData;
 import me.yarinlevi.waypoints.utils.Utils;
 import me.yarinlevi.waypoints.waypoint.Waypoint;
+import me.yarinlevi.waypoints.waypoint.WaypointWorld;
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -56,6 +61,10 @@ public class WaypointBrowser extends AbstractGui implements Listener {
             String waypointState = Utils.newMessageNoPrefix("&7State " + wp.getState().getState());
             lore.add(waypointState);
 
+            lore.add("\n");
+
+            lore.add(Utils.newMessageNoPrefix("&7Owned by &b" + Bukkit.getOfflinePlayer(wp.getOwner()).getName()));
+
             itemMeta.setLore(lore);
             itemMeta.setDisplayName(Utils.newMessageNoPrefix("&b" + wp.getName()));
 
@@ -78,6 +87,38 @@ public class WaypointBrowser extends AbstractGui implements Listener {
     @EventHandler
     public void inventoryClick(InventoryClickEvent e) {
         if (e.getInventory() == this.getInventory()) {
+            ItemStack item = e.getInventory().getItem(e.getRawSlot());
+
+            assert item != null;
+            assert item.getItemMeta() != null;
+            String name = ChatColor.stripColor(item.getItemMeta().getDisplayName());
+
+            Player player = (Player) e.getWhoClicked();
+
+            if (item.getItemMeta().hasLore()) {
+
+                OfflinePlayer offlinePlayer;
+
+                String offlinePlayerName = ChatColor.stripColor(item.getItemMeta().getLore().get(4)).substring(9);
+
+                offlinePlayer = Bukkit.getOfflinePlayer(offlinePlayerName);
+
+                Waypoint wp;
+                wp = Waypoints.getInstance().getWaypointHandler().getWaypoint(offlinePlayer, name);
+
+                if (wp != null) {
+                    switch (e.getClick()) {
+                        case LEFT -> {
+                            LocationData locationData = wp.getLocationData();
+
+                            String msg = Utils.newMessage(String.format("&7Waypoint &b%s &7is located at &bX &a%s &bY &a%s &bZ &a%s &7in world &b%s &7You are &b%s &7blocks away.",
+                                    name, locationData.x(), locationData.y(), locationData.z(), WaypointWorld.valueOf(locationData.world()).getName(), Utils.calculateDistance(player.getLocation().toVector(), wp.getVector())));
+                            player.sendMessage(msg);
+                        }
+                    }
+                }
+            }
+
             if (e.getRawSlot() == 22) {
                 GuiUtils.openInventory("gui.personal.profile", (Player) e.getWhoClicked());
             }

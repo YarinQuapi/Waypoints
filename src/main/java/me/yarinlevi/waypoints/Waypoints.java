@@ -28,8 +28,6 @@ public class Waypoints extends JavaPlugin {
         this.saveDefaultConfig();
         registerConfigData();
 
-        //New data methods
-
         Metrics metrics = new Metrics(this, 12124);
 
         playerListener = new PlayerListener();
