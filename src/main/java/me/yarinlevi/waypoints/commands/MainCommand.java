@@ -1,6 +1,7 @@
 package me.yarinlevi.waypoints.commands;
 
 import me.yarinlevi.waypoints.Waypoints;
+import me.yarinlevi.waypoints.data.FileManager;
 import me.yarinlevi.waypoints.exceptions.PlayerDoesNotExistException;
 import me.yarinlevi.waypoints.exceptions.PlayerNotLoadedException;
 import me.yarinlevi.waypoints.exceptions.WaypointAlreadyExistsException;
@@ -18,14 +19,14 @@ import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.apache.commons.lang.NotImplementedException;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
-import org.bukkit.command.CommandSender;
+import org.bukkit.command.*;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Arrays;
 import java.util.Iterator;
+import java.util.List;
 
 /**
  * @author YarinQuapi
@@ -107,6 +108,7 @@ public class MainCommand implements CommandExecutor {
                     try {
                         if (Waypoints.getInstance().getWaypointHandler().addWaypoint(p.getUniqueId(), wp)) {
                             p.sendMessage(Utils.newMessage(String.format("&7Created new waypoint: &b%s", name)));
+                            FileManager.saveData(Waypoints.getInstance().getPlayerListener().getDataFile(), Waypoints.getInstance().getPlayerListener().getData());
                             return true;
                         }
                         return false;
@@ -163,6 +165,11 @@ public class MainCommand implements CommandExecutor {
                     return false;
                 }
             } else if (args[0].equalsIgnoreCase("set")) {
+                if (args.length < 3 || !Arrays.stream(WaypointState.values()).anyMatch(x -> x.name().equals(args[2].toUpperCase()))) {
+                    p.sendMessage(Utils.newMessage("&cState changed failed! &fIncorrect syntax! please try &e/wp set <waypoint> <state>"));
+                    return false;
+                }
+
                 String waypoint = args[1];
                 WaypointState state = WaypointState.valueOf(args[2].toUpperCase());
 
@@ -193,17 +200,28 @@ public class MainCommand implements CommandExecutor {
 
                 return false;
             } else if (args[0].equalsIgnoreCase("track")) {
-              Waypoint wp = Waypoints.getInstance().getWaypointHandler().getWaypoint(p, args[1]);
+                if (args[1].equalsIgnoreCase("off")) {
+                    if (Waypoints.getInstance().getActionBarHandler().unTrack(p)) {
+                        p.sendMessage(Utils.newMessage("&cNo longer tracking."));
+                        return true;
+                    } else {
+                        p.sendMessage(Utils.newMessage("&cYou are not tracking any waypoints."));
+                        return false;
+                    }
 
-              if (wp != null) {
-                  Waypoints.getInstance().getActionBarHandler().track(p, wp);
+                } else {
 
-                  p.sendMessage(Utils.newMessage("&7Tracking - " + wp.getName()));
-                  p.setCompassTarget(wp.getLocation());
+                    Waypoint wp = Waypoints.getInstance().getWaypointHandler().getWaypoint(p, args[1]);
 
-                  return true;
-              } else return false;
+                    if (wp != null) {
+                        Waypoints.getInstance().getActionBarHandler().track(p, wp);
 
+                        p.sendMessage(Utils.newMessage("&7Tracking - " + wp.getName()));
+                        p.setCompassTarget(wp.getLocation());
+
+                        return true;
+                    } else return false;
+                }
             } else if (args[0].equalsIgnoreCase("setcompass") && p.hasPermission("qwaypoints.compass")) {
                 String name = args[1];
 

@@ -25,6 +25,13 @@ public class ActionBarHandler implements Listener {
         this.tracked.put(player, waypoint);
     }
 
+    public boolean unTrack(Player player) {
+        if (this.tracked.containsKey(player)) {
+            this.tracked.remove(player);
+            return true;
+        } else return false;
+    }
+
     private int tick = 0;
 
     public void update() {

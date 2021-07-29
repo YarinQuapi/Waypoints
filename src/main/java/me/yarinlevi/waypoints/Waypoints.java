@@ -4,6 +4,7 @@ import lombok.Getter;
 import me.yarinlevi.waypoints.commands.Administration;
 import me.yarinlevi.waypoints.commands.MainCommand;
 import me.yarinlevi.waypoints.gui.GuiUtils;
+import me.yarinlevi.waypoints.listeners.PlayerDeathListener;
 import me.yarinlevi.waypoints.listeners.PlayerListener;
 import me.yarinlevi.waypoints.player.actionbar.ActionBarHandler;
 import me.yarinlevi.waypoints.waypoint.WaypointHandler;
@@ -36,6 +37,10 @@ public class Waypoints extends JavaPlugin {
 
         actionBarHandler = new ActionBarHandler();
         Bukkit.getPluginManager().registerEvents(actionBarHandler, this);
+
+        if (this.getConfig().getBoolean("DeathPoints")) {
+            Bukkit.getPluginManager().registerEvents(new PlayerDeathListener(), this);
+        }
 
         this.getCommand("wpadmin").setExecutor(new Administration());
         this.getCommand("waypoint").setExecutor(new MainCommand());
