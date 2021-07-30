@@ -23,30 +23,32 @@ public class PlayerDeathListener implements Listener {
     public void onPlayerDeath(PlayerDeathEvent e) {
         Player p = e.getEntity();
 
-        TextComponent msg = new TextComponent(Utils.newMessage("&7You died. Created waypoint "));
-        TextComponent delete = new TextComponent(Utils.newMessageNoPrefix("&cDELETE"));
+        if (Waypoints.getInstance().getPlayerDataManager().getPlayerDataMap().get(p).isPlayerDeathPoints()) {
+            TextComponent msg = new TextComponent(Utils.newMessage("&7You died. Created waypoint "));
+            TextComponent delete = new TextComponent(Utils.newMessageNoPrefix("&cDELETE"));
 
-        int deathCount = p.getStatistic(Statistic.DEATHS);
+            int deathCount = p.getStatistic(Statistic.DEATHS);
 
-        Waypoint waypoint = new Waypoint(p.getUniqueId(), "Death-" + deathCount, p.getLocation(), true);
+            Waypoint waypoint = new Waypoint(p.getUniqueId(), "Death-" + deathCount, p.getLocation(), true);
 
-        try {
-            if (Waypoints.getInstance().getWaypointHandler().addWaypoint(p.getUniqueId(), waypoint)) {
-                TextComponent deathPoint = new TextComponent(Utils.newMessageNoPrefix("&bDeath-" + deathCount));
+            try {
+                if (Waypoints.getInstance().getWaypointHandler().addWaypoint(p.getUniqueId(), waypoint)) {
+                    TextComponent deathPoint = new TextComponent(Utils.newMessageNoPrefix("&bDeath-" + deathCount));
 
-                deathPoint.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(Utils.newMessageNoPrefix(String.format("&eClick to check waypoint &bDeath-%s", deathCount))).create()));
-                deathPoint.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/wp check Death-" + deathCount));
+                    deathPoint.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(Utils.newMessageNoPrefix(String.format("&eClick to check waypoint &bDeath-%s", deathCount))).create()));
+                    deathPoint.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/wp check Death-" + deathCount));
 
-                delete.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(Utils.newMessageNoPrefix(String.format("&7Click to delete waypoint &bDeath-%s", deathCount))).create()));
-                delete.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/wp delete Death-" + deathCount));
+                    delete.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(Utils.newMessageNoPrefix(String.format("&7Click to delete waypoint &bDeath-%s", deathCount))).create()));
+                    delete.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/wp delete Death-" + deathCount));
 
-                msg.addExtra(deathPoint);
+                    msg.addExtra(deathPoint);
 
-                msg.addExtra(delete);
-                p.spigot().sendMessage(msg);
+                    msg.addExtra(delete);
+                    p.spigot().sendMessage(msg);
+                }
+            } catch (WaypointAlreadyExistsException | PlayerNotLoadedException ex) {
+                p.sendMessage(ex.getMessage());
             }
-        } catch (WaypointAlreadyExistsException | PlayerNotLoadedException ex) {
-            p.sendMessage(ex.getMessage());
         }
     }
 }

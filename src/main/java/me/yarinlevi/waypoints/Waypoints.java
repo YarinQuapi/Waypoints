@@ -6,6 +6,7 @@ import me.yarinlevi.waypoints.commands.MainCommand;
 import me.yarinlevi.waypoints.gui.GuiUtils;
 import me.yarinlevi.waypoints.listeners.PlayerDeathListener;
 import me.yarinlevi.waypoints.listeners.PlayerListener;
+import me.yarinlevi.waypoints.player.PlayerDataManager;
 import me.yarinlevi.waypoints.player.trackers.ActionBarTracker;
 import me.yarinlevi.waypoints.waypoint.WaypointHandler;
 import org.bstats.bukkit.Metrics;
@@ -28,6 +29,8 @@ public class Waypoints extends JavaPlugin {
     //@Getter private ActionBarHandler actionBarHandler;
     @Getter private ActionBarTracker actionBarTracker;
 
+    @Getter private PlayerDataManager playerDataManager;
+
     private Map<Player, BukkitTask> tasks = new HashMap<>();
 
     @Override
@@ -35,9 +38,11 @@ public class Waypoints extends JavaPlugin {
         instance = this;
 
         this.saveDefaultConfig();
-        registerConfigData();
+        registerConfigwaypointData();
 
         Metrics metrics = new Metrics(this, 12124);
+
+        playerDataManager = new PlayerDataManager();
 
         playerListener = new PlayerListener();
         Bukkit.getPluginManager().registerEvents(playerListener, this);
@@ -71,7 +76,7 @@ public class Waypoints extends JavaPlugin {
         Bukkit.getOnlinePlayers().forEach(player -> playerListener.unloadPlayer(player.getUniqueId()));
     }
 
-    public void registerConfigData() {
+    public void registerConfigwaypointData() {
        prefix = getConfig().getString("Prefix");
     }
 }

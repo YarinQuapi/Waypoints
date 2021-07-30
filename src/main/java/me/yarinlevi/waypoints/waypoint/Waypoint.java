@@ -4,10 +4,10 @@ import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
 import me.yarinlevi.waypoints.Waypoints;
-import me.yarinlevi.waypoints.data.FileManager;
 import me.yarinlevi.waypoints.exceptions.PlayerDoesNotExistException;
 import me.yarinlevi.waypoints.utils.LocationData;
 import me.yarinlevi.waypoints.utils.Utils;
+import me.yarinlevi.waypoints.waypointData.FileManager;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -67,7 +67,7 @@ public class Waypoint {
     public void editItem(ItemStack item) {
         this.item = item;
 
-        FileManager.saveData(Waypoints.getInstance().getPlayerListener().getDataFile(), Waypoints.getInstance().getPlayerListener().getData());
+        FileManager.save(Waypoints.getInstance().getPlayerListener().getWaypointDataFile(), Waypoints.getInstance().getPlayerListener().getWaypointData());
     }
 
     public Vector getVector() {
@@ -96,7 +96,7 @@ public class Waypoint {
 
 
     @NonNull
-    public LocationData getLocationData() {
+    public LocationData getLocationwaypointData() {
         return new LocationData(String.valueOf(location.getBlockX()),
                 String.valueOf(location.getBlockY()),
                 String.valueOf(location.getBlockZ()),
@@ -116,6 +116,6 @@ public class Waypoint {
             }
         }
 
-        FileManager.saveData(Waypoints.getInstance().getPlayerListener().getDataFile(), Waypoints.getInstance().getPlayerListener().getData());
+        FileManager.save(Waypoints.getInstance().getPlayerListener().getWaypointDataFile(), Waypoints.getInstance().getPlayerListener().getWaypointData());
     }
 }

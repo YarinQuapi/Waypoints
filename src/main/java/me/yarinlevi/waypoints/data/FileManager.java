@@ -1,4 +1,4 @@
-package me.yarinlevi.waypoints.data;
+package me.yarinlevi.waypoints.waypointData;
 
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -10,27 +10,27 @@ import java.io.IOException;
  * @author YarinQuapi
  */
 public class FileManager {
-    public static void registerData(File file, FileConfiguration data) {
+    public static void registerwaypointData(File file, FileConfiguration waypointData) {
         if (!file.exists()) {
             file.getParentFile().mkdirs();
         } else {
             try {
-                data.load(file);
+                waypointData.load(file);
             } catch (InvalidConfigurationException | IOException e) {
                 e.printStackTrace();
             }
         }
         try {
-            data.save(file);
+            waypointData.save(file);
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
 
-    public static void saveData(File file, FileConfiguration data) {
+    public static void save(File file, FileConfiguration waypointData) {
         try {
-            data.save(file);
+            waypointData.save(file);
         } catch (IOException e) {
             e.printStackTrace();
         }

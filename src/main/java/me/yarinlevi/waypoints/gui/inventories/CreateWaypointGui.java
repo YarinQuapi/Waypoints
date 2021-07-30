@@ -1,14 +1,13 @@
 package me.yarinlevi.waypoints.gui.inventories;
 
 import me.yarinlevi.waypoints.Waypoints;
-import me.yarinlevi.waypoints.data.FileManager;
 import me.yarinlevi.waypoints.exceptions.PlayerNotLoadedException;
 import me.yarinlevi.waypoints.exceptions.WaypointAlreadyExistsException;
 import me.yarinlevi.waypoints.gui.helpers.AbstractGui;
 import me.yarinlevi.waypoints.utils.Utils;
 import me.yarinlevi.waypoints.waypoint.Waypoint;
+import me.yarinlevi.waypoints.waypointData.FileManager;
 import net.wesjd.anvilgui.AnvilGUI;
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -25,7 +24,7 @@ public class CreateWaypointGui extends AbstractGui {
                         Waypoint waypoint = new Waypoint(player.getUniqueId(), text.trim(), player2.getLocation(), false);
                         try {
                             Waypoints.getInstance().getWaypointHandler().addWaypoint(player2.getUniqueId(), waypoint);
-                            FileManager.saveData(Waypoints.getInstance().getPlayerListener().getDataFile(), Waypoints.getInstance().getPlayerListener().getData());
+                            FileManager.save(Waypoints.getInstance().getPlayerListener().getWaypointDataFile(), Waypoints.getInstance().getPlayerListener().getWaypointData());
                             player2.sendMessage(Utils.newMessage(String.format("&7Created new waypoint &b%s", text.trim())));
                         } catch (WaypointAlreadyExistsException | PlayerNotLoadedException e) {
                             player2.sendMessage(e.getMessage());

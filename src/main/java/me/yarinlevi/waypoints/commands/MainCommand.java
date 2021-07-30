@@ -1,7 +1,6 @@
 package me.yarinlevi.waypoints.commands;
 
 import me.yarinlevi.waypoints.Waypoints;
-import me.yarinlevi.waypoints.data.FileManager;
 import me.yarinlevi.waypoints.exceptions.PlayerDoesNotExistException;
 import me.yarinlevi.waypoints.exceptions.PlayerNotLoadedException;
 import me.yarinlevi.waypoints.exceptions.WaypointAlreadyExistsException;
@@ -13,13 +12,16 @@ import me.yarinlevi.waypoints.utils.Utils;
 import me.yarinlevi.waypoints.waypoint.Waypoint;
 import me.yarinlevi.waypoints.waypoint.WaypointState;
 import me.yarinlevi.waypoints.waypoint.WaypointWorld;
+import me.yarinlevi.waypoints.waypointData.FileManager;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.apache.commons.lang.NotImplementedException;
-import org.bukkit.command.*;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandExecutor;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
@@ -96,7 +98,21 @@ public class MainCommand implements CommandExecutor {
                 return false;
             }
         } else {
-            if (args[0].equalsIgnoreCase("create")) {
+            if (args[0].equalsIgnoreCase("toggle")) {
+                String foundArgument = args[1];
+
+                switch (foundArgument) {
+                    case "deathpoints":
+                        Waypoints.getInstance().getPlayerDataManager();
+                        return true;
+                    default:
+                        p.sendMessage(Utils.newMessage("&cToggle failed! &7No setting '&c" + foundArgument + "&7'."));
+                        return false;
+                }
+
+            }
+
+            else if (args[0].equalsIgnoreCase("create")) {
                 String name = args[1].trim();
 
                 if (Utils.allowedCharacters.matcher(name).matches()) {
@@ -106,7 +122,7 @@ public class MainCommand implements CommandExecutor {
                     try {
                         if (Waypoints.getInstance().getWaypointHandler().addWaypoint(p.getUniqueId(), wp)) {
                             p.sendMessage(Utils.newMessage(String.format("&7Created new waypoint: &b%s", name)));
-                            FileManager.saveData(Waypoints.getInstance().getPlayerListener().getDataFile(), Waypoints.getInstance().getPlayerListener().getData());
+                            FileManager.save(Waypoints.getInstance().getPlayerListener().getWaypointDataFile(), Waypoints.getInstance().getPlayerListener().getWaypointData());
                             return true;
                         }
                         return false;
@@ -142,7 +158,7 @@ public class MainCommand implements CommandExecutor {
 
                 Waypoint wp = Waypoints.getInstance().getWaypointHandler().getWaypoint(p, name);
 
-                LocationData locationData = wp.getLocationData();
+                LocationData locationData = wp.getLocationwaypointData();
 
                 String msg = Utils.newMessage(String.format("&7Waypoint &b%s &7is located at &bX &a%s &bY &a%s &bZ &a%s &7in world &b%s &7You are &b%s &7blocks away.",
                         name, locationData.x(), locationData.y(), locationData.z(), WaypointWorld.valueOf(locationData.world()).getName(), Utils.calculateDistance(p.getLocation().toVector(), wp.getVector())));

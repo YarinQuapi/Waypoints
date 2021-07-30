@@ -112,7 +112,7 @@ public class WaypointListGui extends AbstractGui implements Listener {
                     case RIGHT -> EditWaypointItemGui.open(player, wp);
                     case LEFT -> RenameWaypointGUI.open(player, wp);
                     case SHIFT_LEFT -> {
-                        LocationData locationData = wp.getLocationData();
+                        LocationData locationData = wp.getLocationwaypointData();
 
                         String msg = Utils.newMessage(String.format("&7Waypoint &b%s &7is located at &bX &a%s &bY &a%s &bZ &a%s &7in world &b%s &7You are &b%s &7blocks away.",
                                 name, locationData.x(), locationData.y(), locationData.z(), WaypointWorld.valueOf(locationData.world()).getName(), Utils.calculateDistance(player.getLocation().toVector(), wp.getVector())));

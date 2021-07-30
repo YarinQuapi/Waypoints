@@ -2,13 +2,13 @@ package me.yarinlevi.waypoints.listeners;
 
 import lombok.Getter;
 import me.yarinlevi.waypoints.Waypoints;
-import me.yarinlevi.waypoints.data.FileManager;
 import me.yarinlevi.waypoints.exceptions.PlayerDoesNotExistException;
 import me.yarinlevi.waypoints.exceptions.WaypointDoesNotExistException;
 import me.yarinlevi.waypoints.player.PlayerData;
 import me.yarinlevi.waypoints.utils.Utils;
 import me.yarinlevi.waypoints.waypoint.Waypoint;
 import me.yarinlevi.waypoints.waypoint.WaypointState;
+import me.yarinlevi.waypoints.waypointData.FileManager;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -30,16 +30,16 @@ import java.util.UUID;
  * @author YarinQuapi
  */
 public class PlayerListener implements Listener {
-    @Getter private final File dataFile;
-    @Getter private final FileConfiguration data;
+    @Getter private final File waypointDataFile;
+    @Getter private final FileConfiguration waypointData;
 
 
     public PlayerListener() {
-        dataFile = new File(Waypoints.getInstance().getDataFolder(), "waypointsData.yml");
-        data = YamlConfiguration.loadConfiguration(dataFile);
-        FileManager.registerData(dataFile, data);
+        waypointDataFile = new File(Waypoints.getInstance().getDataFolder(), "waypointsData.yml");
+        waypointData = YamlConfiguration.loadConfiguration(waypointDataFile);
+        FileManager.registerwaypointData(waypointDataFile, waypointData);
 
-        Bukkit.getScheduler().runTaskTimerAsynchronously(Waypoints.getInstance(), () -> FileManager.saveData(dataFile, data), 0L, (300 * 20));
+        Bukkit.getScheduler().runTaskTimerAsynchronously(Waypoints.getInstance(), () -> FileManager.save(waypointDataFile, waypointData), 0L, (300 * 20));
     }
 
     @EventHandler
@@ -52,13 +52,13 @@ public class PlayerListener implements Listener {
         Bukkit.getScheduler().runTaskAsynchronously(Waypoints.getInstance(), () -> unloadPlayer(event.getPlayer().getUniqueId()));
     }
 
-    public List<Waypoint> getPublicWaypointsFromData() {
+    public List<Waypoint> getPublicWaypointsFromwaypointData() {
         List<Waypoint> list = new ArrayList<>();
 
-        if (data.contains("public_waypoints")) {
-            for (String uuid : data.getConfigurationSection("public_waypoints").getKeys(false)) {
-                for (String waypoint : data.getConfigurationSection("public_waypoints." + uuid).getKeys(false)) {
-                    ConfigurationSection waypointSection = data.getConfigurationSection(uuid + ".waypoints." + waypoint);
+        if (waypointData.contains("public_waypoints")) {
+            for (String uuid : waypointData.getConfigurationSection("public_waypoints").getKeys(false)) {
+                for (String waypoint : waypointData.getConfigurationSection("public_waypoints." + uuid).getKeys(false)) {
+                    ConfigurationSection waypointSection = waypointData.getConfigurationSection(uuid + ".waypoints." + waypoint);
 
                     if (waypointSection.getString("item").equalsIgnoreCase("DIRT")) {
                         list.add(new Waypoint(UUID.fromString(uuid), waypoint, (Location) waypointSection.get("location"), WaypointState.PUBLIC, waypointSection.getBoolean("systemInduced")));
@@ -73,20 +73,20 @@ public class PlayerListener implements Listener {
     }
 
     public void renamePublicWaypoint(UUID uuid, String waypoint, String name) throws PlayerDoesNotExistException {
-        if (!data.contains(uuid.toString())) {
+        if (!waypointData.contains(uuid.toString())) {
             throw new PlayerDoesNotExistException(Utils.newMessage(String.format("&cNo waypoint found with name: &f\"&d%s&f\"", waypoint)));
         }
 
-        data.set("public_waypoints." + uuid + "." + waypoint, null);
-        data.set("public_waypoints." + uuid + "." + name, "PUBLIC");
+        waypointData.set("public_waypoints." + uuid + "." + waypoint, null);
+        waypointData.set("public_waypoints." + uuid + "." + name, "PUBLIC");
     }
 
     public void setWaypointState(UUID uuid, String waypoint, WaypointState state) throws PlayerDoesNotExistException, WaypointDoesNotExistException {
-        if (!data.contains(uuid.toString())) {
+        if (!waypointData.contains(uuid.toString())) {
             throw new PlayerDoesNotExistException(Utils.newMessage(String.format("&cNo waypoint found with name: &f\"&d%s&f\"", waypoint)));
         }
 
-        ConfigurationSection waypointSection = data.getConfigurationSection(uuid.toString()).getConfigurationSection("waypoints");
+        ConfigurationSection waypointSection = waypointData.getConfigurationSection(uuid.toString()).getConfigurationSection("waypoints");
 
         if (waypointSection.contains(waypoint)) {
             ConfigurationSection waypointConfiguration = waypointSection.getConfigurationSection(waypoint);
@@ -94,23 +94,23 @@ public class PlayerListener implements Listener {
             waypointConfiguration.set("state", state);
 
             if (state.equals(WaypointState.PUBLIC)) {
-                data.set("public_waypoints." + uuid + "." + waypoint, "PUBLIC");
+                waypointData.set("public_waypoints." + uuid + "." + waypoint, "PUBLIC");
             } else if (state.equals(WaypointState.PRIVATE)) {
-                data.set("public_waypoints." + uuid + "." + waypoint, null);
+                waypointData.set("public_waypoints." + uuid + "." + waypoint, null);
             }
 
         } else throw new WaypointDoesNotExistException(Utils.newMessage(String.format("&cNo waypoint found with name: &f\"&d%s&f\"", waypoint)));
     }
 
     public void loadPlayer(UUID uuid) {
-        if (!data.contains(uuid.toString())) {
-            data.createSection(uuid.toString());
-            data.getConfigurationSection(uuid.toString()).createSection("waypoints");
+        if (!waypointData.contains(uuid.toString())) {
+            waypointData.createSection(uuid.toString());
+            waypointData.getConfigurationSection(uuid.toString()).createSection("waypoints");
 
-            Waypoints.getInstance().getWaypointHandler().insertPlayer(uuid, new ArrayList<>());
+            Waypoints.getInstance().getPlayerDataManager().insertPlayer(uuid, new ArrayList<>());
         } else {
             List<Waypoint> waypoints = new ArrayList<>();
-            ConfigurationSection waypointSection = data.getConfigurationSection(uuid.toString()).getConfigurationSection("waypoints");
+            ConfigurationSection waypointSection = waypointData.getConfigurationSection(uuid.toString()).getConfigurationSection("waypoints");
 
             ConfigurationSection waypoint;
             for (String key : waypointSection.getKeys(false)) {
@@ -131,8 +131,8 @@ public class PlayerListener implements Listener {
                 }
             }
 
-            Waypoints.getInstance().getWaypointHandler().insertPlayer(uuid, waypoints);
-            Waypoints.getInstance().getLogger().info("Loaded waypoints data for uuid: " + uuid);
+            Waypoints.getInstance().getPlayerDataManager().insertPlayer(uuid, waypoints);
+            Waypoints.getInstance().getLogger().info("Loaded waypoints waypointData for uuid: " + uuid);
         }
     }
 
@@ -141,29 +141,29 @@ public class PlayerListener implements Listener {
             Waypoints.getInstance().getActionBarTracker().unTrack(Bukkit.getPlayer(uuid));
         }
 
-        PlayerData playerData = Waypoints.getInstance().getWaypointHandler().getPlayerData(uuid);
+        PlayerData playerwaypointData = Waypoints.getInstance().getWaypointHandler().getPlayerwaypointData(uuid);
 
-        ConfigurationSection playerSection = data.getConfigurationSection(uuid.toString());
+        ConfigurationSection playerSection = waypointData.getConfigurationSection(uuid.toString());
 
-        if (!playerData.getWaypointList().isEmpty()) {
+        if (!playerwaypointData.getWaypointList().isEmpty()) {
             ConfigurationSection waypointSection = playerSection.createSection("waypoints");
 
-            for (Waypoint waypoint : playerData.getWaypointList()) {
+            for (Waypoint waypoint : playerwaypointData.getWaypointList()) {
                 waypointSection.set(waypoint.getName() + ".location", waypoint.getLocation());
                 waypointSection.set(waypoint.getName() + ".systemInduced", waypoint.isSystemInduced());
                 waypointSection.set(waypoint.getName() + ".item", waypoint.getItem().getType().name());
                 waypointSection.set(waypoint.getName() + ".state", waypoint.getState().toString().toUpperCase());
             }
 
-            FileManager.saveData(dataFile, data);
-            Waypoints.getInstance().getLogger().info("Saved waypoints data for uuid: " + uuid);
+            FileManager.save(waypointDataFile, waypointData);
+            Waypoints.getInstance().getLogger().info("Saved waypoints waypointData for uuid: " + uuid);
         } else {
             if (playerSection.contains("waypoints")) {
-                data.set(uuid.toString(), null);
+                waypointData.set(uuid.toString(), null);
             }
-            FileManager.saveData(dataFile, data);
+            FileManager.save(waypointDataFile, waypointData);
         }
 
-        Waypoints.getInstance().getWaypointHandler().removePlayer(uuid);
+        Waypoints.getInstance().getPlayerDataManager().removePlayer(uuid);
     }
 }
