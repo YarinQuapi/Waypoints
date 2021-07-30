@@ -22,11 +22,9 @@ import org.apache.commons.lang.NotImplementedException;
 import org.bukkit.command.*;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.Arrays;
 import java.util.Iterator;
-import java.util.List;
 
 /**
  * @author YarinQuapi
@@ -201,7 +199,7 @@ public class MainCommand implements CommandExecutor {
                 return false;
             } else if (args[0].equalsIgnoreCase("track")) {
                 if (args[1].equalsIgnoreCase("off")) {
-                    if (Waypoints.getInstance().getActionBarHandler().unTrack(p)) {
+                    if (Waypoints.getInstance().getActionBarTracker().unTrack(p)) {
                         p.sendMessage(Utils.newMessage("&cNo longer tracking."));
                         return true;
                     } else {
@@ -214,12 +212,17 @@ public class MainCommand implements CommandExecutor {
                     Waypoint wp = Waypoints.getInstance().getWaypointHandler().getWaypoint(p, args[1]);
 
                     if (wp != null) {
-                        Waypoints.getInstance().getActionBarHandler().track(p, wp);
+                        if (Waypoints.getInstance().getActionBarTracker().track(p, wp)) {
 
-                        p.sendMessage(Utils.newMessage("&7Tracking - " + wp.getName()));
-                        p.setCompassTarget(wp.getLocation());
+                            p.sendMessage(Utils.newMessage("&7Tracking - " + wp.getName()));
+                            p.setCompassTarget(wp.getLocation());
 
-                        return true;
+                            return true;
+                        } else {
+                            p.sendMessage(Utils.newMessage("&cTracking failed! &7You are already tracking a waypoint!"));
+                            p.sendMessage(Utils.newMessage("&7Use &e/wp track off &7in order to stop tracking."));
+                            return false;
+                        }
                     } else return false;
                 }
             } else if (args[0].equalsIgnoreCase("setcompass") && p.hasPermission("qwaypoints.compass")) {

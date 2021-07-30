@@ -1,4 +1,4 @@
-package me.yarinlevi.waypoints.player.actionbar;
+package me.yarinlevi.waypoints.player.trackers;
 
 import me.yarinlevi.waypoints.Waypoints;
 import me.yarinlevi.waypoints.utils.Utils;
@@ -18,7 +18,7 @@ import java.util.Map;
 /**
  * @author YarinQuapi
  */
-public class ActionBarHandler implements Listener {
+public class oldActionBarHandler implements Listener {
     private final Map<Player, Waypoint> tracked = new HashMap<>();
 
     public void track(Player player, Waypoint waypoint) {

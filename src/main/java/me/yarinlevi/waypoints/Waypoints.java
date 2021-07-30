@@ -6,11 +6,16 @@ import me.yarinlevi.waypoints.commands.MainCommand;
 import me.yarinlevi.waypoints.gui.GuiUtils;
 import me.yarinlevi.waypoints.listeners.PlayerDeathListener;
 import me.yarinlevi.waypoints.listeners.PlayerListener;
-import me.yarinlevi.waypoints.player.actionbar.ActionBarHandler;
+import me.yarinlevi.waypoints.player.trackers.ActionBarTracker;
 import me.yarinlevi.waypoints.waypoint.WaypointHandler;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scheduler.BukkitTask;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author YarinQuapi
@@ -20,7 +25,10 @@ public class Waypoints extends JavaPlugin {
     @Getter private String prefix;
     @Getter private WaypointHandler waypointHandler;
     @Getter private PlayerListener playerListener;
-    @Getter private ActionBarHandler actionBarHandler;
+    //@Getter private ActionBarHandler actionBarHandler;
+    @Getter private ActionBarTracker actionBarTracker;
+
+    private Map<Player, BukkitTask> tasks = new HashMap<>();
 
     @Override
     public void onEnable() {
@@ -35,8 +43,12 @@ public class Waypoints extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(playerListener, this);
         waypointHandler = new WaypointHandler();
 
+        /*
         actionBarHandler = new ActionBarHandler();
         Bukkit.getPluginManager().registerEvents(actionBarHandler, this);
+        */
+
+        actionBarTracker = new ActionBarTracker();
 
         if (this.getConfig().getBoolean("DeathPoints")) {
             Bukkit.getPluginManager().registerEvents(new PlayerDeathListener(), this);
@@ -49,7 +61,9 @@ public class Waypoints extends JavaPlugin {
 
         GuiUtils.registerGui();
 
-        Bukkit.getScheduler().runTaskTimer(this, () -> actionBarHandler.update(), 1L, 1L);
+        //Bukkit.getScheduler().runTaskTimer(this, () -> actionBarHandler.update(), 1L, 1L);
+
+        Bukkit.getScheduler().runTaskTimer(this, () -> actionBarTracker.update(), 10L, 10L);
     }
 
     @Override

@@ -2,7 +2,6 @@ package me.yarinlevi.waypoints.listeners;
 
 import lombok.Getter;
 import me.yarinlevi.waypoints.Waypoints;
-import me.yarinlevi.waypoints.api.QWaypointsAPI;
 import me.yarinlevi.waypoints.data.FileManager;
 import me.yarinlevi.waypoints.exceptions.PlayerDoesNotExistException;
 import me.yarinlevi.waypoints.exceptions.WaypointDoesNotExistException;
@@ -139,7 +138,7 @@ public class PlayerListener implements Listener {
 
     public void unloadPlayer(UUID uuid) {
         if (Bukkit.getPlayer(uuid) != null) {
-            Waypoints.getInstance().getActionBarHandler().unTrack(Bukkit.getPlayer(uuid));
+            Waypoints.getInstance().getActionBarTracker().unTrack(Bukkit.getPlayer(uuid));
         }
 
         PlayerData playerData = Waypoints.getInstance().getWaypointHandler().getPlayerData(uuid);

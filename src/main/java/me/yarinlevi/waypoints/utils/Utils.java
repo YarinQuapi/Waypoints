@@ -45,6 +45,12 @@ public class Utils {
         return hex;
     }
 
+    public static String repeat(String string, int n) {
+        StringBuilder sb = new StringBuilder();
+        sb.append(String.valueOf(string).repeat(Math.max(0, n)));
+        return sb.toString();
+    }
+
 
     public static int calculate2DDistance(Vector p1, Vector p2) {
         return calculate2DDistance(p1.getBlockX(), p1.getBlockZ(), p2.getBlockX(), p2.getBlockZ());
