@@ -7,16 +7,12 @@ import me.yarinlevi.waypoints.gui.GuiUtils;
 import me.yarinlevi.waypoints.listeners.PlayerDeathListener;
 import me.yarinlevi.waypoints.listeners.PlayerListener;
 import me.yarinlevi.waypoints.player.PlayerDataManager;
-import me.yarinlevi.waypoints.player.trackers.ActionBarTracker;
+import me.yarinlevi.waypoints.player.trackers.TrackerManager;
+import me.yarinlevi.waypoints.utils.Utils;
 import me.yarinlevi.waypoints.waypoint.WaypointHandler;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.scheduler.BukkitTask;
-
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * @author YarinQuapi
@@ -24,39 +20,33 @@ import java.util.Map;
 public class Waypoints extends JavaPlugin {
     @Getter private static Waypoints instance;
     @Getter private String prefix;
+    @Getter private boolean deathPoints;
     @Getter private WaypointHandler waypointHandler;
     @Getter private PlayerListener playerListener;
-    //@Getter private ActionBarHandler actionBarHandler;
-    @Getter private ActionBarTracker actionBarTracker;
-
+    @Getter private TrackerManager trackerManager;
     @Getter private PlayerDataManager playerDataManager;
-
-    private Map<Player, BukkitTask> tasks = new HashMap<>();
 
     @Override
     public void onEnable() {
         instance = this;
 
         this.saveDefaultConfig();
-        registerConfigwaypointData();
+        registerConfigData();
 
         Metrics metrics = new Metrics(this, 12124);
 
-        playerDataManager = new PlayerDataManager();
-
         playerListener = new PlayerListener();
         Bukkit.getPluginManager().registerEvents(playerListener, this);
+
+        playerDataManager = new PlayerDataManager();
+
         waypointHandler = new WaypointHandler();
 
-        /*
-        actionBarHandler = new ActionBarHandler();
-        Bukkit.getPluginManager().registerEvents(actionBarHandler, this);
-        */
+        trackerManager = new TrackerManager();
 
-        actionBarTracker = new ActionBarTracker();
-
-        if (this.getConfig().getBoolean("DeathPoints")) {
+        if (deathPoints) {
             Bukkit.getPluginManager().registerEvents(new PlayerDeathListener(), this);
+            getLogger().info(Utils.newMessageNoPrefix("&7> DeathPoints enabled!"));
         }
 
         this.getCommand("wpadmin").setExecutor(new Administration());
@@ -65,10 +55,6 @@ public class Waypoints extends JavaPlugin {
         Bukkit.getOnlinePlayers().forEach(player -> playerListener.loadPlayer(player.getUniqueId()));
 
         GuiUtils.registerGui();
-
-        //Bukkit.getScheduler().runTaskTimer(this, () -> actionBarHandler.update(), 1L, 1L);
-
-        Bukkit.getScheduler().runTaskTimer(this, () -> actionBarTracker.update(), 10L, 10L);
     }
 
     @Override
@@ -76,7 +62,8 @@ public class Waypoints extends JavaPlugin {
         Bukkit.getOnlinePlayers().forEach(player -> playerListener.unloadPlayer(player.getUniqueId()));
     }
 
-    public void registerConfigwaypointData() {
+    public void registerConfigData() {
        prefix = getConfig().getString("Prefix");
+       deathPoints = getConfig().getBoolean("DeathPoints");
     }
 }

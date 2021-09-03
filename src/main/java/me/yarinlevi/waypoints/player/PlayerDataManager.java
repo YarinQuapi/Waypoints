@@ -1,32 +1,63 @@
 package me.yarinlevi.waypoints.player;
 
 import lombok.Getter;
+import lombok.Setter;
+import me.yarinlevi.waypoints.Waypoints;
+import me.yarinlevi.waypoints.data.FileManager;
 import me.yarinlevi.waypoints.waypoint.Waypoint;
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+/**
+ * @author YarinQuapi
+ */
 public class PlayerDataManager {
     @Getter private final Map<UUID, PlayerData> playerDataMap = new HashMap<>();
 
+    @Getter @Setter private File settingsFile;
+    @Getter @Setter private FileConfiguration settingsData;
 
-    public boolean insertPlayer(UUID uuid, List<Waypoint> waypoints) {
-        if (!this.playerDataMap.containsKey(uuid)) {
-            this.playerDataMap.put(uuid, new PlayerData(waypoints));
-            return true;
-        } else {
-            return false;
+    public PlayerDataManager() {
+        settingsFile = new File(Waypoints.getInstance().getDataFolder(), "playerSettings.yml");
+        settingsData = YamlConfiguration.loadConfiguration(settingsFile);
+
+        FileManager.registerData(settingsFile, settingsData);
+        FileManager.save(settingsFile, settingsData);
+    }
+
+    public void loadPlayerSettings(UUID uuid) {
+        PlayerData playerData = playerDataMap.get(uuid);
+
+        if (settingsData.contains(uuid.toString())) {
+            playerData.setPlayerDeathPoints(settingsData.getBoolean(uuid + ".deathpoints"));
         }
     }
 
-    public boolean removePlayer(UUID uuid) {
+    public void unloadPlayerSettings(UUID uuid) {
+        PlayerData playerData = playerDataMap.get(uuid);
+
+        settingsData.set(uuid + ".deathpoints", playerData.isPlayerDeathPoints());
+
+        FileManager.save(settingsFile, settingsData);
+
+        removePlayer(uuid);
+    }
+
+    public void insertPlayer(UUID uuid, List<Waypoint> waypoints) {
+        if (!this.playerDataMap.containsKey(uuid)) {
+            this.playerDataMap.put(uuid, new PlayerData(waypoints));
+        }
+    }
+
+    public void removePlayer(UUID uuid) {
         if (this.playerDataMap.containsKey(uuid)) {
             this.playerDataMap.remove(uuid);
-            return true;
-        } else {
-            return false;
         }
     }
 }

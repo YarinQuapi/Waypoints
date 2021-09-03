@@ -89,38 +89,44 @@ public class WaypointBrowser extends AbstractGui implements Listener {
         if (e.getInventory() == this.getInventory()) {
             ItemStack item = e.getInventory().getItem(e.getRawSlot());
 
+            if (e.getRawSlot() == 22) {
+                GuiUtils.openInventory("gui.personal.profile", (Player) e.getWhoClicked());
+                return;
+            }
+
             assert item != null;
-            assert item.getItemMeta() != null;
-            String name = ChatColor.stripColor(item.getItemMeta().getDisplayName());
+            if (!item.getType().equals(Material.AIR)) {
+                assert item.getItemMeta() != null;
 
-            Player player = (Player) e.getWhoClicked();
+                String name = ChatColor.stripColor(item.getItemMeta().getDisplayName());
 
-            if (item.getItemMeta().hasLore()) {
+                Player player = (Player) e.getWhoClicked();
 
-                OfflinePlayer offlinePlayer;
+                if (item.getItemMeta().hasLore()) {
 
-                String offlinePlayerName = ChatColor.stripColor(item.getItemMeta().getLore().get(4)).substring(9);
+                    OfflinePlayer offlinePlayer;
 
-                offlinePlayer = Bukkit.getOfflinePlayer(offlinePlayerName);
+                    String offlinePlayerName = ChatColor.stripColor(item.getItemMeta().getLore().get(4)).substring(9);
 
-                Waypoint wp;
-                wp = Waypoints.getInstance().getWaypointHandler().getWaypoint(offlinePlayer, name);
+                    offlinePlayer = Bukkit.getOfflinePlayer(offlinePlayerName);
 
-                if (wp != null) {
+                    Waypoint wp;
+                    wp = Waypoints.getInstance().getWaypointHandler().getAllPublicWaypoints().stream().filter(x -> x.getName().equals(name)).filter(y -> y.getOwner().equals(offlinePlayer.getUniqueId())).findAny().get();
+
                     switch (e.getClick()) {
                         case LEFT -> {
-                            LocationData locationData = wp.getLocationwaypointData();
+                            LocationData locationData = wp.getLocationData();
 
                             String msg = Utils.newMessage(String.format("&7Waypoint &b%s &7is located at &bX &a%s &bY &a%s &bZ &a%s &7in world &b%s &7You are &b%s &7blocks away.",
                                     name, locationData.x(), locationData.y(), locationData.z(), WaypointWorld.valueOf(locationData.world()).getName(), Utils.calculateDistance(player.getLocation().toVector(), wp.getVector())));
                             player.sendMessage(msg);
                         }
+
+                        case RIGHT -> {
+                            Waypoints.getInstance().getTrackerManager().track(player, wp, "actionbar");
+                        }
                     }
                 }
-            }
-
-            if (e.getRawSlot() == 22) {
-                GuiUtils.openInventory("gui.personal.profile", (Player) e.getWhoClicked());
             }
         }
     }

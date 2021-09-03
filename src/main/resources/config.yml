@@ -7,6 +7,20 @@ DeathPoints: true
 # Should public waypoints be available?
 PublicWaypoints: true
 
+trackers:
+  enabled: true
+  destination_reached: 10
+
+  actionbar:
+    enabled: true
+    interval: 20
+    indicatorcolor: "§b§l"
+    leftarrow: "<-"
+    rightarrow: "->"
+
+  particle:
+    enabled: true
+    distance: 5
 
 
-#     Config Version: 0.2-ALPHA1    #
+#     Config Version: 4.0-A4    #

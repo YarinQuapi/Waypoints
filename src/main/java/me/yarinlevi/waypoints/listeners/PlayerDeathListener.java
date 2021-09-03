@@ -15,6 +15,9 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * @author YarinQuapi
  */
@@ -23,7 +26,10 @@ public class PlayerDeathListener implements Listener {
     public void onPlayerDeath(PlayerDeathEvent e) {
         Player p = e.getEntity();
 
-        if (Waypoints.getInstance().getPlayerDataManager().getPlayerDataMap().get(p).isPlayerDeathPoints()) {
+        List<Player> affectedPlayers = new ArrayList<>();
+        p.getNearbyEntities(2, 2, 2).stream().filter(entity -> entity instanceof Player).forEach(x -> affectedPlayers.add((Player) x));
+
+        if (Waypoints.getInstance().getPlayerDataManager().getPlayerDataMap().get(p.getUniqueId()).isPlayerDeathPoints()) {
             TextComponent msg = new TextComponent(Utils.newMessage("&7You died. Created waypoint "));
             TextComponent delete = new TextComponent(Utils.newMessageNoPrefix("&cDELETE"));
 
@@ -42,7 +48,7 @@ public class PlayerDeathListener implements Listener {
                     delete.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/wp delete Death-" + deathCount));
 
                     msg.addExtra(deathPoint);
-
+                    msg.addExtra(" ");
                     msg.addExtra(delete);
                     p.spigot().sendMessage(msg);
                 }

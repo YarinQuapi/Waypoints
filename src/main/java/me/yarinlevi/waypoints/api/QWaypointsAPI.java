@@ -62,7 +62,7 @@ public final class QWaypointsAPI {
      * @param player The player
      * @param waypoint The name of the waypoint you want to remove
      * @return True if was removed
-     * @throws PlayerNotLoadedException The player is offline or bugged, a re-log should fix
+     * @throws PlayerNotLoadedException The player is unloaded or doesn't exist. "/wpa load [playerName]" should fix the problem, a re-log works too.
      * @throws WaypointDoesNotExistException The player already has a waypoint with that name
      */
     public static boolean removeWaypoint(OfflinePlayer player, String waypoint) throws PlayerNotLoadedException, WaypointDoesNotExistException {

@@ -2,13 +2,13 @@ package me.yarinlevi.waypoints.listeners;
 
 import lombok.Getter;
 import me.yarinlevi.waypoints.Waypoints;
+import me.yarinlevi.waypoints.data.FileManager;
 import me.yarinlevi.waypoints.exceptions.PlayerDoesNotExistException;
 import me.yarinlevi.waypoints.exceptions.WaypointDoesNotExistException;
 import me.yarinlevi.waypoints.player.PlayerData;
 import me.yarinlevi.waypoints.utils.Utils;
 import me.yarinlevi.waypoints.waypoint.Waypoint;
 import me.yarinlevi.waypoints.waypoint.WaypointState;
-import me.yarinlevi.waypoints.waypointData.FileManager;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -37,7 +37,7 @@ public class PlayerListener implements Listener {
     public PlayerListener() {
         waypointDataFile = new File(Waypoints.getInstance().getDataFolder(), "waypointsData.yml");
         waypointData = YamlConfiguration.loadConfiguration(waypointDataFile);
-        FileManager.registerwaypointData(waypointDataFile, waypointData);
+        FileManager.registerData(waypointDataFile, waypointData);
 
         Bukkit.getScheduler().runTaskTimerAsynchronously(Waypoints.getInstance(), () -> FileManager.save(waypointDataFile, waypointData), 0L, (300 * 20));
     }
@@ -98,7 +98,6 @@ public class PlayerListener implements Listener {
             } else if (state.equals(WaypointState.PRIVATE)) {
                 waypointData.set("public_waypoints." + uuid + "." + waypoint, null);
             }
-
         } else throw new WaypointDoesNotExistException(Utils.newMessage(String.format("&cNo waypoint found with name: &f\"&d%s&f\"", waypoint)));
     }
 
@@ -132,23 +131,31 @@ public class PlayerListener implements Listener {
             }
 
             Waypoints.getInstance().getPlayerDataManager().insertPlayer(uuid, waypoints);
+            Waypoints.getInstance().getPlayerDataManager().loadPlayerSettings(uuid);
+
             Waypoints.getInstance().getLogger().info("Loaded waypoints waypointData for uuid: " + uuid);
         }
     }
 
     public void unloadPlayer(UUID uuid) {
         if (Bukkit.getPlayer(uuid) != null) {
-            Waypoints.getInstance().getActionBarTracker().unTrack(Bukkit.getPlayer(uuid));
+            Waypoints.getInstance().getTrackerManager().unTrack(Bukkit.getPlayer(uuid));
         }
 
-        PlayerData playerwaypointData = Waypoints.getInstance().getWaypointHandler().getPlayerwaypointData(uuid);
+        savePlayer(uuid);
+
+        Waypoints.getInstance().getPlayerDataManager().unloadPlayerSettings(uuid);
+    }
+
+    public void savePlayer(UUID uuid) {
+        PlayerData playerData = Waypoints.getInstance().getWaypointHandler().getPlayerwaypointData(uuid);
 
         ConfigurationSection playerSection = waypointData.getConfigurationSection(uuid.toString());
 
-        if (!playerwaypointData.getWaypointList().isEmpty()) {
+        if (!playerData.getWaypointList().isEmpty()) {
             ConfigurationSection waypointSection = playerSection.createSection("waypoints");
 
-            for (Waypoint waypoint : playerwaypointData.getWaypointList()) {
+            for (Waypoint waypoint : playerData.getWaypointList()) {
                 waypointSection.set(waypoint.getName() + ".location", waypoint.getLocation());
                 waypointSection.set(waypoint.getName() + ".systemInduced", waypoint.isSystemInduced());
                 waypointSection.set(waypoint.getName() + ".item", waypoint.getItem().getType().name());
@@ -163,7 +170,5 @@ public class PlayerListener implements Listener {
             }
             FileManager.save(waypointDataFile, waypointData);
         }
-
-        Waypoints.getInstance().getPlayerDataManager().removePlayer(uuid);
     }
 }

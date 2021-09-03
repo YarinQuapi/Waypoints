@@ -2,7 +2,6 @@ package me.yarinlevi.waypoints.player.trackers;
 
 import me.yarinlevi.waypoints.Waypoints;
 import me.yarinlevi.waypoints.utils.Utils;
-import me.yarinlevi.waypoints.waypoint.Waypoint;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
@@ -16,19 +15,20 @@ import java.util.concurrent.ConcurrentHashMap;
 /**
  * @author YarinQuapi
  */
-public class ActionBarTracker {
+public class ActionBarTracker implements Tracker {
 
     // System variables
-    private static final int interval = 20;
+    private static final int interval = Waypoints.getInstance().getConfig().getInt("trackers.actionbar.interval");
     private final ConcurrentHashMap<Player, Location> players = new ConcurrentHashMap<>();
     private final ConcurrentHashMap<Player, String> bars = new ConcurrentHashMap<>();
 
     // Display settings
     private static final int range = 70;
-    private static final String leftArrow = "<-";
-    private static final String rightArrow = "->";
-    private static final String section = "⬛";
-    private static final int sectionCount = 35;
+    private static final String leftArrow = Waypoints.getInstance().getConfig().getString("trackers.actionbar.leftarrow");
+    private static final String rightArrow = Waypoints.getInstance().getConfig().getString("trackers.actionbar.rightarrow");
+    private static final String block = "⬛";
+    private static final int blockCount = 35;
+    private static final String indicatorColor = Waypoints.getInstance().getConfig().getString("trackers.actionbar.indicatorcolor");
 
     public ActionBarTracker() {
         Bukkit.getScheduler().runTaskTimerAsynchronously(Waypoints.getInstance(), () -> {
@@ -37,7 +37,9 @@ public class ActionBarTracker {
                 if (!players.containsKey(player))
                     notFound.add(player);
             });
+
             notFound.forEach(bars::remove);
+
             players.forEach((player, location) -> {
                 if (player.getWorld().equals(location.getWorld())) {
                     bars.put(player, generateDirectionIndicator(deltaAngleToTarget(player.getLocation(), location)));
@@ -48,6 +50,7 @@ public class ActionBarTracker {
         }, interval, interval);
     }
 
+    @Override
     public void update() {
         bars.forEach((x, y) -> {
             if (x.getLocation().distance(players.get(x)) <= 10) {
@@ -59,49 +62,26 @@ public class ActionBarTracker {
         });
     }
 
-    public boolean track(Player player, Waypoint waypoint) {
-        if (players.containsKey(player)) {
-            return false;
-        } else {
-            players.put(player, waypoint.getLocation());
-            return true;
-        }
-    }
-
-    public boolean unTrack(Player player) {
-        if (players.containsKey(player)) {
-            players.remove(player);
-            return true;
-        } else return false;
-    }
-
     private String generateDirectionIndicator(double angle) {
         if (angle > range) {
-            return "§b" + leftArrow + "§7" + Utils
-                    .repeat(section, sectionCount)
-                    + rightArrow;
+            return indicatorColor + leftArrow + indicatorColor + Utils.repeat(block, blockCount) + rightArrow;
         }
+
         if (-angle > range) {
-            return "§7" + leftArrow + Utils
-                    .repeat(section,
-                            sectionCount) + "§b"
-                    + rightArrow;
+            return indicatorColor + leftArrow + Utils.repeat(block, blockCount) + indicatorColor + rightArrow;
         }
+
         double percent = -(angle / range);
-        int nthSection = (int) Math.round(((double) (sectionCount - 1) / 2) * percent);
-        nthSection += Math.round((double) sectionCount / 2);
-        return "§7" + leftArrow + Utils.repeat(section, nthSection - 1)
-                + "§b" + section
-                + "§7" + Utils.repeat(section,
-                sectionCount - nthSection) + rightArrow;
+        int nthSection = (int) Math.round(((double) (blockCount - 1) / 2) * percent);
+        nthSection += Math.round((double) blockCount / 2);
+
+        return indicatorColor + leftArrow +
+                Utils.repeat(block, nthSection - 1)
+                + indicatorColor + block + indicatorColor
+                + Utils.repeat(block, blockCount - nthSection) + rightArrow;
     }
 
-
-    /**
-     * @param location The location to calculate the angle from
-     * @param target   The target when looked at the angle is 0
-     * @return The delta angle
-     */
+    
     private double deltaAngleToTarget(Location location, Location target) {
         double playerAngle = location.getYaw() + 90;
         while (playerAngle < 0)

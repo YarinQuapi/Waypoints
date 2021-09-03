@@ -89,6 +89,7 @@ public class WaypointHandler {
                 throw new WaypointAlreadyExistsException(Utils.newMessage(String.format("&7Waypoint with name &b%s &7already exists.", waypoint.getName())));
             } else {
                 waypointData.getWaypointList().add(waypoint);
+                Waypoints.getInstance().getPlayerListener().savePlayer(player);
                 return true;
             }
         } else {

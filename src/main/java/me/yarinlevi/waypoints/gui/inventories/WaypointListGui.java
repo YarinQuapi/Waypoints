@@ -99,32 +99,36 @@ public class WaypointListGui extends AbstractGui implements Listener {
             ItemStack item = e.getInventory().getItem(e.getRawSlot());
 
             assert item != null;
-            assert item.getItemMeta() != null;
-            String name = ChatColor.stripColor(item.getItemMeta().getDisplayName());
 
-            Player player = (Player) e.getWhoClicked();
+            if (!item.getType().equals(Material.AIR)) {
 
-            Waypoint wp;
-            wp = Waypoints.getInstance().getWaypointHandler().getWaypoint(player, name);
+                assert item.getItemMeta() != null;
+                String name = ChatColor.stripColor(item.getItemMeta().getDisplayName());
 
-            if (wp != null) {
-                switch (e.getClick()) {
-                    case RIGHT -> EditWaypointItemGui.open(player, wp);
-                    case LEFT -> RenameWaypointGUI.open(player, wp);
-                    case SHIFT_LEFT -> {
-                        LocationData locationData = wp.getLocationwaypointData();
+                Player player = (Player) e.getWhoClicked();
 
-                        String msg = Utils.newMessage(String.format("&7Waypoint &b%s &7is located at &bX &a%s &bY &a%s &bZ &a%s &7in world &b%s &7You are &b%s &7blocks away.",
-                                name, locationData.x(), locationData.y(), locationData.z(), WaypointWorld.valueOf(locationData.world()).getName(), Utils.calculateDistance(player.getLocation().toVector(), wp.getVector())));
-                        player.sendMessage(msg);
+                Waypoint wp;
+                wp = Waypoints.getInstance().getWaypointHandler().getWaypoint(player, name);
 
-                        player.closeInventory();
+                if (wp != null) {
+                    switch (e.getClick()) {
+                        case RIGHT -> EditWaypointItemGui.open(player, wp);
+                        case LEFT -> RenameWaypointGUI.open(player, wp);
+                        case SHIFT_LEFT -> {
+                            LocationData locationData = wp.getLocationData();
+
+                            String msg = Utils.newMessage(String.format("&7Waypoint &b%s &7is located at &bX &a%s &bY &a%s &bZ &a%s &7in world &b%s &7You are &b%s &7blocks away.",
+                                    name, locationData.x(), locationData.y(), locationData.z(), WaypointWorld.valueOf(locationData.world()).getName(), Utils.calculateDistance(player.getLocation().toVector(), wp.getVector())));
+                            player.sendMessage(msg);
+
+                            player.closeInventory();
+                        }
                     }
                 }
-            }
 
-            if (e.getRawSlot() == 22) {
-                GuiUtils.openInventory("gui.personal.profile", (Player) e.getWhoClicked());
+                if (e.getRawSlot() == 22) {
+                    GuiUtils.openInventory("gui.personal.profile", (Player) e.getWhoClicked());
+                }
             }
         }
     }
