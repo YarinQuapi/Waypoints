@@ -57,7 +57,7 @@ public abstract class AbstractGui implements Listener, IGui {
     }
 
     @EventHandler
-    public void onInventoryClick(final InventoryDragEvent e) {
+    public void onInventoryDrag(final InventoryDragEvent e) {
         if (e.getInventory() == inventory) {
             e.setCancelled(true);
         }

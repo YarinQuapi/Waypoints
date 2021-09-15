@@ -26,29 +26,37 @@ public class Utils {
     /**
      * 1.16.2 ABOVE ONLY!
      * @param message message
+     * @param rgbController An RGB Controller object
+     * @return colored string
+     */
+    public static String newRGBMessage(String message, RGBController rgbController) {
+        return (rgbController.toColor() + message);
+    }
+
+    /**
      * @param red volume
      * @param green volume
      * @param blue volume
-     * @return colored string
      */
-    public static String newRGBMessage(String message, int red, int green, int blue) {
-        return (ChatColor.of(getHexFromRGB(red,green,blue)) + message);
+    public record RGBController(int red, int green, int blue) {
+        public ChatColor toColor() {
+            return ChatColor.of(toHex());
+        }
+
+        public String toHex() {
+            Color color = Color.fromRGB(red, green, blue);
+            String hex = Integer.toHexString(color.asRGB() & 0xffffff);
+            if (hex.length() < 6) {
+                hex = "0" + hex;
+            }
+            hex = "#" + hex;
+            return hex;
+        }
     }
 
-    public static String getHexFromRGB(int r, int g, int b) {
-        Color color = Color.fromRGB(r,g,b);
-        String hex = Integer.toHexString(color.asRGB() & 0xffffff);
-        if (hex.length() < 6) {
-            hex = "0" + hex;
-        }
-        hex = "#" + hex;
-        return hex;
-    }
 
     public static String repeat(String string, int n) {
-        StringBuilder sb = new StringBuilder();
-        sb.append(String.valueOf(string).repeat(Math.max(0, n)));
-        return sb.toString();
+        return String.valueOf(string).repeat(Math.max(0, n));
     }
 
 

@@ -71,10 +71,10 @@ public class ProfileGui extends AbstractGui implements Listener {
                 ItemMeta meta = createWaypointButton.getItemMeta();
 
                 assert meta != null;
-                meta.setDisplayName(Utils.newRGBMessage("Create a new waypoint", 35, 245, 24));
+                meta.setDisplayName(Utils.newRGBMessage("Create a new waypoint", new Utils.RGBController(35, 245, 24)));
 
                 ArrayList<String> lore = new ArrayList<>();
-                lore.add(Utils.newRGBMessage("Click here to create a new waypoint!", 30, 219, 20));
+                lore.add(Utils.newRGBMessage("Click here to create a new waypoint!", new Utils.RGBController(30, 219, 20)));
 
                 meta.setLore(lore);
 
@@ -89,10 +89,10 @@ public class ProfileGui extends AbstractGui implements Listener {
                 ItemMeta meta = waypointListButton.getItemMeta();
 
                 assert meta != null;
-                meta.setDisplayName(Utils.newRGBMessage("List all waypoints", 255, 205, 28));
+                meta.setDisplayName(Utils.newRGBMessage("List all waypoints", new Utils.RGBController(255, 205, 28)));
 
                 ArrayList<String> lore = new ArrayList<>();
-                lore.add(Utils.newRGBMessage("Click here to list all waypoints!", 255, 251, 0));
+                lore.add(Utils.newRGBMessage("Click here to list all waypoints!", new Utils.RGBController(255, 251, 0)));
 
                 meta.setLore(lore);
 
