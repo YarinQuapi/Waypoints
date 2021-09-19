@@ -54,7 +54,7 @@ public class WaypointHandler {
 
     public Set<String> getWaypointList(OfflinePlayer player) {
         Set<String> waypoints = new HashSet<>();
-        Waypoints.getInstance().getPlayerDataManager().getPlayerDataMap().get(player.getUniqueId()).getWaypointList().stream().filter(x -> !x.isSystemInduced()).forEach(x -> waypoints.add(x.getName()));
+        Waypoints.getInstance().getPlayerDataManager().getPlayerDataMap().get(player.getUniqueId()).getWaypointList().forEach(x -> waypoints.add(x.getName()));
 
         return waypoints;
     }
@@ -62,7 +62,7 @@ public class WaypointHandler {
     public Set<String> getWaypointList(OfflinePlayer player, WaypointWorld world) {
         Set<String> list = new HashSet<>();
 
-        Waypoints.getInstance().getPlayerDataManager().getPlayerDataMap().get(player.getUniqueId()).getWaypointList().stream().filter(x -> x.getWorld().equals(world)).filter(x -> !x.isSystemInduced()).forEach(x -> list.add(x.getName()));
+        Waypoints.getInstance().getPlayerDataManager().getPlayerDataMap().get(player.getUniqueId()).getWaypointList().stream().filter(x -> x.getWorld().equals(world)).forEach(x -> list.add(x.getName()));
 
         return list;
     }

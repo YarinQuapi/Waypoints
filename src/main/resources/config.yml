@@ -23,4 +23,4 @@ trackers:
     distance: 5
 
 
-#     Config Version: 4.0-A4    #
+#     Config Version: ${project.version}    #

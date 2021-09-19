@@ -18,7 +18,10 @@ import org.bukkit.entity.Player;
 public class Administration implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String s, String[] args) {
-        final Player p = (Player) sender;
+        if (!(sender instanceof final Player p)) {
+            sender.sendMessage(Utils.newMessage("&cYou are required to be a Player to use this command."));
+            return false;
+        }
 
         if (args.length == 0) {
             p.sendMessage(Utils.newMessage("&cMissing arguments."));

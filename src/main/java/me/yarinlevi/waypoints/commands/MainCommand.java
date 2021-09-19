@@ -99,6 +99,7 @@ public class MainCommand implements CommandExecutor {
                             "&a  • &b/wp distance <&awaypointA&b> <&awaypointB&b> &f- &7Calculates the distance between two waypoints\n" +
                             "&a  • &b/wp set <&awaypoint&b> <&astate&b> &f- &7Changes the state of the waypoint\n" +
                             "&a  • &b/wp track <&awaypoint&b> &f- &7Tracks a waypoints" +
+                            "&a  • &b/wp toggle <setting>" +
                             "\n &b&lQWaypoints Version&7&l: &a&l" + Waypoints.getInstance().getDescription().getVersion());
                     p.sendMessage(str);
                 }
@@ -170,13 +171,20 @@ public class MainCommand implements CommandExecutor {
 
                         Waypoint wp = Waypoints.getInstance().getWaypointHandler().getWaypoint(p, name);
 
-                        LocationData locationData = wp.getLocationData();
+                        if (wp != null) {
+                            LocationData locationData = wp.getLocationData();
 
-                        String msg = Utils.newMessage(String.format("&7Waypoint &b%s &7is located at &bX &a%s &bY &a%s &bZ &a%s &7in world &b%s &7You are &b%s &7blocks away.",
-                                name, locationData.x(), locationData.y(), locationData.z(), WaypointWorld.valueOf(locationData.world()).getName(), Utils.calculateDistance(p.getLocation().toVector(), wp.getVector())));
-                        p.sendMessage(msg);
+                            String msg = Utils.newMessage(String.format("&7Waypoint &b%s &7is located at &bX &a%s &bY &a%s &bZ &a%s &7in world &b%s &7You are &b%s &7blocks away.",
+                                    name, locationData.x(), locationData.y(), locationData.z(), WaypointWorld.valueOf(locationData.world()).getName(), Utils.calculateDistance(p.getLocation().toVector(), wp.getVector())));
+                            p.sendMessage(msg);
+                            return true;
+                        } else {
+                            p.sendMessage(Utils.newMessage("&cSorry, couldn't find a waypoint with that name."));
+                            return false;
+                        }
                     } else {
                         p.sendMessage(Utils.newMessage("&cCheck failed! &7Not enough arguments!"));
+                        return false;
                     }
                 }
 
