@@ -11,6 +11,7 @@ import me.yarinlevi.waypoints.utils.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
 
@@ -84,6 +85,10 @@ public class Waypoint {
      */
     public int getDistance() {
         return Utils.calculateDistance(getVector(), Bukkit.getPlayer(owner).getLocation().toVector());
+    }
+
+    public int getDistance(Player player) {
+        return Utils.calculateDistance(getVector(), player.getLocation().toVector());
     }
 
     /**

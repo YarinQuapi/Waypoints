@@ -20,6 +20,9 @@ public class TrackerManager {
             if (Waypoints.getInstance().getConfig().getBoolean("trackers.particle.enabled")) {
                 trackers.put(ETracker.Particle, new ParticleTracker());
             }
+            if (Waypoints.getInstance().getConfig().getBoolean("trackers.bossbar.enabled")) {
+                trackers.put(ETracker.BossBar, new BossBarTracker());
+            }
         }
 
         Bukkit.getScheduler().runTaskTimer(Waypoints.getInstance(), () -> trackers.values().forEach(Tracker::update), 10L, 10L);

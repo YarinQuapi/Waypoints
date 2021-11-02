@@ -8,8 +8,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public interface Tracker {
-    Map<Player, Location> trackedPlayers = new HashMap<>();
-
+    Map<Player, Waypoint> trackedPlayers = new HashMap<>();
 
     void update();
 
@@ -23,7 +22,7 @@ public interface Tracker {
         if (trackedPlayers.containsKey(player)) {
             return false;
         } else {
-            trackedPlayers.put(player, waypoint.getLocation());
+            trackedPlayers.put(player, waypoint);
             return true;
         }
     }

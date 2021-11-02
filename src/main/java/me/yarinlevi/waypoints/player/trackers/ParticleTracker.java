@@ -19,10 +19,10 @@ public class ParticleTracker implements Tracker {
 
     @Override
     public void update() {
-        trackedPlayers.forEach((player, location) -> {
-            if (player.getWorld() == location.getWorld()) {
+        trackedPlayers.forEach((player, waypoint) -> {
+            if (player.getWorld() == waypoint.getLocation().getWorld()) {
                 Location playerLocation = player.getLocation();
-                Vector dir = location.toVector().subtract(playerLocation.toVector()).normalize().multiply(length);
+                Vector dir = waypoint.getLocation().toVector().subtract(playerLocation.toVector()).normalize().multiply(length);
 
                 dir.divide(new Vector(amount, 1, amount));
 

@@ -26,5 +26,9 @@ trackers:
     amount: 15
     verticalDirection: false
 
+  bossbar:
+    enabled: true
+    barcolor: BLUE
+
 
 #     Config Version: ${project.version}    #
