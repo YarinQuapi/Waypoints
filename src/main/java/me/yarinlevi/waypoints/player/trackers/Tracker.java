@@ -1,7 +1,6 @@
 package me.yarinlevi.waypoints.player.trackers;
 
 import me.yarinlevi.waypoints.waypoint.Waypoint;
-import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
 import java.util.HashMap;

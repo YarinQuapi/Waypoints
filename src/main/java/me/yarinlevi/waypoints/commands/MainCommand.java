@@ -1,6 +1,5 @@
 package me.yarinlevi.waypoints.commands;
 
-import jdk.jshell.execution.Util;
 import me.yarinlevi.waypoints.Waypoints;
 import me.yarinlevi.waypoints.exceptions.PlayerDoesNotExistException;
 import me.yarinlevi.waypoints.exceptions.PlayerNotLoadedException;
@@ -8,7 +7,6 @@ import me.yarinlevi.waypoints.exceptions.WaypointAlreadyExistsException;
 import me.yarinlevi.waypoints.exceptions.WaypointDoesNotExistException;
 import me.yarinlevi.waypoints.gui.GuiUtils;
 import me.yarinlevi.waypoints.player.trackers.ETracker;
-import me.yarinlevi.waypoints.player.trackers.Tracker;
 import me.yarinlevi.waypoints.utils.LocationData;
 import me.yarinlevi.waypoints.utils.LocationUtils;
 import me.yarinlevi.waypoints.utils.Utils;

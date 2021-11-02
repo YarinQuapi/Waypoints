@@ -3,7 +3,6 @@ package me.yarinlevi.waypoints.waypoint;
 import lombok.Getter;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Arrays;
 import java.util.List;
 
 /**
