@@ -20,7 +20,11 @@ trackers:
 
   particle:
     enabled: true
-    distance: 5
+    length: 5
+    heightOffset: 0
+    particle: villager_rebreed
+    amount: 15
+    verticalDirection: false
 
 
 #     Config Version: ${project.version}    #
