@@ -1,7 +1,7 @@
 name: QWaypoints
 version: ${project.version}
 main: me.yarinlevi.waypoints.Waypoints
-api-version: 1.13
+api-version: 1.17
 author: Quapi
 
 commands:
