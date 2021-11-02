@@ -62,6 +62,11 @@ public class ActionBarTracker implements Tracker {
         });
     }
 
+    @Override
+    public ETracker getETracker() {
+        return ETracker.ActionBar;
+    }
+
     private String generateDirectionIndicator(double angle) {
         if (angle > range) {
             return indicatorColor + leftArrow + indicatorColor + Utils.repeat(block, blockCount) + rightArrow;

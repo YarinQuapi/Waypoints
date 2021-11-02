@@ -23,7 +23,7 @@ public class TrackerManager {
     }
 
     public Tracker getTracker(String key) {
-        return trackers.get(Arrays.stream(ETracker.values()).filter(x-> x.getKey().equals(key)).findAny().orElse(ETracker.ActionBar));
+        return trackers.get(Arrays.stream(ETracker.values()).filter(x-> x.getKey().equalsIgnoreCase(key)).findAny().orElse(ETracker.ActionBar));
     }
 
     public boolean track(Player player, Waypoint waypoint, String tracker) {

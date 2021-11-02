@@ -10,7 +10,10 @@ import java.util.Map;
 public interface Tracker {
     Map<Player, Location> trackedPlayers = new HashMap<>();
 
+
     void update();
+
+    ETracker getETracker();
 
     default boolean isTracked(Player player) {
         return trackedPlayers.containsKey(player);

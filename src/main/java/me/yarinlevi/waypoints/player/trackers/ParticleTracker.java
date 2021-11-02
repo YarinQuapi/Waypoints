@@ -8,4 +8,9 @@ public class ParticleTracker implements Tracker {
     public void update() {
 
     }
+
+    @Override
+    public ETracker getETracker() {
+        return ETracker.Particle;
+    }
 }
