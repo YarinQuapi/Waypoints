@@ -26,9 +26,6 @@ public class PlayerDeathListener implements Listener {
     public void onPlayerDeath(PlayerDeathEvent e) {
         Player p = e.getEntity();
 
-        List<Player> affectedPlayers = new ArrayList<>();
-        p.getNearbyEntities(2, 2, 2).stream().filter(entity -> entity instanceof Player).forEach(x -> affectedPlayers.add((Player) x));
-
         if (Waypoints.getInstance().getPlayerDataManager().getPlayerDataMap().get(p.getUniqueId()).isPlayerDeathPoints()) {
             TextComponent msg = new TextComponent(Utils.newMessage("&7You died. Created waypoint "));
             TextComponent delete = new TextComponent(Utils.newMessageNoPrefix("&cDELETE"));
