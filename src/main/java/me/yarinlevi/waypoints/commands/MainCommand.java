@@ -1,11 +1,14 @@
 package me.yarinlevi.waypoints.commands;
 
+import jdk.jshell.execution.Util;
 import me.yarinlevi.waypoints.Waypoints;
 import me.yarinlevi.waypoints.exceptions.PlayerDoesNotExistException;
 import me.yarinlevi.waypoints.exceptions.PlayerNotLoadedException;
 import me.yarinlevi.waypoints.exceptions.WaypointAlreadyExistsException;
 import me.yarinlevi.waypoints.exceptions.WaypointDoesNotExistException;
 import me.yarinlevi.waypoints.gui.GuiUtils;
+import me.yarinlevi.waypoints.player.trackers.ETracker;
+import me.yarinlevi.waypoints.player.trackers.Tracker;
 import me.yarinlevi.waypoints.utils.LocationData;
 import me.yarinlevi.waypoints.utils.LocationUtils;
 import me.yarinlevi.waypoints.utils.Utils;
@@ -99,7 +102,7 @@ public class MainCommand implements CommandExecutor {
                             "&a  • &b/wp distance <&awaypointA&b> <&awaypointB&b> &f- &7Calculates the distance between two waypoints\n" +
                             "&a  • &b/wp set <&awaypoint&b> <&astate&b> &f- &7Changes the state of the waypoint\n" +
                             "&a  • &b/wp track <&awaypoint&b> &f- &7Tracks a waypoints" +
-                            "&a  • &b/wp toggle <setting>" +
+                            "&a  • &b/wp setting <setting> [value]" +
                             "\n &b&lQWaypoints Version&7&l: &a&l" + Waypoints.getInstance().getDescription().getVersion());
                     p.sendMessage(str);
                 }
@@ -116,26 +119,41 @@ public class MainCommand implements CommandExecutor {
                     }
                 }
 
-                case "toggle" -> {
+                case "setting" -> {
                     if (args.length >= 2) {
                         String foundArgument = args[1];
 
                         switch (foundArgument) {
-                            case "deathpoints":
-                                Waypoints.getInstance().getPlayerDataManager().getPlayerDataMap().get(p.getUniqueId())
-                                        .setPlayerDeathPoints(!Waypoints.getInstance()
-                                                .getPlayerDataManager()
-                                                .getPlayerDataMap().get(p.getUniqueId())
-                                                .isPlayerDeathPoints());
+                            case "deathpoints" -> {
+                                boolean deathpoints = !Waypoints.getInstance().getPlayerDataManager().getPlayerDataMap().get(p.getUniqueId()).isPlayerDeathPoints();
 
-                                boolean deathpoints = Waypoints.getInstance().getPlayerDataManager().getPlayerDataMap().get(p.getUniqueId()).isPlayerDeathPoints();
+                                Waypoints.getInstance().getPlayerDataManager().getPlayerDataMap().get(p.getUniqueId())
+                                        .setPlayerDeathPoints(deathpoints);
+
                                 String toggled = deathpoints ? "&aenabled" : "&cdisabled";
 
                                 p.sendMessage(Utils.newMessage("&7Setting '&eDeathPoints&7' was toggled " + toggled + "&7!"));
                                 return true;
-                            default:
+                            }
+
+                            case "tracker" -> {
+                                if (args.length >= 3) {
+                                    ETracker tracker = Waypoints.getInstance().getTrackerManager().getTracker(args[2]).getETracker();
+
+                                    Waypoints.getInstance().getPlayerDataManager().getPlayerDataMap().get(p.getUniqueId()).setETracker(tracker);
+
+                                    p.sendMessage(Utils.newMessage("&7Tracker updated! now using &b" + tracker.getKey() + "&7!"));
+                                    return true;
+                                } else {
+                                    p.sendMessage(Utils.newMessage("&cSetting change failed! &7Not enough arguments!"));
+                                    return false;
+                                }
+                            }
+
+                            default -> {
                                 p.sendMessage(Utils.newMessage("&cToggle failed! &7No setting '&c" + foundArgument + "&7'."));
                                 return false;
+                            }
                         }
                     } else {
                         p.sendMessage(Utils.newMessage("&cSetting change failed! &7Not enough arguments!"));
