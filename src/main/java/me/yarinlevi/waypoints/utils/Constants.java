@@ -7,9 +7,9 @@ import me.yarinlevi.waypoints.Waypoints;
  * @author YarinQuapi
  */
 public class Constants {
-    @Getter static boolean DEATH_POINTS;
+    @Getter static final boolean DEATH_POINTS;
 
-    public Constants() {
+    static {
         DEATH_POINTS = Waypoints.getInstance().getConfig().getBoolean("DeathPoints");
     }
 }
