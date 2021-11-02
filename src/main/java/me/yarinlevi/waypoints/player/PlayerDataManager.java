@@ -36,6 +36,7 @@ public class PlayerDataManager {
 
         if (settingsData.contains(uuid.toString())) {
             playerData.setPlayerDeathPoints(settingsData.getBoolean(uuid + ".deathpoints"));
+            playerData.setETracker(Waypoints.getInstance().getTrackerManager().getTracker(settingsData.getString(uuid + ".etracker")).getETracker());
         }
     }
 
@@ -43,10 +44,11 @@ public class PlayerDataManager {
         PlayerData playerData = playerDataMap.get(uuid);
 
         settingsData.set(uuid + ".deathpoints", playerData.isPlayerDeathPoints());
+        settingsData.set(uuid + ".etracker", playerData.getETracker().getKey());
 
         FileManager.save(settingsFile, settingsData);
 
-        removePlayer(uuid);
+        this.removePlayer(uuid);
     }
 
     public void insertPlayer(UUID uuid, List<Waypoint> waypoints) {
