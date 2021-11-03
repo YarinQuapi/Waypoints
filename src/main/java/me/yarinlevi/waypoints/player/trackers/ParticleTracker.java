@@ -10,7 +10,7 @@ import java.util.Arrays;
 /**
  * @author YarinQuapi
  */
-public class ParticleTracker implements Tracker {
+public class ParticleTracker extends Tracker {
     private final int length = Waypoints.getInstance().getConfig().getInt("trackers.particle.length");
     private final int amount = Waypoints.getInstance().getConfig().getInt("trackers.particle.amount");
     private final int heightOffset = Waypoints.getInstance().getConfig().getInt("trackers.particle.heightOffset");
@@ -39,6 +39,10 @@ public class ParticleTracker implements Tracker {
                             playerLocation.getY() + y,
                             playerLocation.getZ() + (dir.getZ() * i),
                             1, 0.0, 0.0, 0.0, 0.0);
+                }
+
+                if (waypoint.getDistance(player) <= 10) {
+                    this.unTrack(player);
                 }
             }
         });

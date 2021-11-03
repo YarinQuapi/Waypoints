@@ -11,16 +11,17 @@ import org.bukkit.entity.Player;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 
 /**
  * @author YarinQuapi
  */
-public class ActionBarTracker implements Tracker {
+public class ActionBarTracker extends Tracker {
 
-    // System variables
+    // System settings
     private static final int interval = Waypoints.getInstance().getConfig().getInt("trackers.actionbar.interval");
-    private final ConcurrentHashMap<Player, Location> players = new ConcurrentHashMap<>();
-    private final ConcurrentHashMap<Player, String> bars = new ConcurrentHashMap<>();
+    private final ConcurrentMap<Player, Location> players = new ConcurrentHashMap<>();
+    private final ConcurrentMap<Player, String> bars = new ConcurrentHashMap<>();
 
     // Display settings
     private static final int range = 70;

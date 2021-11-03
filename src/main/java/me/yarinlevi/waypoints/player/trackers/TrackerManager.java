@@ -29,11 +29,11 @@ public class TrackerManager {
     }
 
     public Tracker getTracker(String key) {
-        return trackers.get(Arrays.stream(ETracker.values()).filter(x-> x.getKey().equalsIgnoreCase(key)).findAny().orElse(ETracker.ActionBar));
+        return trackers.get(ETracker.getTracker(key));
     }
 
-    public boolean track(Player player, Waypoint waypoint, String tracker) {
-        return getTracker(tracker).track(player, waypoint);
+    public boolean track(Player player, Waypoint waypoint, ETracker tracker) {
+        return trackers.get(tracker).track(player, waypoint);
     }
 
     public boolean unTrack(Player player) {

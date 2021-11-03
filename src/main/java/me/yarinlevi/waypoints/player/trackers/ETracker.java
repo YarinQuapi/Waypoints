@@ -12,4 +12,13 @@ public enum ETracker {
     ETracker(String key) {
         this.key = key;
     }
+
+    public static ETracker getTracker(String key) {
+        for (ETracker value : ETracker.values()) {
+            if (value.key.equalsIgnoreCase(key)) {
+                return value;
+            }
+        }
+        return ActionBar;
+    }
 }

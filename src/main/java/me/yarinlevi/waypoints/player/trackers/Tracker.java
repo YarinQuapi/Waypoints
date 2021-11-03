@@ -6,18 +6,18 @@ import org.bukkit.entity.Player;
 import java.util.HashMap;
 import java.util.Map;
 
-public interface Tracker {
+public abstract class Tracker {
     Map<Player, Waypoint> trackedPlayers = new HashMap<>();
 
-    void update();
+    protected abstract void update();
 
-    ETracker getETracker();
+    public abstract ETracker getETracker();
 
-    default boolean isTracked(Player player) {
+    boolean isTracked(Player player) {
         return trackedPlayers.containsKey(player);
     }
 
-    default boolean track(Player player, Waypoint waypoint) {
+    boolean track(Player player, Waypoint waypoint) {
         if (trackedPlayers.containsKey(player)) {
             return false;
         } else {
@@ -26,7 +26,7 @@ public interface Tracker {
         }
     }
 
-    default boolean unTrack(Player player) {
+    boolean unTrack(Player player) {
         if (trackedPlayers.containsKey(player)) {
             trackedPlayers.remove(player);
             return true;
