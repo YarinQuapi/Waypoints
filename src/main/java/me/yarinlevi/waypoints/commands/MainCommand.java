@@ -268,7 +268,7 @@ public class MainCommand implements CommandExecutor {
                             Waypoint wp = Waypoints.getInstance().getWaypointHandler().getWaypoint(p, args[1]);
 
                             if (wp != null) {
-                                if (Waypoints.getInstance().getTrackerManager().track(p, wp, "actionbar")) {
+                                if (Waypoints.getInstance().getTrackerManager().track(p, wp, Waypoints.getInstance().getPlayerDataManager().getPlayerDataMap().get(p.getUniqueId()).getETracker())) {
 
                                     p.sendMessage(Utils.newMessage("&7Tracking - " + wp.getName()));
                                     p.setCompassTarget(wp.getLocation());

@@ -123,7 +123,7 @@ public class WaypointBrowser extends AbstractGui implements Listener {
                         }
 
                         case RIGHT -> {
-                            Waypoints.getInstance().getTrackerManager().track(player, wp, "actionbar");
+                            Waypoints.getInstance().getTrackerManager().track(player, wp, Waypoints.getInstance().getPlayerDataManager().getPlayerDataMap().get(player.getUniqueId()).getETracker());
                         }
                     }
                 }
