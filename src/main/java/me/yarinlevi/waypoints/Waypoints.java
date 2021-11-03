@@ -8,11 +8,15 @@ import me.yarinlevi.waypoints.listeners.PlayerDeathListener;
 import me.yarinlevi.waypoints.listeners.PlayerListener;
 import me.yarinlevi.waypoints.player.PlayerDataManager;
 import me.yarinlevi.waypoints.player.trackers.TrackerManager;
+import me.yarinlevi.waypoints.utils.MessagesUtils;
 import me.yarinlevi.waypoints.utils.Utils;
 import me.yarinlevi.waypoints.waypoint.WaypointHandler;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
+
+import java.io.File;
 
 /**
  * @author YarinQuapi
@@ -34,6 +38,9 @@ public class Waypoints extends JavaPlugin {
         registerConfigData();
 
         Metrics metrics = new Metrics(this, 12124);
+
+        this.saveResource("messages.yml", false);
+        new MessagesUtils();
 
         playerListener = new PlayerListener();
         Bukkit.getPluginManager().registerEvents(playerListener, this);

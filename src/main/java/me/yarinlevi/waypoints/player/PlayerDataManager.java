@@ -3,7 +3,7 @@ package me.yarinlevi.waypoints.player;
 import lombok.Getter;
 import lombok.Setter;
 import me.yarinlevi.waypoints.Waypoints;
-import me.yarinlevi.waypoints.data.FileManager;
+import me.yarinlevi.waypoints.data.FileUtils;
 import me.yarinlevi.waypoints.waypoint.Waypoint;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -27,8 +27,8 @@ public class PlayerDataManager {
         settingsFile = new File(Waypoints.getInstance().getDataFolder(), "playerSettings.yml");
         settingsData = YamlConfiguration.loadConfiguration(settingsFile);
 
-        FileManager.registerData(settingsFile, settingsData);
-        FileManager.save(settingsFile, settingsData);
+        FileUtils.registerData(settingsFile, settingsData);
+        FileUtils.save(settingsFile, settingsData);
     }
 
     public void loadPlayerSettings(UUID uuid) {
@@ -46,7 +46,7 @@ public class PlayerDataManager {
         settingsData.set(uuid + ".deathpoints", playerData.isPlayerDeathPoints());
         settingsData.set(uuid + ".etracker", playerData.getETracker().getKey());
 
-        FileManager.save(settingsFile, settingsData);
+        FileUtils.save(settingsFile, settingsData);
 
         this.removePlayer(uuid);
     }

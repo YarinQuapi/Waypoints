@@ -2,7 +2,7 @@ package me.yarinlevi.waypoints.listeners;
 
 import lombok.Getter;
 import me.yarinlevi.waypoints.Waypoints;
-import me.yarinlevi.waypoints.data.FileManager;
+import me.yarinlevi.waypoints.data.FileUtils;
 import me.yarinlevi.waypoints.exceptions.PlayerDoesNotExistException;
 import me.yarinlevi.waypoints.exceptions.WaypointDoesNotExistException;
 import me.yarinlevi.waypoints.player.PlayerData;
@@ -37,9 +37,9 @@ public class PlayerListener implements Listener {
     public PlayerListener() {
         waypointDataFile = new File(Waypoints.getInstance().getDataFolder(), "waypointsData.yml");
         waypointData = YamlConfiguration.loadConfiguration(waypointDataFile);
-        FileManager.registerData(waypointDataFile, waypointData);
+        FileUtils.registerData(waypointDataFile, waypointData);
 
-        Bukkit.getScheduler().runTaskTimerAsynchronously(Waypoints.getInstance(), () -> FileManager.save(waypointDataFile, waypointData), 0L, (300 * 20));
+        Bukkit.getScheduler().runTaskTimerAsynchronously(Waypoints.getInstance(), () -> FileUtils.save(waypointDataFile, waypointData), 0L, (300 * 20));
     }
 
     @EventHandler
@@ -162,13 +162,13 @@ public class PlayerListener implements Listener {
                 waypointSection.set(waypoint.getName() + ".state", waypoint.getState().toString().toUpperCase());
             }
 
-            FileManager.save(waypointDataFile, waypointData);
+            FileUtils.save(waypointDataFile, waypointData);
             Waypoints.getInstance().getLogger().info("Saved waypoints waypointData for uuid: " + uuid);
         } else {
             if (playerSection.contains("waypoints")) {
                 waypointData.set(uuid.toString(), null);
             }
-            FileManager.save(waypointDataFile, waypointData);
+            FileUtils.save(waypointDataFile, waypointData);
         }
     }
 }
