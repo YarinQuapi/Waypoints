@@ -42,4 +42,11 @@ public class BossBarTracker implements Tracker {
     public ETracker getETracker() {
         return ETracker.BossBar;
     }
+
+    @Override
+    public boolean unTrack(Player player) {
+        bossBarConcurrentHashMap.get(player).removeAll();
+        bossBarConcurrentHashMap.remove(player);
+        return Tracker.super.unTrack(player);
+    }
 }

@@ -22,13 +22,12 @@ trackers:
     enabled: true
     length: 5
     heightOffset: 0
-    particle: villager_rebreed
+    particle: villager_happy
     amount: 15
     verticalDirection: false
 
   bossbar:
     enabled: true
     barcolor: BLUE
-
 
 #     Config Version: ${project.version}    #

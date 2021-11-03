@@ -94,12 +94,12 @@ public class MainCommand implements CommandExecutor {
                             "&a  • &b/wp check <&awaypoint&b> &f- &7Check a certain waypoint.\n" +
                             "&a  • &b/wp create <&aname&b> &f- &7Create a new waypoint\n" +
                             "&a  • &b/wp list [&aworld&b] &f- &7List all (or some) your waypoints\n" +
-                            "&a  • &b/wp delete <&awaypoint&b | &adeathpoints&b> &f- &7Delete a waypoint\n" +
+                            "&a  • &b/wp delete <&awaypoint&b> &f- &7Delete a waypoint\n" +
                             "&a  • &b/wp spawn &f- &7Locates the spawn of the world\n" +
                             "&a  • &b/wp nearest &f- &7Locates the nearest waypoint\n" +
                             "&a  • &b/wp distance <&awaypointA&b> <&awaypointB&b> &f- &7Calculates the distance between two waypoints\n" +
                             "&a  • &b/wp set <&awaypoint&b> <&astate&b> &f- &7Changes the state of the waypoint\n" +
-                            "&a  • &b/wp track <&awaypoint&b> &f- &7Tracks a waypoints" +
+                            "&a  • &b/wp track <&awaypoint&b> &f- &7Tracks a waypoints\n" +
                             "&a  • &b/wp setting <setting> [value]" +
                             "\n &b&lQWaypoints Version&7&l: &a&l" + Waypoints.getInstance().getDescription().getVersion());
                     p.sendMessage(str);
