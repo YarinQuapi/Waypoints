@@ -17,7 +17,7 @@ public class BossBarTracker extends Tracker {
     private final BarColor barColor = Arrays.stream(BarColor.values()).filter(x -> x.name().equalsIgnoreCase(Waypoints.getInstance().getConfig().getString("trackers.bossbar.barcolor"))).findFirst().get();
 
     @Override
-    public void update() {
+    protected void update() {
         trackedPlayers.forEach((player, waypoint) -> {
             if (player.getWorld() == waypoint.getLocation().getWorld()) {
                 if (!player.isOnline()) {

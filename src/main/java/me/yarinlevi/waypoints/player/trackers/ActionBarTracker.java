@@ -52,7 +52,7 @@ public class ActionBarTracker extends Tracker {
     }
 
     @Override
-    public void update() {
+    protected void update() {
         bars.forEach((x, y) -> {
             if (x.getLocation().distance(players.get(x)) <= 10) {
                 players.remove(x);
