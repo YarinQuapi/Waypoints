@@ -1,3 +1,5 @@
+# This messages file is updated for QWaypoints v${project.version}
+no_permission: "&cFailed! &7You are not permitted to use this."
 must_be_player: "&cYou are required to be a player to use this command."
 excessive_arguments: "&cExcessive arguments."
 no_waypoints: "&cYou do not have any waypoints."
@@ -5,20 +7,36 @@ no_waypoint_world: "&cNo waypoints detected in world &4%s"
 unknown_world: "&cUnknown world type."
 closest_waypoint: "&7The closest waypoint to you is &b%1$s &7at &b%2$s &7blocks away from you, located at %3$s"
 illegal_characters: "&cIllegal characters found (Allowed: A-z,0-9)"
+command_not_exist: "&cCommand failed! &7command doesn't exist."
+not_enough_args: "&cCommand failed! &7not enough arguments."
 enabled: "&aenabled"
 disabled: "&cdisabled"
-
+#
 setting_change_failed_args: "&cSetting change failed! &7Not enough arguments!"
 setting_change_failed_not_found: "&cSetting change failed! &7Setting &e%s &7not found!"
 setting_toggled: "&7Setting '&e%1$s&7' was toggled %2$s&7!"
 tracker_changed: "&7Tracker updated! now using &b%1$s&7!"
 create_failed_args: "&cCreate failed! &7Not enough arguments!"
+#
 waypoint_created: "&7Created new waypoint &b%s"
-
-check_failed_not_found: "&cCheck failed! &7No waypoint found!"
-check_failed_args: "&cCheck failed! &7Not enough arguments!"
+waypoint_deleted: "&7Deleted waypoint &b%s"
 waypoint_check: "&7Waypoint &b%1$s &7is located at &bX &a%2$s &bY &a%3$s &bZ &a%4$s &7in world &b%5$s &7You are &b%6$s &7blocks away."
-
+waypoint_distance: "&7The distance between waypoint &b%1$s &7and &b%2$s &7is &b%3$s &7blocks"
+waypoint_distance_not_found: "&cDistance check failed! &7Waypoint &e%s &7doesn't exist!"
+#
+action_failed_not_found: "&cAction failed! &7No waypoint found!"
+action_failed_args: "&cAction failed! &7Not enough arguments!"
+#
+tracking_disabled: "&cNo longer tracking."
+tracking_off: "&cYou are not tracking any waypoint."
+tracking: "&7Tracking - &b%s"
+tracking_failed_tracking: "&cTracking failed! &7You are already tracking a waypoint."
+tracking_failed_tracking_2: "&7Use &e/wp track off &7in order to stop tracking."
+#
+state_change_failed_not_allowed: "&cState change failed! &7changing waypoint state is not allowed."
+state_change_failed_syntax: "&cState changed failed! &7Incorrect syntax! please try &e/wp set <waypoint> <state>"
+state_change: "&7Successfully set waypoint state to %s"
+#
 spawn_locate_command:
   - "&7Spawn locator:\n"
   - "&a  • &7Coordinates &bX &a%1$s &bY &a%2$s &bZ &a%3$s\n"

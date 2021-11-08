@@ -179,15 +179,15 @@ public class MainCommand implements CommandExecutor {
                             LocationData locationData = wp.getLocationData();
 
                             String msg = MessagesUtils.getMessage("waypoint_check",
-                                    name, locationData.x(), locationData.y(), locationData.z(), WaypointWorld.valueOf(locationData.world()).getName(), Utils.calculateDistance(p.getLocation().toVector(), wp.getVector())));
+                                    name, locationData.x(), locationData.y(), locationData.z(), WaypointWorld.valueOf(locationData.world()).getName(), Utils.calculateDistance(p.getLocation().toVector(), wp.getVector()));
                             p.sendMessage(msg);
                             return true;
                         } else {
-                            p.sendMessage(MessagesUtils.getMessage("check_failed_not_found"));
+                            p.sendMessage(MessagesUtils.getMessage("action_failed_not_found"));
                             return false;
                         }
                     } else {
-                        p.sendMessage(MessagesUtils.getMessage("check_failed_args"));
+                        p.sendMessage(MessagesUtils.getMessage("action_failed_args"));
                         return false;
                     }
                 }
@@ -198,19 +198,19 @@ public class MainCommand implements CommandExecutor {
 
                         try {
                             if (Waypoints.getInstance().getWaypointHandler().removeWaypoint(p, name)) {
-                                p.sendMessage(Utils.newMessage(String.format("&7Deleted waypoint &b%s", name)));
+                                p.sendMessage(MessagesUtils.getMessage("waypoint_deleted", name));
                             }
                         } catch (PlayerNotLoadedException | WaypointDoesNotExistException exception) {
                             p.sendMessage(exception.getMessage());
                         }
                     } else {
-                        p.sendMessage(Utils.newMessage("&cDelete failed! &7Not enough arguments!"));
+                        p.sendMessage(MessagesUtils.getMessage("action_failed_args"));
                     }
                 }
 
                 case "set" -> {
                     if (args.length < 3 || Arrays.stream(WaypointState.values()).noneMatch(x -> x.name().equals(args[2].toUpperCase()))) {
-                        p.sendMessage(Utils.newMessage("&cState changed failed! &7Incorrect syntax! please try &e/wp set <waypoint> <state>"));
+                        p.sendMessage(MessagesUtils.getMessage("state_change_failed_syntax"));
                     } else {
                         String waypoint = args[1];
                         WaypointState state = WaypointState.valueOf(args[2].toUpperCase());
@@ -222,13 +222,13 @@ public class MainCommand implements CommandExecutor {
                                         Waypoints.getInstance().getPlayerListener().setWaypointState(p.getUniqueId(), waypoint, state);
                                         Waypoints.getInstance().getWaypointHandler().getWaypoint(p, waypoint).setState(state);
 
-                                        p.sendMessage(Utils.newMessage("&7Successfully set waypoint state to " + state.getState()));
+                                        p.sendMessage(MessagesUtils.getMessage("state_change", state.getState()));
 
                                     } catch (PlayerDoesNotExistException | WaypointDoesNotExistException e) {
                                         p.sendMessage(e.getMessage());
                                     }
                                 } else {
-                                    p.sendMessage(Utils.newMessage("&cSorry, changing waypoint state is not allowed."));
+                                    p.sendMessage(MessagesUtils.getMessage("state_change_failed_not_allowed"));
                                 }
                             }
 
@@ -236,7 +236,7 @@ public class MainCommand implements CommandExecutor {
                                 if (p.hasPermission("qwaypoints.admin.serverwaypoints")) {
                                     throw new NotImplementedException();
                                 } else
-                                    p.sendMessage(Utils.newMessage("&cSorry, you do not have the required permission."));
+                                    p.sendMessage(MessagesUtils.getMessage("no_permission"));
                             }
 
                         }
@@ -247,9 +247,9 @@ public class MainCommand implements CommandExecutor {
                     if (args.length >= 2) {
                         if (args[1].equalsIgnoreCase("off")) {
                             if (Waypoints.getInstance().getTrackerManager().unTrack(p)) {
-                                p.sendMessage(Utils.newMessage("&cNo longer tracking."));
+                                p.sendMessage(MessagesUtils.getMessage("tracking_disabled"));
                             } else {
-                                p.sendMessage(Utils.newMessage("&cYou are not tracking any waypoints."));
+                                p.sendMessage(MessagesUtils.getMessage("tracking_off"));
                             }
 
                         } else {
@@ -258,18 +258,18 @@ public class MainCommand implements CommandExecutor {
                             if (wp != null) {
                                 if (Waypoints.getInstance().getTrackerManager().track(p, wp, Waypoints.getInstance().getPlayerDataManager().getPlayerDataMap().get(p.getUniqueId()).getETracker())) {
 
-                                    p.sendMessage(Utils.newMessage("&7Tracking - " + wp.getName()));
+                                    p.sendMessage(MessagesUtils.getMessage("tracking", wp.getName()));
                                     p.setCompassTarget(wp.getLocation());
                                 } else {
-                                    p.sendMessage(Utils.newMessage("&cTracking failed! &7You are already tracking a waypoint!"));
-                                    p.sendMessage(Utils.newMessage("&7Use &e/wp track off &7in order to stop tracking."));
+                                    p.sendMessage(MessagesUtils.getMessage("tracking_failed_tracking"));
+                                    p.sendMessage(MessagesUtils.getMessage("tracking_failed_tracking_2"));
                                 }
                             } else {
-                                p.sendMessage(Utils.newMessage("&cTrack failed! &7Waypoint doesn't exist!"));
+                                p.sendMessage(MessagesUtils.getMessage("action_failed_not_found"));
                             }
                         }
                     } else {
-                        p.sendMessage(Utils.newMessage("&cTrack failed! &7Not enough arguments!"));
+                        p.sendMessage(MessagesUtils.getMessage("action_failed_args"));
                     }
                 }
 
@@ -286,18 +286,18 @@ public class MainCommand implements CommandExecutor {
                             if (wpB != null) {
                                 int distance = Utils.calculateDistance(wpA.getVector(), wpB.getVector());
 
-                                p.sendMessage(Utils.newMessage(String.format("&7The distance between waypoint &b%s &7and &b%s &7is &b%s &7blocks", wpA.getName(), wpB.getName(), distance)));
+                                p.sendMessage(MessagesUtils.getMessage("waypoint_distance", wpA.getName(), wpB.getName(), distance));
                             } else {
-                                p.sendMessage(Utils.newMessage(String.format("&cWaypoint %s doesn't exist!", waypointB)));
+                                p.sendMessage(MessagesUtils.getMessage("waypoint_distance_not_found", waypointB));
                             }
                         } else {
-                            p.sendMessage(Utils.newMessage(String.format("&cWaypoint %s doesn't exist!", waypointA)));
+                            p.sendMessage(MessagesUtils.getMessage("waypoint_distance_not_found", waypointA));
                         }
                     } else {
-                        p.sendMessage(Utils.newMessage("&cWrong argument syntax!"));
+                        p.sendMessage(MessagesUtils.getMessage("not_enough_args"));
                     }
                 }
-                default -> p.sendMessage(Utils.newMessage("&cCommand failed! &7command doesn't exist!"));
+                default -> p.sendMessage(MessagesUtils.getMessage("command_not_exist"));
             }
         } else {
             GuiUtils.openInventory("gui.personal.profile", p);

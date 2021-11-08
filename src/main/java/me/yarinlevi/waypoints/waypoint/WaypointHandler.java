@@ -5,6 +5,7 @@ import me.yarinlevi.waypoints.exceptions.PlayerNotLoadedException;
 import me.yarinlevi.waypoints.exceptions.WaypointAlreadyExistsException;
 import me.yarinlevi.waypoints.exceptions.WaypointDoesNotExistException;
 import me.yarinlevi.waypoints.player.PlayerData;
+import me.yarinlevi.waypoints.utils.MessagesUtils;
 import me.yarinlevi.waypoints.utils.Utils;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
@@ -104,7 +105,7 @@ public class WaypointHandler {
                 waypointData.getWaypointList().remove(waypointData.getWaypointList().stream().filter(x -> x.getName().equalsIgnoreCase(waypointName)).findAny().get());
                 return true;
             } else {
-                throw new WaypointDoesNotExistException(Utils.newMessage(String.format("&cNo waypoint found with name: &f\"&d%s&f\"", waypointName)));
+                throw new WaypointDoesNotExistException(MessagesUtils.getMessage("action_failed_not_found"));
             }
         } else {
             throw new PlayerNotLoadedException("Hey! your account was not loaded correctly, please reconnect.");
