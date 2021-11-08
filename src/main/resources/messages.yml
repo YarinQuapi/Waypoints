@@ -54,3 +54,14 @@ help_command:
   - "&a  • &b/wp set <&awaypoint&b> <&astate&b> &f- &7Changes the state of the waypoint\n"
   - "&a  • &b/wp track <&awaypoint&b> &f- &7Tracks a waypoints\n"
   - "&a  • &b/wp setting <setting> [value]"
+  - "&a  • &b/wp setting <setting> [value]"
+#
+edit_icon: "&7Successfully changed waypoint's item to: &b%s"
+edit_icon_failed: "&cEdit failed! &7The item id was not found."
+#
+gui:
+  create:
+    title: "Enter a waypoint name"
+  edit:
+    icon:
+      title: "Edit waypoint icon"
