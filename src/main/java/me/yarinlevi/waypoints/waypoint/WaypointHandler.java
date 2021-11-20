@@ -20,7 +20,7 @@ public class WaypointHandler {
         return Waypoints.getInstance().getPlayerDataManager().getPlayerDataMap().get(player.getUniqueId()).getWaypointList();
     }
 
-    public PlayerData getPlayerwaypointData(UUID uuid) {
+    public PlayerData getPlayerData(UUID uuid) {
         return Waypoints.getInstance().getPlayerDataManager().getPlayerDataMap().get(uuid);
     }
 
@@ -41,7 +41,7 @@ public class WaypointHandler {
      * @return Waypoint list
      */
     public List<Waypoint> getAllPublicWaypoints() {
-        return Waypoints.getInstance().getPlayerListener().getPublicWaypointsFromwaypointData();
+        return Waypoints.getInstance().getPlayerListener().getPublicWaypointsFromData();
     }
 
     public void renameWaypoint(OfflinePlayer player, String waypoint, String newWaypointName) {
