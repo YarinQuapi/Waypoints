@@ -4,6 +4,8 @@ import lombok.Getter;
 import lombok.Setter;
 import me.yarinlevi.waypoints.Waypoints;
 import me.yarinlevi.waypoints.data.FileManager;
+import me.yarinlevi.waypoints.player.trackers.ETracker;
+import me.yarinlevi.waypoints.player.trackers.Tracker;
 import me.yarinlevi.waypoints.waypoint.Waypoint;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -35,8 +37,8 @@ public class PlayerDataManager {
         PlayerData playerData = playerDataMap.get(uuid);
 
         if (settingsData.contains(uuid.toString())) {
-            playerData.setPlayerDeathPoints(settingsData.getBoolean(uuid + ".deathpoints"));
-            playerData.setETracker(Waypoints.getInstance().getTrackerManager().getTracker(settingsData.getString(uuid + ".etracker")).getETracker());
+            playerData.setPlayerDeathPoints(settingsData.getBoolean(uuid + ".deathpoints", true));
+            playerData.setETracker(Waypoints.getInstance().getTrackerManager().getTracker(settingsData.getString(uuid + ".etracker", ETracker.ActionBar.getKey())).getETracker());
         }
     }
 
