@@ -22,16 +22,23 @@ import org.apache.commons.lang.NotImplementedException;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabExecutor;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.java.annotation.command.Commands;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
+import java.util.List;
+import java.util.stream.Stream;
 
 /**
  * @author YarinQuapi
  */
-public class MainCommand implements CommandExecutor {
+@Commands(@org.bukkit.plugin.java.annotation.command.Command(name = "qwaypoint", desc = "Main command", aliases = { "wp", "qwp", "qwaypoints", "waypoints", "waypoint" }))
+public class MainCommand implements CommandExecutor, TabExecutor {
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
         if (!(sender instanceof final Player p)) {
@@ -204,7 +211,7 @@ public class MainCommand implements CommandExecutor {
                     }
                 }
 
-                case "delete" -> {
+                case "remove", "delete" -> {
                     if (args.length >= 2) {
                         String name = args[1];
 
@@ -318,6 +325,57 @@ public class MainCommand implements CommandExecutor {
         return true;
     }
 
+    @Nullable
+    @Override
+    public List<String> onTabComplete(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] args) {
+        List<String> list = new ArrayList<>();
+
+        if (args.length == 1) {
+            list.addAll(List.of(new String[] { "list", "create", "remove", "check", "set", "distance", "track", "nearest", "help" } ));
+
+            if (commandSender.hasPermission("qwaypoints.commands.spawn")) {
+                list.add("spawn");
+            }
+
+            if (Waypoints.getInstance().getConfig().getBoolean("PublicWaypoints")) {
+                list.add("public");
+            }
+        }
+
+        if (args.length == 2) {
+            switch (args[0].toLowerCase()) {
+                case "remove", "check", "distance", "track", "set" -> list.addAll(Waypoints.getInstance().getWaypointHandler().getWaypointList((Player) commandSender));
+
+                case "setting" -> list.addAll(List.of(new String[] { "deathpoints", "tracker" } ));
+            }
+        }
+
+        else if (args.length == 3) {
+            switch (args[0].toLowerCase()) {
+                case "distance" -> {
+                    List<String> waypointList = Waypoints.getInstance().getWaypointHandler().getWaypointList((Player) commandSender).stream().toList();
+                    list.addAll(waypointList);
+                }
+
+                case "set" -> {
+                    if (Waypoints.getInstance().getConfig().getBoolean("PublicWaypoints")) {
+                        list.add("public");
+                    }
+                    list.add("private");
+                }
+
+                case "setting" -> {
+                    if (args[2].equalsIgnoreCase("tracker")) {
+                        for (ETracker et : ETracker.values()) {
+                            list.add(et.getKey());
+                        }
+                    }
+                }
+            }
+        }
+
+        return list;
+    }
 
     private void list(Player p, Iterator<String> waypointList) {
         TextComponent message = new TextComponent(ChatColor.translateAlternateColorCodes('&', Waypoints.getInstance().getPrefix()));

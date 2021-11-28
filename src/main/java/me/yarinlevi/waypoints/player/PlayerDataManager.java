@@ -5,7 +5,6 @@ import lombok.Setter;
 import me.yarinlevi.waypoints.Waypoints;
 import me.yarinlevi.waypoints.data.FileManager;
 import me.yarinlevi.waypoints.player.trackers.ETracker;
-import me.yarinlevi.waypoints.player.trackers.Tracker;
 import me.yarinlevi.waypoints.waypoint.Waypoint;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;

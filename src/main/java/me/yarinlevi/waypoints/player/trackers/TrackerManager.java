@@ -36,6 +36,6 @@ public class TrackerManager {
     }
 
     public boolean unTrack(Player player) {
-        return trackers.values().stream().filter(x -> x.isTracked(player)).findAny().get().unTrack(player);
+        return trackers.values().stream().anyMatch(x -> x.isTracked(player)) && trackers.values().stream().filter(x -> x.isTracked(player)).findFirst().get().unTrack(player);
     }
 }

@@ -142,7 +142,7 @@ public class PlayerListener implements Listener {
             Waypoints.getInstance().getTrackerManager().unTrack(Bukkit.getPlayer(uuid));
         }
 
-        savePlayer(uuid);
+        this.savePlayer(uuid);
 
         Waypoints.getInstance().getPlayerDataManager().unloadPlayerSettings(uuid);
     }
