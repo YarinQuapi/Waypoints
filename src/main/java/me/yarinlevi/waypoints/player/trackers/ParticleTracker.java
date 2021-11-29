@@ -19,7 +19,7 @@ public class ParticleTracker extends Tracker {
     private final Particle particle = Arrays.stream(Particle.values()).filter(x -> x.name().equalsIgnoreCase(Waypoints.getInstance().getConfig().getString("trackers.particle.particle"))).findAny().get();
 
     @Override
-    public void update() {
+    protected void update() {
         trackedPlayers.forEach((player, waypoint) -> {
             if (player.getWorld() == waypoint.getLocation().getWorld()) {
                 Location playerLocation = player.getLocation();

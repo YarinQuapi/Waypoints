@@ -15,6 +15,7 @@ import java.util.List;
  * @author YarinQuapi
  * @since 3.0.0-Beta-1.4
  */
+@Deprecated(forRemoval = true)
 public final class QWaypointsAPI {
     /**
      * Gets the nearest waypoint to a player
@@ -27,7 +28,7 @@ public final class QWaypointsAPI {
     }
 
     /**
-     * Gets all of the player's waypoints
+     * Gets all the player's waypoints
      * @param player The player
      * @return A list with all of his waypoints
      */

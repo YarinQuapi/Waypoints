@@ -53,7 +53,7 @@ public class PlayerListener implements Listener {
         Bukkit.getScheduler().runTaskAsynchronously(Waypoints.getInstance(), () -> unloadPlayer(event.getPlayer().getUniqueId()));
     }
 
-    public List<Waypoint> getPublicWaypointsFromwaypointData() {
+    public List<Waypoint> getPublicWaypointsFromData() {
         List<Waypoint> list = new ArrayList<>();
 
         if (waypointData.contains("public_waypoints")) {
@@ -143,13 +143,13 @@ public class PlayerListener implements Listener {
             Waypoints.getInstance().getTrackerManager().unTrack(Bukkit.getPlayer(uuid));
         }
 
-        savePlayer(uuid);
+        this.savePlayer(uuid);
 
         Waypoints.getInstance().getPlayerDataManager().unloadPlayerSettings(uuid);
     }
 
     public void savePlayer(UUID uuid) {
-        PlayerData playerData = Waypoints.getInstance().getWaypointHandler().getPlayerwaypointData(uuid);
+        PlayerData playerData = Waypoints.getInstance().getWaypointHandler().getPlayerData(uuid);
 
         ConfigurationSection playerSection = waypointData.getConfigurationSection(uuid.toString());
 

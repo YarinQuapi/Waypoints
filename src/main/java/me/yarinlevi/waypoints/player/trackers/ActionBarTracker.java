@@ -8,6 +8,7 @@ import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,7 +22,6 @@ public class ActionBarTracker extends Tracker {
 
     // System settings
     private static final int interval = Waypoints.getInstance().getConfig().getInt("trackers.actionbar.interval");
-    private final ConcurrentMap<Player, Location> players = new ConcurrentHashMap<>();
     private final ConcurrentMap<Player, String> bars = new ConcurrentHashMap<>();
 
     // Display settings
@@ -36,15 +36,15 @@ public class ActionBarTracker extends Tracker {
         Bukkit.getScheduler().runTaskTimerAsynchronously(Waypoints.getInstance(), () -> {
             List<Player> notFound = new ArrayList<>();
             bars.forEach((player, str) -> {
-                if (!players.containsKey(player))
+                if (!trackedPlayers.containsKey(player))
                     notFound.add(player);
             });
 
             notFound.forEach(bars::remove);
 
-            players.forEach((player, location) -> {
+            trackedPlayers.forEach((player, location) -> {
                 if (player.getWorld().equals(location.getWorld())) {
-                    bars.put(player, generateDirectionIndicator(deltaAngleToTarget(player.getLocation(), location)));
+                    bars.put(player, generateDirectionIndicator(deltaAngleToTarget(player.getLocation(), location.getLocation())));
                 } else {
                     bars.remove(player);
                 }
@@ -53,11 +53,11 @@ public class ActionBarTracker extends Tracker {
     }
 
     @Override
-    public void update() {
+    protected void update() {
         bars.forEach((x, y) -> {
-            if (x.getLocation().distance(players.get(x)) <= 10) {
-                players.remove(x);
-                x.sendMessage(MessagesUtils.getMessage("tracking_destination_reached"));
+            if (trackedPlayers.get(x).getDistance(x) <= 10) {
+                trackedPlayers.remove(x);
+                x.sendMessage(Utils.newMessage("&7You have reached your destination!"));
             } else {
                 x.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(bars.get(x)));
             }
@@ -69,7 +69,7 @@ public class ActionBarTracker extends Tracker {
         return ETracker.ActionBar;
     }
 
-    private String generateDirectionIndicator(double angle) {
+    private @NotNull String generateDirectionIndicator(double angle) {
         if (angle > range) {
             return indicatorColor + leftArrow + indicatorColor + Utils.repeat(block, blockCount) + rightArrow;
         }
@@ -89,7 +89,7 @@ public class ActionBarTracker extends Tracker {
     }
 
     
-    private double deltaAngleToTarget(Location location, Location target) {
+    private double deltaAngleToTarget(@NotNull Location location, Location target) {
         double playerAngle = location.getYaw() + 90;
         while (playerAngle < 0)
             playerAngle += 360;

@@ -5,7 +5,6 @@ import me.yarinlevi.waypoints.waypoint.Waypoint;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -37,6 +36,6 @@ public class TrackerManager {
     }
 
     public boolean unTrack(Player player) {
-        return trackers.values().stream().filter(x -> x.isTracked(player)).findAny().get().unTrack(player);
+        return trackers.values().stream().anyMatch(x -> x.isTracked(player)) && trackers.values().stream().filter(x -> x.isTracked(player)).findFirst().get().unTrack(player);
     }
 }

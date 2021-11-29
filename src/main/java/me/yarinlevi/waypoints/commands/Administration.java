@@ -11,13 +11,16 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.java.annotation.command.Commands;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * @author YarinQuapi
  */
+@Commands(@org.bukkit.plugin.java.annotation.command.Command(name = "qwaypointsadmin", permission = "qwaypoints.admin", aliases = { "qwpa", "qwpadmin", "wpadmin", "wpa" }))
 public class Administration implements CommandExecutor {
     @Override
-    public boolean onCommand(CommandSender sender, Command command, String s, String[] args) {
+    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, String s, String[] args) {
         if (!(sender instanceof final Player p)) {
             sender.sendMessage(Utils.newMessage("&cYou are required to be a Player to use this command."));
             return false;
