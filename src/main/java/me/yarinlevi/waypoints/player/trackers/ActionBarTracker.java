@@ -1,6 +1,7 @@
 package me.yarinlevi.waypoints.player.trackers;
 
 import me.yarinlevi.waypoints.Waypoints;
+import me.yarinlevi.waypoints.utils.MessagesUtils;
 import me.yarinlevi.waypoints.utils.Utils;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
@@ -56,7 +57,7 @@ public class ActionBarTracker extends Tracker {
         bars.forEach((x, y) -> {
             if (x.getLocation().distance(players.get(x)) <= 10) {
                 players.remove(x);
-                x.sendMessage(Utils.newMessage("&7You have reached your destination!"));
+                x.sendMessage(MessagesUtils.getMessage("tracking_destination_reached"));
             } else {
                 x.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(bars.get(x)));
             }

@@ -1,6 +1,7 @@
 package me.yarinlevi.waypoints.player.trackers;
 
 import me.yarinlevi.waypoints.Waypoints;
+import me.yarinlevi.waypoints.utils.MessagesUtils;
 import org.bukkit.Location;
 import org.bukkit.Particle;
 import org.bukkit.util.Vector;
@@ -43,6 +44,7 @@ public class ParticleTracker extends Tracker {
 
                 if (waypoint.getDistance(player) <= 10) {
                     this.unTrack(player);
+                    player.sendMessage(MessagesUtils.getMessage("tracking_destination_reached"));
                 }
             }
         });

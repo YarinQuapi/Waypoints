@@ -6,6 +6,7 @@ import me.yarinlevi.waypoints.data.FileUtils;
 import me.yarinlevi.waypoints.exceptions.PlayerDoesNotExistException;
 import me.yarinlevi.waypoints.exceptions.WaypointDoesNotExistException;
 import me.yarinlevi.waypoints.player.PlayerData;
+import me.yarinlevi.waypoints.utils.MessagesUtils;
 import me.yarinlevi.waypoints.utils.Utils;
 import me.yarinlevi.waypoints.waypoint.Waypoint;
 import me.yarinlevi.waypoints.waypoint.WaypointState;
@@ -74,7 +75,7 @@ public class PlayerListener implements Listener {
 
     public void renamePublicWaypoint(UUID uuid, String waypoint, String name) throws PlayerDoesNotExistException {
         if (!waypointData.contains(uuid.toString())) {
-            throw new PlayerDoesNotExistException(Utils.newMessage(String.format("&cNo waypoint found with name: &f\"&d%s&f\"", waypoint)));
+            throw new PlayerDoesNotExistException(MessagesUtils.getMessage("action_failed_not_found" , waypoint));
         }
 
         waypointData.set("public_waypoints." + uuid + "." + waypoint, null);
@@ -83,7 +84,7 @@ public class PlayerListener implements Listener {
 
     public void setWaypointState(UUID uuid, String waypoint, WaypointState state) throws PlayerDoesNotExistException, WaypointDoesNotExistException {
         if (!waypointData.contains(uuid.toString())) {
-            throw new PlayerDoesNotExistException(Utils.newMessage(String.format("&cNo waypoint found with name: &f\"&d%s&f\"", waypoint)));
+            throw new PlayerDoesNotExistException(MessagesUtils.getMessage("action_failed_not_found" , waypoint));
         }
 
         ConfigurationSection waypointSection = waypointData.getConfigurationSection(uuid.toString()).getConfigurationSection("waypoints");
@@ -98,7 +99,7 @@ public class PlayerListener implements Listener {
             } else if (state.equals(WaypointState.PRIVATE)) {
                 waypointData.set("public_waypoints." + uuid + "." + waypoint, null);
             }
-        } else throw new WaypointDoesNotExistException(Utils.newMessage(String.format("&cNo waypoint found with name: &f\"&d%s&f\"", waypoint)));
+        } else throw new WaypointDoesNotExistException(MessagesUtils.getMessage("action_failed_not_found" , waypoint));
     }
 
     public void loadPlayer(UUID uuid) {

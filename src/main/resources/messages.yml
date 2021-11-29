@@ -11,6 +11,9 @@ command_not_exist: "&cCommand failed! &7command doesn't exist."
 not_enough_args: "&cCommand failed! &7not enough arguments."
 enabled: "&aenabled"
 disabled: "&cdisabled"
+delete: "&cDELETE"
+you_died: "&7You died. Created waypoint "
+coordinates_format: "&bX &a%s &bY &a%s &bZ &a%s"
 #
 setting_change_failed_args: "&cSetting change failed! &7Not enough arguments!"
 setting_change_failed_not_found: "&cSetting change failed! &7Setting &e%s &7not found!"
@@ -32,6 +35,7 @@ tracking_off: "&cYou are not tracking any waypoint."
 tracking: "&7Tracking - &b%s"
 tracking_failed_tracking: "&cTracking failed! &7You are already tracking a waypoint."
 tracking_failed_tracking_2: "&7Use &e/wp track off &7in order to stop tracking."
+tracking_destination_reached: "&7Destination reached!"
 #
 state_change_failed_not_allowed: "&cState change failed! &7changing waypoint state is not allowed."
 state_change_failed_syntax: "&cState changed failed! &7Incorrect syntax! please try &e/wp set <waypoint> <state>"
@@ -54,7 +58,6 @@ help_command:
   - "&a  • &b/wp set <&awaypoint&b> <&astate&b> &f- &7Changes the state of the waypoint\n"
   - "&a  • &b/wp track <&awaypoint&b> &f- &7Tracks a waypoints\n"
   - "&a  • &b/wp setting <setting> [value]"
-  - "&a  • &b/wp setting <setting> [value]"
 #
 edit_icon: "&7Successfully changed waypoint's item to: &b%s"
 edit_icon_failed: "&cEdit failed! &7The item id was not found."
@@ -65,3 +68,5 @@ gui:
   edit:
     icon:
       title: "Edit waypoint icon"
+    name:
+      title: "Rename waypoint"

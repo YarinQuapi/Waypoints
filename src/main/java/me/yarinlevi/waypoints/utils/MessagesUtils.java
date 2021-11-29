@@ -39,7 +39,7 @@ public class MessagesUtils {
     }
 
     public static String getMessage(String key, Object... args) {
-        return String.format(messages.get(key).replaceAll("&", "§"), args);
+        return Constants.PREFIX + messages.get(key).replaceAll("&", "§").formatted(args);
     }
 
     public static String getMessageLines(String key, Object... args) {

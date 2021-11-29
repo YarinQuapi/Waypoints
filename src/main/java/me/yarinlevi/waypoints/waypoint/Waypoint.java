@@ -7,6 +7,7 @@ import me.yarinlevi.waypoints.Waypoints;
 import me.yarinlevi.waypoints.data.FileUtils;
 import me.yarinlevi.waypoints.exceptions.PlayerDoesNotExistException;
 import me.yarinlevi.waypoints.utils.LocationData;
+import me.yarinlevi.waypoints.utils.MessagesUtils;
 import me.yarinlevi.waypoints.utils.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -76,7 +77,7 @@ public class Waypoint {
     }
 
     public String getFormattedCoordinates() {
-        return Utils.newMessageNoPrefix(String.format("&bX &a%s &bY &a%s &bZ &a%s", getVector().getBlockX(), getVector().getBlockY(), getVector().getBlockZ()));
+        return Utils.newMessageNoPrefix(MessagesUtils.getRawFormattedString("coordinates_format", getVector().getBlockX(), getVector().getBlockY(), getVector().getBlockZ()));
     }
 
     /**
