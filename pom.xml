@@ -6,7 +6,7 @@
 
     <groupId>me.yarinlevi</groupId>
     <artifactId>Waypoints</artifactId>
-    <version>5.0-dev</version>
+    <version>4.1-dev</version>
     <packaging>jar</packaging>
 
     <name>QWaypoints</name>
