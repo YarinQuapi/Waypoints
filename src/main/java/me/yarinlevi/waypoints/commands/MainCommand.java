@@ -19,6 +19,7 @@ import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.apache.commons.lang.NotImplementedException;
+import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -32,7 +33,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
-import java.util.stream.Stream;
 
 /**
  * @author YarinQuapi
@@ -108,6 +108,7 @@ public class MainCommand implements CommandExecutor, TabExecutor {
                             "&a  • &b/wp set <&awaypoint&b> <&astate&b> &f- &7Changes the state of the waypoint\n" +
                             "&a  • &b/wp track <&awaypoint&b> &f- &7Tracks a waypoints\n" +
                             "&a  • &b/wp setting <setting> [value]" +
+                            "&a  • &b/wp share <waypoint> &f- &7Shares a waypoint in chat\n" +
                             "\n &b&lQWaypoints Version&7&l: &a&l" + Waypoints.getInstance().getDescription().getVersion());
                     p.sendMessage(str);
                 }
@@ -185,6 +186,28 @@ public class MainCommand implements CommandExecutor, TabExecutor {
                         }
                     } else {
                         p.sendMessage(Utils.newMessage("&cCreate failed! &7Not enough arguments!"));
+                    }
+                }
+
+                case "share" -> {
+                    if (args.length >= 2) {
+                        String name = args[1].trim();
+
+                        Waypoint wp = Waypoints.getInstance().getWaypointHandler().getWaypoint(p, name);
+
+                        if (wp != null) {
+                            LocationData locationData = wp.getLocationData();
+
+                            String msg = Utils.newMessage(String.format("&e&lShare &7Waypoint &b%s &7is located at &bX &a%s &bY &a%s &bZ &a%s &7in world &b%s",
+                                    name, locationData.x(), locationData.y(), locationData.z(), WaypointWorld.valueOf(locationData.world()).getName(), Utils.calculateDistance(p.getLocation().toVector(), wp.getVector())));
+                            Bukkit.broadcastMessage(msg);
+                            return true;
+                        } else {
+                            p.sendMessage(Utils.newMessage("&cSorry, couldn't find a waypoint with that name."));
+                            return false;
+                        }
+                    } else {
+                        p.sendMessage(Utils.newMessage("&cShare failed! &7Not enough arguments!"));
                     }
                 }
 
@@ -272,7 +295,17 @@ public class MainCommand implements CommandExecutor, TabExecutor {
                             }
 
                         } else {
-                            Waypoint wp = Waypoints.getInstance().getWaypointHandler().getWaypoint(p, args[1]);
+                            Waypoint wp;
+                            if (!args[1].contains(":")) {
+                                wp = Waypoints.getInstance().getWaypointHandler().getWaypoint(p, args[1]);
+                            } else {
+                                String playerName = args[1].split(":")[0];
+                                String waypointName = args[1].split(":")[1];
+
+                                wp = Waypoints.getInstance().getWaypointHandler().getAllPublicWaypoints().stream()
+                                        .filter(waypoint -> waypoint.getOwner().equals(Bukkit.getOfflinePlayer(playerName).getUniqueId()))
+                                        .filter(waypoint -> waypoint.getName().equalsIgnoreCase(waypointName)).findFirst().orElse(null);
+                            }
 
                             if (wp != null) {
                                 if (Waypoints.getInstance().getTrackerManager().track(p, wp, Waypoints.getInstance().getPlayerDataManager().getPlayerDataMap().get(p.getUniqueId()).getETracker())) {

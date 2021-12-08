@@ -6,7 +6,7 @@
 
     <groupId>me.yarinlevi</groupId>
     <artifactId>Waypoints</artifactId>
-    <version>4.0B-1</version>
+    <version>4.0B-2</version>
     <packaging>jar</packaging>
 
     <name>QWaypoints</name>
@@ -75,6 +75,10 @@
             <id>codemc-snapshots</id>
             <url>https://repo.codemc.io/repository/maven-snapshots/</url>
         </repository>
+        <repository>
+            <id>dmulloy2-repo</id>
+            <url>https://repo.dmulloy2.net/repository/public/</url>
+        </repository>
     </repositories>
 
     <dependencies>
@@ -109,6 +113,13 @@
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <version>1.18.22</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.comphenix.protocol</groupId>
+            <artifactId>ProtocolLib</artifactId>
+            <version>4.7.0</version>
             <scope>provided</scope>
         </dependency>
 

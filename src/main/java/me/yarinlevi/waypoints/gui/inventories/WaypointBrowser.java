@@ -94,10 +94,7 @@ public class WaypointBrowser extends AbstractGui implements Listener {
                 return;
             }
 
-            assert item != null;
-            if (!item.getType().equals(Material.AIR)) {
-                assert item.getItemMeta() != null;
-
+            if (item != null && !item.getType().equals(Material.AIR) && item.getItemMeta() != null) {
                 String name = ChatColor.stripColor(item.getItemMeta().getDisplayName());
 
                 Player player = (Player) e.getWhoClicked();

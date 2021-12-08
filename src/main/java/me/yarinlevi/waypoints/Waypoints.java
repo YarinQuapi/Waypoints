@@ -10,10 +10,10 @@ import me.yarinlevi.waypoints.player.PlayerDataManager;
 import me.yarinlevi.waypoints.player.trackers.TrackerManager;
 import me.yarinlevi.waypoints.utils.Utils;
 import me.yarinlevi.waypoints.waypoint.WaypointHandler;
-import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.plugin.java.annotation.command.Commands;
+import org.bukkit.plugin.java.annotation.dependency.SoftDependency;
 import org.bukkit.plugin.java.annotation.plugin.ApiVersion;
 import org.bukkit.plugin.java.annotation.plugin.Description;
 import org.bukkit.plugin.java.annotation.plugin.Plugin;
@@ -22,10 +22,11 @@ import org.bukkit.plugin.java.annotation.plugin.author.Author;
 /**
  * @author YarinQuapi
  */
-@Plugin(name = "QWaypoints", version = "4.0B-1")
+@Plugin(name = "QWaypoints", version = "4.0B-2")
 @Description(value = "A new way to store locations")
 @Author(value = "Quapi")
 @ApiVersion(value = ApiVersion.Target.v1_17)
+@SoftDependency(value = "ProtocolLib")
 @Commands()
 public class Waypoints extends JavaPlugin {
     @Getter private static Waypoints instance;
@@ -43,8 +44,6 @@ public class Waypoints extends JavaPlugin {
         this.saveDefaultConfig();
         registerConfigData();
 
-        Metrics metrics = new Metrics(this, 12124);
-
         playerListener = new PlayerListener();
         Bukkit.getPluginManager().registerEvents(playerListener, this);
 
@@ -59,6 +58,7 @@ public class Waypoints extends JavaPlugin {
             getLogger().info(Utils.newMessageNoPrefix("&7> DeathPoints enabled!"));
         }
 
+        // Reload Safe
         Bukkit.getOnlinePlayers().forEach(player -> playerListener.loadPlayer(player.getUniqueId()));
 
         GuiUtils.registerGui();
