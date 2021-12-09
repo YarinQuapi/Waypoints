@@ -14,7 +14,11 @@ public class TrackerManager {
     public TrackerManager() {
         if (Waypoints.getInstance().getConfig().getBoolean("trackers.enabled")) {
             if (Waypoints.getInstance().getConfig().getBoolean("trackers.actionbar.enabled")) {
-                trackers.put(ETracker.ActionBar, new ActionBarTracker());
+                if (Bukkit.getPluginManager().isPluginEnabled("ProtocolLib")) {
+                    trackers.put(ETracker.ActionBar, new ActionBarTracker());
+                } else {
+                    Waypoints.getInstance().getLogger().severe("ActionBar tracker is enabled but protocol lib was not found!");
+                }
             }
             if (Waypoints.getInstance().getConfig().getBoolean("trackers.particle.enabled")) {
                 trackers.put(ETracker.Particle, new ParticleTracker());

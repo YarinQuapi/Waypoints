@@ -10,6 +10,7 @@ import me.yarinlevi.waypoints.player.PlayerDataManager;
 import me.yarinlevi.waypoints.player.trackers.TrackerManager;
 import me.yarinlevi.waypoints.utils.Utils;
 import me.yarinlevi.waypoints.waypoint.WaypointHandler;
+import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.plugin.java.annotation.command.Commands;
@@ -22,7 +23,7 @@ import org.bukkit.plugin.java.annotation.plugin.author.Author;
 /**
  * @author YarinQuapi
  */
-@Plugin(name = "QWaypoints", version = "4.0B-2")
+@Plugin(name = "QWaypoints", version = "4.0R-1")
 @Description(value = "A new way to store locations")
 @Author(value = "Quapi")
 @ApiVersion(value = ApiVersion.Target.v1_17)
@@ -43,6 +44,8 @@ public class Waypoints extends JavaPlugin {
 
         this.saveDefaultConfig();
         registerConfigData();
+
+        new Metrics(this, 12124);
 
         playerListener = new PlayerListener();
         Bukkit.getPluginManager().registerEvents(playerListener, this);

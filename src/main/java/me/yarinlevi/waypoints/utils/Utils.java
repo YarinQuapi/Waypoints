@@ -14,7 +14,6 @@ import java.util.regex.Pattern;
 public class Utils {
     public static final Pattern allowedCharacters = Pattern.compile("([A-z0-9]\\w+)");
 
-
     public static String newMessage(String message) {
         return ChatColor.translateAlternateColorCodes('&', Waypoints.getInstance().getPrefix()) + ChatColor.translateAlternateColorCodes('&', message);
     }
@@ -39,10 +38,17 @@ public class Utils {
      * @param blue volume
      */
     public record RGBController(int red, int green, int blue) {
+        /**
+         * Turns given colors to a viable ChatColor
+         * @return ChatColor
+         */
         public ChatColor toColor() {
             return ChatColor.of(toHex());
         }
 
+        /**
+         * @return hex color, e.g. #0xffffff
+         */
         public String toHex() {
             Color color = Color.fromRGB(red, green, blue);
             String hex = Integer.toHexString(color.asRGB() & 0xffffff);
