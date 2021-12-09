@@ -14,7 +14,7 @@ Running on older Java versions may cause unexpected errors and will not get supp
 ## Commands
 ``/wp help ``- Show all the commands  
 ``/wp check <waypointName>`` - Check a certain waypoint.  
-``/wp create <&aname&b>`` - Create a new waypoint
+``/wp create <name>`` - Create a new waypoint
 ``/wp list [world]`` - List all (or some) your waypoints  
 ``/wp delete <waypoint> ``- Delete a waypoint  
 ``/wp spawn ``- Locates the spawn of the world  
