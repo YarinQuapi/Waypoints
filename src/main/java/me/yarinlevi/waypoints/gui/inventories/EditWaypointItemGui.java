@@ -1,6 +1,7 @@
 package me.yarinlevi.waypoints.gui.inventories;
 
 import me.yarinlevi.waypoints.Waypoints;
+import me.yarinlevi.waypoints.utils.MessagesUtils;
 import me.yarinlevi.waypoints.utils.Utils;
 import me.yarinlevi.waypoints.waypoint.Waypoint;
 import net.wesjd.anvilgui.AnvilGUI;
@@ -17,15 +18,15 @@ public class EditWaypointItemGui {
                 .onComplete((player2, text) -> {
                     if (Material.getMaterial(text.trim().toUpperCase()) != null) {
                         wp.editItem(new ItemStack(Material.getMaterial(text.trim().toUpperCase())));
-                        player2.sendMessage(Utils.newMessage("&7Successfully changed waypoint's item to: &b" + text.trim().toUpperCase()));
+                        player2.sendMessage(MessagesUtils.getMessage("edit_icon", text.trim().toUpperCase()));
                     } else {
-                        player2.sendMessage(Utils.newMessage("&cEdit failed! &7The item id was not found."));
+                        player2.sendMessage(MessagesUtils.getMessage("edit_icon_failed"));
                     }
                     return AnvilGUI.Response.close();
                 })
                 .text(" ")
                 .itemLeft(new ItemStack(Material.PAPER))
-                .title("Edit waypoint icon")
+                .title(MessagesUtils.getMessage("gui.edit.icon.title"))
                 .plugin(Waypoints.getInstance())
                 .open(player);
     }

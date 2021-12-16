@@ -9,7 +9,7 @@ import java.io.IOException;
 /**
  * @author YarinQuapi
  */
-public class FileManager {
+public class FileUtils {
     public static void registerData(File file, FileConfiguration waypointData) {
         if (!file.exists()) {
             file.getParentFile().mkdirs();

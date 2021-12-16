@@ -39,3 +39,6 @@ If you find a bug, please do not leave a bad review, head over to my [Github](ht
 
 ## Disclaimer
 This plugin uses BStats for basic data collection. If you wish to not participate please head over to /plugins/bstats/ and disable it.
+=======
+# Waypoints
+QWaypoints v4.1 featuring messages files and non hardcoded messages.

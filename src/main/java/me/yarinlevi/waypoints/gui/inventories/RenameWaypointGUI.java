@@ -1,6 +1,7 @@
 package me.yarinlevi.waypoints.gui.inventories;
 
 import me.yarinlevi.waypoints.Waypoints;
+import me.yarinlevi.waypoints.utils.MessagesUtils;
 import me.yarinlevi.waypoints.utils.Utils;
 import me.yarinlevi.waypoints.waypoint.Waypoint;
 import net.wesjd.anvilgui.AnvilGUI;
@@ -26,7 +27,7 @@ public class RenameWaypointGUI {
                 })
                 .text(" ")
                 .itemLeft(new ItemStack(Material.PAPER))
-                .title("Rename waypoint")
+                .title(MessagesUtils.getMessage("gui.edit.name.title"))
                 .plugin(Waypoints.getInstance())
                 .open(player);
     }
