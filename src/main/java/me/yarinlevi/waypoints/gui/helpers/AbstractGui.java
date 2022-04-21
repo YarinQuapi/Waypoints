@@ -102,8 +102,6 @@ public abstract class AbstractGui implements Listener, IGui {
                 j = 0;
                 pages.put(page.getId(), page);
 
-                Bukkit.broadcastMessage(page.getId() + "#, Items in page: " + j);
-
                 page = new Page(page.getId() + 1, slots, lockedSlots, null, this.maxPages != page.getId() + 1);
             }
         }
