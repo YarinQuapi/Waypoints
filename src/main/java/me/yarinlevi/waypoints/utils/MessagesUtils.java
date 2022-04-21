@@ -2,6 +2,7 @@ package me.yarinlevi.waypoints.utils;
 
 import me.yarinlevi.waypoints.Waypoints;
 import me.yarinlevi.waypoints.data.FileUtils;
+import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -39,14 +40,18 @@ public class MessagesUtils {
     }
 
     public static String getMessage(String key, Object... args) {
-        return Constants.PREFIX + messages.get(key).replaceAll("&", "§").formatted(args);
+        return messages.get(key).replaceAll("&", "§").formatted(args);
+    }
+
+    public static String getMessageFromData(String key, Object... args) {
+        return messagesData.getString(key).replaceAll("&", "§").formatted(args);
     }
 
     public static String getMessageLines(String key, Object... args) {
         StringBuilder message = new StringBuilder();
 
         for (String string : messagesData.getStringList(key)) {
-            message.append(string.replaceAll("&", "§"));
+            message.append(ChatColor.translateAlternateColorCodes('&', string));
         }
 
         return message.toString().formatted(args);
@@ -58,5 +63,9 @@ public class MessagesUtils {
 
     public static String getRawString(String key) {
         return messages.getOrDefault(key, key).replaceAll("&", "§");
+    }
+
+    public static int getInt(String key) {
+        return messagesData.getInt(key);
     }
 }

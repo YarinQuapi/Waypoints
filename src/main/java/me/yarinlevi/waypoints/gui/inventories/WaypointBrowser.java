@@ -78,10 +78,9 @@ public class WaypointBrowser extends AbstractGui implements Listener {
         }
 
         try {
-            player.openInventory(this.initializeInventory());
-        } catch (InventoryDoesNotExistException e) {
-            e.printStackTrace();
-        }
+            this.initializeInventory();
+        } catch (InventoryDoesNotExistException ignored) { }
+        this.openPage(player, 1);
     }
 
     @EventHandler
@@ -92,6 +91,10 @@ public class WaypointBrowser extends AbstractGui implements Listener {
             if (e.getRawSlot() == 22) {
                 GuiUtils.openInventory("gui.personal.profile", (Player) e.getWhoClicked());
                 return;
+            }
+
+            if (e.getRawSlot() == this.getSlots()) {
+                this.nextPage((Player) e.getWhoClicked());
             }
 
             if (item != null && !item.getType().equals(Material.AIR) && item.getItemMeta() != null) {

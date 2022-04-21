@@ -186,8 +186,8 @@ public class MainCommand implements CommandExecutor, TabExecutor {
                         if (wp != null) {
                             LocationData locationData = wp.getLocationData();
 
-                            String msg = Utils.newMessage(String.format("&e&lShare &7Waypoint &b%s &7is located at &bX &a%s &bY &a%s &bZ &a%s &7in world &b%s",
-                                    name, locationData.x(), locationData.y(), locationData.z(), WaypointWorld.valueOf(locationData.world()).getName(), Utils.calculateDistance(p.getLocation().toVector(), wp.getVector())));
+                            String msg = MessagesUtils.getMessage("share_waypoint",
+                                    name, locationData.x(), locationData.y(), locationData.z(), WaypointWorld.valueOf(locationData.world()).getName(), Utils.calculateDistance(p.getLocation().toVector(), wp.getVector()));
                             Bukkit.broadcastMessage(msg);
                             return true;
                         } else {

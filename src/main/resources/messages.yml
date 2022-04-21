@@ -14,39 +14,34 @@ disabled: "&cdisabled"
 delete: "&cDELETE"
 you_died: "&7You died. Created waypoint "
 coordinates_format: "&bX &a%s &bY &a%s &bZ &a%s"
-#
 setting_change_failed_args: "&cSetting change failed! &7Not enough arguments!"
 setting_change_failed_not_found: "&cSetting change failed! &7Setting &e%s &7not found!"
 setting_toggled: "&7Setting '&e%1$s&7' was toggled %2$s&7!"
 tracker_changed: "&7Tracker updated! now using &b%1$s&7!"
 create_failed_args: "&cCreate failed! &7Not enough arguments!"
-#
 waypoint_created: "&7Created new waypoint &b%s"
 waypoint_deleted: "&7Deleted waypoint &b%s"
 waypoint_check: "&7Waypoint &b%1$s &7is located at &bX &a%2$s &bY &a%3$s &bZ &a%4$s &7in world &b%5$s &7You are &b%6$s &7blocks away."
 waypoint_distance: "&7The distance between waypoint &b%1$s &7and &b%2$s &7is &b%3$s &7blocks"
 waypoint_distance_not_found: "&cDistance check failed! &7Waypoint &e%s &7doesn't exist!"
-#
 action_failed_not_found: "&cAction failed! &7No waypoint found!"
 action_failed_args: "&cAction failed! &7Not enough arguments!"
-#
 tracking_disabled: "&cNo longer tracking."
 tracking_off: "&cYou are not tracking any waypoint."
 tracking: "&7Tracking - &b%s"
 tracking_failed_tracking: "&cTracking failed! &7You are already tracking a waypoint."
 tracking_failed_tracking_2: "&7Use &e/wp track off &7in order to stop tracking."
 tracking_destination_reached: "&7Destination reached!"
-#
 state_change_failed_not_allowed: "&cState change failed! &7changing waypoint state is not allowed."
 state_change_failed_syntax: "&cState changed failed! &7Incorrect syntax! please try &e/wp set <waypoint> <state>"
 state_change: "&7Successfully set waypoint state to %s"
-#
+share_waypoint: "&e&lShare &7Waypoint &b%1$s &7is located at &bX &a%2$s &bY &a%3$s &bZ &a%4$s &7in world &b%5$s"
 spawn_locate_command:
   - "&7Spawn locator:\n"
   - "&a  • &7Coordinates &bX &a%1$s &bY &a%2$s &bZ &a%3$s\n"
   - "&a  • &7Distance to coordinates &b%4$s &7blocks"
 help_command:
-  - "&7Commands:\n" +
+  - "&7Commands:\n"
   - "&a  • &b/wp help &f- &7Show this help menu\n"
   - "&a  • &b/wp check <&awaypoint&b> &f- &7Check a certain waypoint.\n"
   - "&a  • &b/wp create <&aname&b> &f- &7Create a new waypoint\n"
@@ -56,13 +51,23 @@ help_command:
   - "&a  • &b/wp nearest &f- &7Locates the nearest waypoint\n"
   - "&a  • &b/wp distance <&awaypointA&b> <&awaypointB&b> &f- &7Calculates the distance between two waypoints\n"
   - "&a  • &b/wp set <&awaypoint&b> <&astate&b> &f- &7Changes the state of the waypoint\n"
-  - "&a  • &b/wp track <&awaypoint&b> &f- &7Tracks a waypoints\n"
-  - "&a  • &b/wp setting <setting> [value]"
-#
+  - "&a  • &b/wp track <&a[player:waypoint] &7| &awaypoint&b> &f- &7Tracks a personal or a public waypoints\n"
+  - "&a  • &b/wp setting <&asetting&b> [&avalue&b] &f- &7Change a player setting\n"
+  - "&a  • &b/wp share <&awaypoint&b> &f- &7Shares a waypoint in chat"
 edit_icon: "&7Successfully changed waypoint's item to: &b%s"
 edit_icon_failed: "&cEdit failed! &7The item id was not found."
-#
 gui:
+  last-page: "&7Action Failed! &cYou were on the last page."
+  items: # Please note: When there are multiple pages, the last row is always locked to these items. Their slots are the slot at the last row.
+    menu:
+      title: "&6&lBack to Menu"
+      slot: 5
+    next:
+      title: "&6&lNext Page"
+      slot: 9
+    previous:
+      title: "&6&lPrevious Page"
+      slot: 1
   create:
     title: "Enter a waypoint name"
   edit:

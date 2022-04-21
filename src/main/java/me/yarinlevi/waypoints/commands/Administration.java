@@ -45,7 +45,11 @@ public class Administration implements CommandExecutor {
                     String.format("&a  • &7Distance to coordinates &b%s &7blocks", Utils.calculateDistance(p.getLocation(), p.getWorld().getSpawnLocation())));
             p.sendMessage(msg);
         } else if (args[0].equalsIgnoreCase("gui")) {
-            GuiUtils.openInventory(args[1], p);
+            if (args.length == 2) {
+                GuiUtils.openInventory(args[1], p);
+            } else {
+                GuiUtils.openInventory("profile", p);
+            }
 
         } else if (args[0].equalsIgnoreCase("load")) {
             OfflinePlayer offlinePlayer;

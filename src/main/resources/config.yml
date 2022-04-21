@@ -7,6 +7,15 @@ DeathPoints: true
 # Should public waypoints be available?
 PublicWaypoints: true
 
+# Permissions limiting players from creating unlimited waypoints
+# Please note! public waypoints are counted when considering total waypoints.
+permissions:
+  publicwaypoints:
+    qwaypoints.default: 2
+  totalwaypoints:
+    qwaypoints.default: 5
+
+# Configurations for all the trackers available
 trackers:
   enabled: true
   destination_reached: 10

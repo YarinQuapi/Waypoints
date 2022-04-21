@@ -26,7 +26,7 @@ public class EditWaypointItemGui {
                 })
                 .text(" ")
                 .itemLeft(new ItemStack(Material.PAPER))
-                .title(MessagesUtils.getMessage("gui.edit.icon.title"))
+                .title(MessagesUtils.getMessageFromData("gui.edit.icon.title"))
                 .plugin(Waypoints.getInstance())
                 .open(player);
     }

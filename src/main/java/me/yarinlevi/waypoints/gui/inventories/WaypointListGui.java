@@ -3,6 +3,7 @@ package me.yarinlevi.waypoints.gui.inventories;
 import me.yarinlevi.waypoints.Waypoints;
 import me.yarinlevi.waypoints.exceptions.InventoryDoesNotExistException;
 import me.yarinlevi.waypoints.gui.GuiUtils;
+import me.yarinlevi.waypoints.gui.global.items.Items;
 import me.yarinlevi.waypoints.gui.helpers.AbstractGui;
 import me.yarinlevi.waypoints.utils.LocationData;
 import me.yarinlevi.waypoints.utils.Utils;
@@ -30,16 +31,6 @@ public class WaypointListGui extends AbstractGui implements Listener {
         this.setKey("gui.personal.waypointlist");
         this.setSlots(9*3);
         this.setTitle(Utils.newMessageNoPrefix("&7Waypoint List"));
-
-        ItemStack backItem = new ItemStack(Material.NETHER_STAR);
-        ItemMeta meta = backItem.getItemMeta();
-
-        meta.setDisplayName(Utils.newMessageNoPrefix("&6&lBack to menu"));
-        meta.setLore(Collections.singletonList(Utils.newMessageNoPrefix("&6Click to go back.")));
-
-        backItem.setItemMeta(meta);
-        this.getItems().put(22, backItem);
-
 
         int i = 0;
         for (String waypointName : Waypoints.getInstance().getWaypointHandler().getWaypointList(player)) {
@@ -87,28 +78,41 @@ public class WaypointListGui extends AbstractGui implements Listener {
         }
 
         try {
-            player.openInventory(this.initializeInventory());
-        } catch (InventoryDoesNotExistException e) {
-            e.printStackTrace();
-        }
+            this.initializeInventory();
+        } catch (InventoryDoesNotExistException ignored) { }
+        this.openPage(player, 1);
     }
 
+    @Override
     @EventHandler
-    public void inventoryClick(InventoryClickEvent e) {
+    public void onInventoryClick(InventoryClickEvent e) {
         if (e.getInventory() == this.getInventory()) {
+
             ItemStack item = e.getInventory().getItem(e.getRawSlot());
 
-            assert item != null;
+            if (item == null) {
+                return;
+            }
 
             if (!item.getType().equals(Material.AIR)) {
+                Player player = (Player) e.getWhoClicked();
+
+                if (e.getRawSlot() == this.getSlots() -9+ Items.ITEM_MENU_SLOT) {
+                    GuiUtils.openInventory("gui.personal.profile", (Player) e.getWhoClicked());
+                }
+
+                if (e.getRawSlot() == this.getSlots() -9+ Items.ITEM_NEXT_SLOT) {
+                    this.nextPage(player);
+                }
+
+                if (e.getRawSlot() == this.getSlots() -9+ Items.ITEM_PREVIOUS_SLOT) {
+                    this.previousPage(player);
+                }
 
                 assert item.getItemMeta() != null;
                 String name = ChatColor.stripColor(item.getItemMeta().getDisplayName());
 
-                Player player = (Player) e.getWhoClicked();
-
-                Waypoint wp;
-                wp = Waypoints.getInstance().getWaypointHandler().getWaypoint(player, name);
+                Waypoint wp = Waypoints.getInstance().getWaypointHandler().getWaypoint(player, name);
 
                 if (wp != null) {
                     switch (e.getClick()) {
@@ -124,10 +128,6 @@ public class WaypointListGui extends AbstractGui implements Listener {
                             player.closeInventory();
                         }
                     }
-                }
-
-                if (e.getRawSlot() == 22) {
-                    GuiUtils.openInventory("gui.personal.profile", (Player) e.getWhoClicked());
                 }
             }
         }

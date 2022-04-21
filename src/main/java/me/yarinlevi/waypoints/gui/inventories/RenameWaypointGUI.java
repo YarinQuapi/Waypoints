@@ -27,7 +27,7 @@ public class RenameWaypointGUI {
                 })
                 .text(" ")
                 .itemLeft(new ItemStack(Material.PAPER))
-                .title(MessagesUtils.getMessage("gui.edit.name.title"))
+                .title(MessagesUtils.getMessageFromData("gui.edit.name.title"))
                 .plugin(Waypoints.getInstance())
                 .open(player);
     }

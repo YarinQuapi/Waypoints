@@ -28,6 +28,7 @@ public class ProfileGui extends AbstractGui implements Listener {
         this.setSlots(9*3);
         this.setTitle(Utils.newMessageNoPrefix("&7Main Profile: &b" + player.getName()));
 
+
         ItemStack itemStack = new ItemStack(Material.PLAYER_HEAD);
         SkullMeta skullMeta = (SkullMeta) itemStack.getItemMeta();
 
@@ -103,10 +104,9 @@ public class ProfileGui extends AbstractGui implements Listener {
             }
 
             try {
-                player.openInventory(this.initializeInventory());
-            } catch (InventoryDoesNotExistException e) {
-                e.printStackTrace();
-            }
+                this.initializeInventory();
+            } catch (InventoryDoesNotExistException ignored) { }
+            this.openPage(player, 1);
         }
     }
 
