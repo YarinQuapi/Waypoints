@@ -2,17 +2,13 @@ package me.yarinlevi.waypoints.gui.helpers.types;
 
 import lombok.Getter;
 import me.yarinlevi.waypoints.gui.global.items.Items;
-import org.bukkit.Bukkit;
-import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 /**
  * @author YarinQuapi

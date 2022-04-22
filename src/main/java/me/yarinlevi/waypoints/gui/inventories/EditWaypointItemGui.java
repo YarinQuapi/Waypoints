@@ -2,7 +2,6 @@ package me.yarinlevi.waypoints.gui.inventories;
 
 import me.yarinlevi.waypoints.Waypoints;
 import me.yarinlevi.waypoints.utils.MessagesUtils;
-import me.yarinlevi.waypoints.utils.Utils;
 import me.yarinlevi.waypoints.waypoint.Waypoint;
 import net.wesjd.anvilgui.AnvilGUI;
 import org.bukkit.Material;

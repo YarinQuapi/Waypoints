@@ -1,10 +1,5 @@
 package me.yarinlevi.waypoints.listeners;
 
-import com.comphenix.protocol.PacketType;
-import com.comphenix.protocol.ProtocolLibrary;
-import com.comphenix.protocol.ProtocolManager;
-import com.comphenix.protocol.events.PacketContainer;
-import com.comphenix.protocol.wrappers.BlockPosition;
 import lombok.Getter;
 import me.yarinlevi.waypoints.Waypoints;
 import me.yarinlevi.waypoints.data.FileUtils;
@@ -12,7 +7,6 @@ import me.yarinlevi.waypoints.exceptions.PlayerDoesNotExistException;
 import me.yarinlevi.waypoints.exceptions.WaypointDoesNotExistException;
 import me.yarinlevi.waypoints.player.PlayerData;
 import me.yarinlevi.waypoints.utils.MessagesUtils;
-import me.yarinlevi.waypoints.utils.Utils;
 import me.yarinlevi.waypoints.waypoint.Waypoint;
 import me.yarinlevi.waypoints.waypoint.WaypointState;
 import org.bukkit.Bukkit;
@@ -23,14 +17,11 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.util.BlockVector;
 
 import java.io.File;
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;

@@ -1,7 +1,6 @@
 package me.yarinlevi.waypoints.gui.inventories;
 
 import me.yarinlevi.waypoints.Waypoints;
-import me.yarinlevi.waypoints.exceptions.InventoryDoesNotExistException;
 import me.yarinlevi.waypoints.exceptions.PlayerNotLoadedException;
 import me.yarinlevi.waypoints.exceptions.WaypointAlreadyExistsException;
 import me.yarinlevi.waypoints.gui.helpers.AbstractGui;
@@ -11,7 +10,6 @@ import me.yarinlevi.waypoints.waypoint.Waypoint;
 import net.wesjd.anvilgui.AnvilGUI;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
 /**

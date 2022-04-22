@@ -15,7 +15,6 @@ import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.plugin.java.annotation.command.Commands;
-import org.bukkit.plugin.java.annotation.dependency.SoftDependency;
 import org.bukkit.plugin.java.annotation.plugin.ApiVersion;
 import org.bukkit.plugin.java.annotation.plugin.Description;
 import org.bukkit.plugin.java.annotation.plugin.Plugin;
@@ -28,7 +27,6 @@ import org.bukkit.plugin.java.annotation.plugin.author.Author;
 @Description(value = "A new way to store locations")
 @Author(value = "Quapi")
 @ApiVersion(value = ApiVersion.Target.v1_17)
-@SoftDependency(value = "ProtocolLib")
 @Commands()
 public class Waypoints extends JavaPlugin {
     @Getter private static Waypoints instance;
