@@ -5,6 +5,7 @@ import me.yarinlevi.waypoints.exceptions.InventoryDoesNotExistException;
 import me.yarinlevi.waypoints.gui.GuiUtils;
 import me.yarinlevi.waypoints.gui.global.items.Items;
 import me.yarinlevi.waypoints.gui.helpers.AbstractGui;
+import me.yarinlevi.waypoints.gui.helpers.types.GuiItem;
 import me.yarinlevi.waypoints.utils.LocationData;
 import me.yarinlevi.waypoints.utils.Utils;
 import me.yarinlevi.waypoints.waypoint.Waypoint;
@@ -69,7 +70,7 @@ public class WaypointListGui extends AbstractGui implements Listener {
 
                 itemStack.setItemMeta(itemMeta);
 
-                this.getItems().put(i, itemStack);
+                this.getItems().put(i, new GuiItem(i, itemStack));
                 i++;
                 if (i == 22) {
                     i++;

@@ -3,6 +3,7 @@ package me.yarinlevi.waypoints.gui.helpers;
 import lombok.Getter;
 import lombok.Setter;
 import me.yarinlevi.waypoints.exceptions.InventoryDoesNotExistException;
+import me.yarinlevi.waypoints.gui.helpers.types.GuiItem;
 import me.yarinlevi.waypoints.gui.helpers.types.Page;
 import me.yarinlevi.waypoints.utils.MessagesUtils;
 import org.bukkit.Bukkit;
@@ -16,8 +17,7 @@ import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author YarinQuapi
@@ -30,7 +30,8 @@ public abstract class AbstractGui implements Listener, IGui {
     @Getter private int maxPages;
     @Getter private int currentPage = 1;
     @Getter private final Map<Integer, Page> pages = new HashMap<>();
-    @Getter private final HashMap<Integer, ItemStack> items = new HashMap<>();
+    @Getter private final LinkedHashMap<Integer, ItemStack> gitems = new LinkedHashMap<>();
+    @Getter private final LinkedHashMap<Integer, GuiItem> items = new LinkedHashMap<>();
     private final int[] lockedSlots = new int[]{ slots-1, slots-2, slots-3, slots-4, slots-5, slots-6, slots-7, slots-8, slots-9 };
 
     public abstract void run(Player player);
@@ -73,36 +74,29 @@ public abstract class AbstractGui implements Listener, IGui {
     }
 
     public void initializeSlots() {
-        int size = items.keySet().size() + (lockedSlots.length * (items.keySet().size() / slots));
+        int size = items.size() + (lockedSlots.length * (items.size() / slots)); // total size of the inventories combined
 
-        this.maxPages = size / slots;
-        boolean leftOver = size % slots > 0;
+        this.maxPages = (int) Math.ceil((double) size / slots); // ceil to round up max pages
 
-        if (leftOver || this.maxPages == 0) {
-            this.maxPages++;
-        }
+        Page page = new Page(1, slots, lockedSlots, null, this.maxPages != 1); // create first page
 
-        Page page = new Page(1, slots, lockedSlots, null, this.maxPages != 1);
-
-        Bukkit.broadcastMessage("Total Size (including lockedSlots): " + size);
-        Bukkit.broadcastMessage("Max Pages: " + this.maxPages);
-        Bukkit.broadcastMessage("Max items: " + items.size());
-
-        int j = 0;
+        int j = 0; // item slot
         for (int i = 0; i < size; i++) {
 
-            if (j < (slots - lockedSlots.length)) {
-                page.addItem(j, items.get(i));
-                j++;
+            if (j < (slots - lockedSlots.length)) { // is in locked slots?
+                GuiItem item = items.entrySet().stream().sorted(Map.Entry.comparingByKey()).skip(i).findFirst().get().getValue(); // gets the item and the slot for the specified item
 
-                if (i == size-1) {
-                    pages.put(page.getId(), page);
+                page.addItem(item.slot() < this.slots-lockedSlots.length ? item.slot() : j, item.item()); // add item to page
+                j++; // increase slot
+
+                if (i == size-1) { // is last item?
+                    pages.put(page.getId(), page); // add page to pages
                 }
             } else {
-                j = 0;
-                pages.put(page.getId(), page);
+                j = 0; // reset slot to 0
+                pages.put(page.getId(), page); // add page to pages
 
-                page = new Page(page.getId() + 1, slots, lockedSlots, null, this.maxPages != page.getId() + 1);
+                page = new Page(page.getId() + 1, slots, lockedSlots, null, this.maxPages != page.getId() + 1); // create new page with an incremented id
             }
         }
     }

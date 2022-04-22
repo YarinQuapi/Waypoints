@@ -4,6 +4,7 @@ import me.yarinlevi.waypoints.Waypoints;
 import me.yarinlevi.waypoints.exceptions.InventoryDoesNotExistException;
 import me.yarinlevi.waypoints.gui.GuiUtils;
 import me.yarinlevi.waypoints.gui.helpers.AbstractGui;
+import me.yarinlevi.waypoints.gui.helpers.types.GuiItem;
 import me.yarinlevi.waypoints.utils.Utils;
 import me.yarinlevi.waypoints.waypoint.WaypointWorld;
 import org.bukkit.Material;
@@ -32,82 +33,77 @@ public class ProfileGui extends AbstractGui implements Listener {
         ItemStack itemStack = new ItemStack(Material.PLAYER_HEAD);
         SkullMeta skullMeta = (SkullMeta) itemStack.getItemMeta();
 
-        if (skullMeta != null) {
-            { // Statistics
-                skullMeta.setDisplayName(Utils.newMessageNoPrefix("&d" + player.getDisplayName() + "&7's Stats"));
-                skullMeta.setOwningPlayer(player);
+        // Statistics
+        skullMeta.setDisplayName(Utils.newMessageNoPrefix("&d" + player.getDisplayName() + "&7's Stats"));
+        skullMeta.setOwningPlayer(player);
 
-                ArrayList<String> lore = new ArrayList<>();
-                String waypointCount = String.format(Utils.newMessageNoPrefix("&b%s &7Waypoints"), Waypoints.getInstance().getWaypointHandler().getWaypointList(player).size());
-                lore.add(waypointCount);
+        ArrayList<String> lore = new ArrayList<>();
+        String waypointCount = String.format(Utils.newMessageNoPrefix("&b%s &7Waypoints"), Waypoints.getInstance().getWaypointHandler().getWaypointList(player).size());
+        lore.add(waypointCount);
 
-                int overworldCount = Waypoints.getInstance().getWaypointHandler().getWaypointList(player, WaypointWorld.NORMAL).size();
-                int netherCount = Waypoints.getInstance().getWaypointHandler().getWaypointList(player, WaypointWorld.NETHER).size();
-                int endCount = Waypoints.getInstance().getWaypointHandler().getWaypointList(player, WaypointWorld.THE_END).size();
-                int systemInduced = Waypoints.getInstance().getWaypointHandler().getSystemInducedWaypointList(player).size();
+        int overworldCount = Waypoints.getInstance().getWaypointHandler().getWaypointList(player, WaypointWorld.NORMAL).size();
+        int netherCount = Waypoints.getInstance().getWaypointHandler().getWaypointList(player, WaypointWorld.NETHER).size();
+        int endCount = Waypoints.getInstance().getWaypointHandler().getWaypointList(player, WaypointWorld.THE_END).size();
+        int systemInduced = Waypoints.getInstance().getWaypointHandler().getSystemInducedWaypointList(player).size();
 
-                if (overworldCount > 0) {
-                    lore.add(String.format(Utils.newMessageNoPrefix("&a%s &7Waypoints in &bOverworld"), overworldCount));
-                }
-
-                if (netherCount > 0) {
-                    lore.add(String.format(Utils.newMessageNoPrefix("&a%s &7Waypoints in &bThe Nether"), netherCount));
-                }
-
-                if (endCount > 0) {
-                    lore.add(String.format(Utils.newMessageNoPrefix("&a%s &7Waypoints in &bThe End"), endCount));
-                }
-
-                if (systemInduced > 0) {
-                    lore.add(String.format(Utils.newMessageNoPrefix("&4%s &cDeathpoints"), systemInduced));
-                }
-
-                skullMeta.setLore(lore);
-                itemStack.setItemMeta(skullMeta);
-                this.getItems().put(13, itemStack);
-            }
-
-            { // Create waypoint button
-                ItemStack createWaypointButton = new ItemStack(Material.LIME_WOOL);
-                ItemMeta meta = createWaypointButton.getItemMeta();
-
-                assert meta != null;
-                meta.setDisplayName(Utils.newRGBMessage("Create a new waypoint", new Utils.RGBController(35, 245, 24)));
-
-                ArrayList<String> lore = new ArrayList<>();
-                lore.add(Utils.newRGBMessage("Click here to create a new waypoint!", new Utils.RGBController(30, 219, 20)));
-
-                meta.setLore(lore);
-
-                createWaypointButton.setItemMeta(meta);
-
-
-                this.getItems().put(10, createWaypointButton);
-            }
-
-            { // Create waypoint button
-                ItemStack waypointListButton = new ItemStack(Material.YELLOW_WOOL);
-                ItemMeta meta = waypointListButton.getItemMeta();
-
-                assert meta != null;
-                meta.setDisplayName(Utils.newRGBMessage("List all waypoints", new Utils.RGBController(255, 205, 28)));
-
-                ArrayList<String> lore = new ArrayList<>();
-                lore.add(Utils.newRGBMessage("Click here to list all waypoints!", new Utils.RGBController(255, 251, 0)));
-
-                meta.setLore(lore);
-
-                waypointListButton.setItemMeta(meta);
-
-
-                this.getItems().put(16, waypointListButton);
-            }
-
-            try {
-                this.initializeInventory();
-            } catch (InventoryDoesNotExistException ignored) { }
-            this.openPage(player, 1);
+        if (overworldCount > 0) {
+            lore.add(String.format(Utils.newMessageNoPrefix("&a%s &7Waypoints in &bOverworld"), overworldCount));
         }
+
+        if (netherCount > 0) {
+            lore.add(String.format(Utils.newMessageNoPrefix("&a%s &7Waypoints in &bThe Nether"), netherCount));
+        }
+
+        if (endCount > 0) {
+            lore.add(String.format(Utils.newMessageNoPrefix("&a%s &7Waypoints in &bThe End"), endCount));
+        }
+
+        if (systemInduced > 0) {
+            lore.add(String.format(Utils.newMessageNoPrefix("&4%s &cDeathpoints"), systemInduced));
+        }
+
+        skullMeta.setLore(lore);
+        itemStack.setItemMeta(skullMeta);
+        this.getItems().put(13, new GuiItem(13, itemStack));
+
+        // Create waypoint button
+        ItemStack createWaypointButton = new ItemStack(Material.LIME_WOOL);
+        ItemMeta meta2 = createWaypointButton.getItemMeta();
+
+        meta2.setDisplayName(Utils.newRGBMessage("Create a new waypoint", new Utils.RGBController(35, 245, 24)));
+
+        ArrayList<String> lore2 = new ArrayList<>();
+        lore2.add(Utils.newRGBMessage("Click here to create a new waypoint!", new Utils.RGBController(30, 219, 20)));
+
+        meta2.setLore(lore2);
+
+        createWaypointButton.setItemMeta(meta2);
+
+
+        this.getItems().put(10, new GuiItem(10, createWaypointButton));
+
+        // Create waypoint button
+        ItemStack waypointListButton = new ItemStack(Material.YELLOW_WOOL);
+        ItemMeta meta1 = waypointListButton.getItemMeta();
+
+        assert meta1 != null;
+        meta1.setDisplayName(Utils.newRGBMessage("List all waypoints", new Utils.RGBController(255, 205, 28)));
+
+        ArrayList<String> lore1 = new ArrayList<>();
+        lore1.add(Utils.newRGBMessage("Click here to list all waypoints!", new Utils.RGBController(255, 251, 0)));
+
+        meta1.setLore(lore1);
+
+        waypointListButton.setItemMeta(meta1);
+
+
+        this.getItems().put(16, new GuiItem(16, waypointListButton));
+
+
+        try {
+            this.initializeInventory();
+        } catch (InventoryDoesNotExistException ignored) { }
+        this.openPage(player, 1);
     }
 
     @EventHandler

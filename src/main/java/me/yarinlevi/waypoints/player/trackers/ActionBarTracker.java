@@ -8,6 +8,8 @@ import com.comphenix.protocol.wrappers.WrappedChatComponent;
 import me.yarinlevi.waypoints.Waypoints;
 import me.yarinlevi.waypoints.utils.MessagesUtils;
 import me.yarinlevi.waypoints.utils.Utils;
+import net.md_5.bungee.api.ChatMessageType;
+import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -33,10 +35,8 @@ public class ActionBarTracker extends Tracker {
     private static final String leftArrow = Waypoints.getInstance().getConfig().getString("trackers.actionbar.leftarrow");
     private static final String rightArrow = Waypoints.getInstance().getConfig().getString("trackers.actionbar.rightarrow");
     private static final String block = "⬛";
-    private static final int blockCount = 35;
+    private static final int blockCount = 25;
     private static final String indicatorColor = Waypoints.getInstance().getConfig().getString("trackers.actionbar.indicatorcolor");
-
-    ProtocolManager protocolManager = ProtocolLibrary.getProtocolManager();
 
     public ActionBarTracker() {
         Bukkit.getScheduler().runTaskTimerAsynchronously(Waypoints.getInstance(), () -> {
@@ -65,16 +65,7 @@ public class ActionBarTracker extends Tracker {
                 trackedPlayers.remove(x);
                 x.sendMessage(Utils.newMessage("&7You have reached your destination!"));
             } else {
-                PacketContainer packetContainer = protocolManager.createPacket(PacketType.Play.Client.CHAT);
-
-                packetContainer.getChatComponents().write(0, WrappedChatComponent.fromText(bars.get(x)));
-                packetContainer.getBytes().write(0, (byte) 2);
-
-                try {
-                    protocolManager.sendServerPacket(x, packetContainer);
-                } catch (InvocationTargetException e) {
-                    e.printStackTrace();
-                }
+                x.spigot().sendMessage(ChatMessageType.ACTION_BAR, null, new TextComponent(bars.get(x)));
             }
         });
     }

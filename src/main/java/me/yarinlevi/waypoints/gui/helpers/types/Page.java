@@ -51,14 +51,7 @@ public class Page {
         player.closeInventory();
         inventory.clear();
 
-        Bukkit.broadcastMessage("1");
-
-        Bukkit.broadcastMessage("Items: " + items.size());
-
-        for (int i = 0; i < items.size(); i++) {
-            inventory.setItem(i, items.get(i));
-            Bukkit.broadcastMessage("Item added to slot " + i);
-        }
+        items.entrySet().stream().sorted(Map.Entry.comparingByKey()).forEach(entry -> inventory.setItem(entry.getKey(), entry.getValue()));
 
         inventory.setItem(slots - (lockedSlots.length - Items.ITEM_MENU_SLOT), Items.ITEM_MENU);
 
