@@ -6,6 +6,7 @@ import me.yarinlevi.waypoints.Waypoints;
 import me.yarinlevi.waypoints.data.FileUtils;
 import me.yarinlevi.waypoints.player.trackers.ETracker;
 import me.yarinlevi.waypoints.waypoint.Waypoint;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
@@ -24,12 +25,27 @@ public class PlayerDataManager {
     @Getter @Setter private File settingsFile;
     @Getter @Setter private FileConfiguration settingsData;
 
+    @Getter private final Map<String, Map<String, Integer>> waypointLimits = new HashMap<>();
+
     public PlayerDataManager() {
         settingsFile = new File(Waypoints.getInstance().getDataFolder(), "playerSettings.yml");
         settingsData = YamlConfiguration.loadConfiguration(settingsFile);
 
         FileUtils.registerData(settingsFile, settingsData);
         FileUtils.save(settingsFile, settingsData);
+
+        ConfigurationSection config = Waypoints.getInstance().getConfig().getConfigurationSection("permissions");
+
+        waypointLimits.put("total", new HashMap<>());
+        waypointLimits.put("nether", new HashMap<>());
+        waypointLimits.put("end", new HashMap<>());
+
+        {
+            config.getConfigurationSection("totalwaypoints").getKeys(false).forEach(key -> {
+                waypointLimits.get("total").put(key, config.getInt("totalwaypoints." + key));
+            });
+        }
+
     }
 
     public void loadPlayerSettings(UUID uuid) {

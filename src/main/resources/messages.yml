@@ -68,6 +68,14 @@ gui:
     previous:
       title: "&6&lPrevious Page"
       slot: 1
+    profile:
+      title: "&d{0}&7's Stats"
+      lore:
+        - "&a{1} &7Total waypoints"
+        - "&a{2} &7Waypoints in &bOverworld"
+        - "&a{3} &7Waypoints in &bThe Nether"
+        - "&a{4} &7Waypoints in &bThe End"
+        - "&a{5} &7Deathpoints"
   create:
     title: "Enter a waypoint name"
   edit:
@@ -75,3 +83,6 @@ gui:
       title: "Edit waypoint icon"
     name:
       title: "Rename waypoint"
+  menu:
+    title: "&b{0}&7's Profile"
+

@@ -5,6 +5,7 @@ import me.yarinlevi.waypoints.exceptions.InventoryDoesNotExistException;
 import me.yarinlevi.waypoints.gui.GuiUtils;
 import me.yarinlevi.waypoints.gui.helpers.AbstractGui;
 import me.yarinlevi.waypoints.gui.helpers.types.GuiItem;
+import me.yarinlevi.waypoints.utils.MessagesUtils;
 import me.yarinlevi.waypoints.utils.Utils;
 import me.yarinlevi.waypoints.waypoint.WaypointWorld;
 import org.bukkit.Material;
@@ -17,6 +18,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -27,42 +29,24 @@ public class ProfileGui extends AbstractGui implements Listener {
     public void run(Player player) {
         this.setKey("gui.personal.profile");
         this.setSlots(9*3);
-        this.setTitle(Utils.newMessageNoPrefix("&7Main Profile: &b" + player.getName()));
+        this.setTitle(MessagesUtils.getMessageFromData("gui.menu.title"));
 
 
         ItemStack itemStack = new ItemStack(Material.PLAYER_HEAD);
         SkullMeta skullMeta = (SkullMeta) itemStack.getItemMeta();
 
         // Statistics
-        skullMeta.setDisplayName(Utils.newMessageNoPrefix("&d" + player.getDisplayName() + "&7's Stats"));
+        skullMeta.setDisplayName(MessagesUtils.getMessageFromData("gui.items.profile.title"));
         skullMeta.setOwningPlayer(player);
-
-        ArrayList<String> lore = new ArrayList<>();
-        String waypointCount = String.format(Utils.newMessageNoPrefix("&b%s &7Waypoints"), Waypoints.getInstance().getWaypointHandler().getWaypointList(player).size());
-        lore.add(waypointCount);
 
         int overworldCount = Waypoints.getInstance().getWaypointHandler().getWaypointList(player, WaypointWorld.NORMAL).size();
         int netherCount = Waypoints.getInstance().getWaypointHandler().getWaypointList(player, WaypointWorld.NETHER).size();
         int endCount = Waypoints.getInstance().getWaypointHandler().getWaypointList(player, WaypointWorld.THE_END).size();
         int systemInduced = Waypoints.getInstance().getWaypointHandler().getSystemInducedWaypointList(player).size();
 
-        if (overworldCount > 0) {
-            lore.add(String.format(Utils.newMessageNoPrefix("&a%s &7Waypoints in &bOverworld"), overworldCount));
-        }
+        String lore = MessagesUtils.getMessageLines("gui.items.profile.lore", overworldCount, netherCount, endCount, systemInduced);
 
-        if (netherCount > 0) {
-            lore.add(String.format(Utils.newMessageNoPrefix("&a%s &7Waypoints in &bThe Nether"), netherCount));
-        }
-
-        if (endCount > 0) {
-            lore.add(String.format(Utils.newMessageNoPrefix("&a%s &7Waypoints in &bThe End"), endCount));
-        }
-
-        if (systemInduced > 0) {
-            lore.add(String.format(Utils.newMessageNoPrefix("&4%s &cDeathpoints"), systemInduced));
-        }
-
-        skullMeta.setLore(lore);
+        skullMeta.setLore(List.of(lore));
         itemStack.setItemMeta(skullMeta);
         this.getItems().put(13, new GuiItem(13, itemStack));
 

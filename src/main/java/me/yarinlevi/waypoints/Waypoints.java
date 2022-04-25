@@ -49,16 +49,16 @@ public class Waypoints extends JavaPlugin {
         this.saveResource("messages.yml", false);
         new MessagesUtils();
 
-        playerListener = new PlayerListener();
+        playerListener = new PlayerListener(); // registering player listener
         Bukkit.getPluginManager().registerEvents(playerListener, this);
 
-        playerDataManager = new PlayerDataManager();
+        playerDataManager = new PlayerDataManager(); // loads player data manager
 
-        waypointHandler = new WaypointHandler();
+        waypointHandler = new WaypointHandler(); // loads waypoint handler
 
-        trackerManager = new TrackerManager();
+        trackerManager = new TrackerManager(); // loads tracking systems
 
-        if (deathPoints) {
+        if (deathPoints) { // death point registerer
             Bukkit.getPluginManager().registerEvents(new PlayerDeathListener(), this);
             getLogger().info(Utils.newMessageNoPrefix("&7> DeathPoints enabled!"));
         }
@@ -66,7 +66,7 @@ public class Waypoints extends JavaPlugin {
         // Reload Safe
         Bukkit.getOnlinePlayers().forEach(player -> playerListener.loadPlayer(player.getUniqueId()));
 
-        GuiUtils.registerGui();
+        GuiUtils.registerGui(); // registers gui systems
 
         this.getCommand("wpadmin").setExecutor(new Administration());
         this.getCommand("waypoint").setExecutor(new MainCommand());

@@ -43,6 +43,10 @@ public class MessagesUtils {
 
 
     public static String getMessage(String key, Object... args) {
+        if (key.contains(".")) {
+            return getMessageFromData(key, args);
+        }
+
         return messages.get(key).replaceAll("&", "§").formatted(args);
     }
 
