@@ -36,27 +36,29 @@ state_change_failed_not_allowed: "&cState change failed! &7changing waypoint sta
 state_change_failed_syntax: "&cState changed failed! &7Incorrect syntax! please try &e/wp set <waypoint> <state>"
 state_change: "&7Successfully set waypoint state to %s"
 share_waypoint: "&e&lShare &7Waypoint &b%1$s &7is located at &bX &a%2$s &bY &a%3$s &bZ &a%4$s &7in world &b%5$s"
+biome_format: "&7Biome: &b%s"
 spawn_locate_command:
-  - "&7Spawn locator:\n"
-  - "&a  • &7Coordinates &bX &a%1$s &bY &a%2$s &bZ &a%3$s\n"
+  - "&7Spawn locator:"
+  - "&a  • &7Coordinates &bX &a%1$s &bY &a%2$s &bZ &a%3$s"
   - "&a  • &7Distance to coordinates &b%4$s &7blocks"
 help_command:
   - "&7Commands:\n"
-  - "&a  • &b/wp help &f- &7Show this help menu\n"
-  - "&a  • &b/wp check <&awaypoint&b> &f- &7Check a certain waypoint.\n"
-  - "&a  • &b/wp create <&aname&b> &f- &7Create a new waypoint\n"
-  - "&a  • &b/wp list [&aworld&b] &f- &7List all (or some) of your waypoints\n"
-  - "&a  • &b/wp delete <&awaypoint&b> &f- &7Delete a waypoint\n"
-  - "&a  • &b/wp spawn &f- &7Locates the spawn of the world\n"
-  - "&a  • &b/wp nearest &f- &7Locates the nearest waypoint\n"
-  - "&a  • &b/wp distance <&awaypointA&b> <&awaypointB&b> &f- &7Calculates the distance between two waypoints\n"
-  - "&a  • &b/wp set <&awaypoint&b> <&astate&b> &f- &7Changes the state of the waypoint\n"
-  - "&a  • &b/wp track <&a[player:waypoint] &7| &awaypoint&b> &f- &7Tracks a personal or a public waypoints\n"
-  - "&a  • &b/wp setting <&asetting&b> [&avalue&b] &f- &7Change a player setting\n"
+  - "&a  • &b/wp help &f- &7Show this help menu"
+  - "&a  • &b/wp check <&awaypoint&b> &f- &7Check a certain waypoint."
+  - "&a  • &b/wp create <&aname&b> &f- &7Create a new waypoint"
+  - "&a  • &b/wp list [&aworld&b] &f- &7List all (or some) of your waypoints"
+  - "&a  • &b/wp delete <&awaypoint&b> &f- &7Delete a waypoint"
+  - "&a  • &b/wp spawn &f- &7Locates the spawn of the world"
+  - "&a  • &b/wp nearest &f- &7Locates the nearest waypoin"
+  - "&a  • &b/wp distance <&awaypointA&b> <&awaypointB&b> &f- &7Calculates the distance between two waypoints"
+  - "&a  • &b/wp set <&awaypoint&b> <&astate&b> &f- &7Changes the state of the waypoint"
+  - "&a  • &b/wp track <&a[player:waypoint] &7| &awaypoint&b> &f- &7Tracks a personal or a public waypoints"
+  - "&a  • &b/wp setting <&asetting&b> [&avalue&b] &f- &7Change a player setting"
   - "&a  • &b/wp share <&awaypoint&b> &f- &7Shares a waypoint in chat"
 edit_icon: "&7Successfully changed waypoint's item to: &b%s"
 edit_icon_failed: "&cEdit failed! &7The item id was not found."
 gui:
+  no-items: "&7Action Failed! &cNo items found!"
   last-page: "&7Action Failed! &cYou were on the last page."
   items: # Please note: When there are multiple pages, the last row is always locked to these items. Their slots are the slot at the last row.
     menu:
@@ -69,13 +71,13 @@ gui:
       title: "&6&lPrevious Page"
       slot: 1
     profile:
-      title: "&d{0}&7's Stats"
+      title: "&d%1$s&7's Stats"
       lore:
-        - "&a{1} &7Total waypoints"
-        - "&a{2} &7Waypoints in &bOverworld"
-        - "&a{3} &7Waypoints in &bThe Nether"
-        - "&a{4} &7Waypoints in &bThe End"
-        - "&a{5} &7Deathpoints"
+        - "&a%1$s &7Total waypoints"
+        - "&a%2$s &7Waypoints in &bOverworld"
+        - "&a%3$s &7Waypoints in &bThe Nether"
+        - "&a%4$s &7Waypoints in &bThe End"
+        - "&a%5$s &7Deathpoints"
   create:
     title: "Enter a waypoint name"
   edit:
@@ -84,5 +86,5 @@ gui:
     name:
       title: "Rename waypoint"
   menu:
-    title: "&b{0}&7's Profile"
+    title: "&b%1$s&7's Profile"
 
