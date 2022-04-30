@@ -30,6 +30,7 @@ public class ActionBarTracker extends Tracker {
     private static final String block = "⬛";
     private static final int blockCount = 25;
     private static final String indicatorColor = Waypoints.getInstance().getConfig().getString("trackers.actionbar.indicatorcolor");
+    private static final String blockColor = Waypoints.getInstance().getConfig().getString("trackers.actionbar.blockcolor");
 
     public ActionBarTracker() {
         Bukkit.getScheduler().runTaskTimerAsynchronously(Waypoints.getInstance(), () -> {
@@ -70,20 +71,20 @@ public class ActionBarTracker extends Tracker {
 
     private @NotNull String generateDirectionIndicator(double angle) {
         if (angle > range) {
-            return indicatorColor + leftArrow + indicatorColor + Utils.repeat(block, blockCount) + rightArrow;
+            return indicatorColor + leftArrow + blockColor + Utils.repeat(block, blockCount) + rightArrow;
         }
 
         if (-angle > range) {
-            return indicatorColor + leftArrow + Utils.repeat(block, blockCount) + indicatorColor + rightArrow;
+            return blockColor + leftArrow + Utils.repeat(block, blockCount) + indicatorColor + rightArrow;
         }
 
         double percent = -(angle / range);
         int nthSection = (int) Math.round(((double) (blockCount - 1) / 2) * percent);
         nthSection += Math.round((double) blockCount / 2);
 
-        return indicatorColor + leftArrow +
+        return blockColor + leftArrow +
                 Utils.repeat(block, nthSection - 1)
-                + indicatorColor + block + indicatorColor
+                + indicatorColor + block + blockColor
                 + Utils.repeat(block, blockCount - nthSection) + rightArrow;
     }
 
