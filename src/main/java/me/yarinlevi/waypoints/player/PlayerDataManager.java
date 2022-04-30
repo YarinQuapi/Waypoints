@@ -3,7 +3,7 @@ package me.yarinlevi.waypoints.player;
 import lombok.Getter;
 import lombok.Setter;
 import me.yarinlevi.waypoints.Waypoints;
-import me.yarinlevi.waypoints.data.FileUtils;
+import me.yarinlevi.waypoints.data.helpers.FileUtils;
 import me.yarinlevi.waypoints.player.trackers.ETracker;
 import me.yarinlevi.waypoints.waypoint.Waypoint;
 import org.bukkit.configuration.ConfigurationSection;

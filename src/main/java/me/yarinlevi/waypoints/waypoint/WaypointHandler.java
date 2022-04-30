@@ -42,7 +42,7 @@ public class WaypointHandler {
      * @return Waypoint list
      */
     public List<Waypoint> getAllPublicWaypoints() {
-        return Waypoints.getInstance().getPlayerListener().getPublicWaypointsFromData();
+        return Waypoints.getInstance().getPlayerData().getPublicWaypoints();
     }
 
     public void renameWaypoint(OfflinePlayer player, String waypoint, String newWaypointName) {
@@ -90,7 +90,7 @@ public class WaypointHandler {
                 throw new WaypointAlreadyExistsException(Utils.newMessage(String.format("&7Waypoint with name &b%s &7already exists.", waypoint.getName())));
             } else {
                 waypointData.getWaypointList().add(waypoint);
-                Waypoints.getInstance().getPlayerListener().savePlayer(player);
+                Waypoints.getInstance().getPlayerData().savePlayer(player);
                 return true;
             }
         } else {
