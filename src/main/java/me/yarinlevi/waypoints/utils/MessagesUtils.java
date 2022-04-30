@@ -1,7 +1,7 @@
 package me.yarinlevi.waypoints.utils;
 
 import me.yarinlevi.waypoints.Waypoints;
-import me.yarinlevi.waypoints.data.FileUtils;
+import me.yarinlevi.waypoints.data.helpers.FileUtils;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -9,6 +9,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 public class MessagesUtils {
     private static final Map<String, String> messages = new HashMap<>();
@@ -40,20 +41,18 @@ public class MessagesUtils {
         messagesData.getKeys(false).forEach(key -> messages.put(key, messagesData.getString(key)));
     }
 
-
+    private static final Pattern pattern = Pattern.compile("\\b[{\\d}](?=})\\b");
 
     public static String getMessage(String key, Object... args) {
         if (key.contains(".")) {
             return getMessageFromData(key, args);
         }
 
-        return messages.get(key).replaceAll("&", "§").formatted(args);
+        return messages.get(key).formatted(args).replaceAll("&", "§");
     }
 
-
-
     public static String getMessageFromData(String key, Object... args) {
-        return messagesData.getString(key).replaceAll("&", "§").formatted(args);
+        return messagesData.getString(key, key).formatted(args).replaceAll("&", "§");
     }
 
 
@@ -62,7 +61,7 @@ public class MessagesUtils {
         StringBuilder message = new StringBuilder();
 
         for (String string : messagesData.getStringList(key)) {
-            message.append(ChatColor.translateAlternateColorCodes('&', string));
+            message.append(ChatColor.translateAlternateColorCodes('&', string + "\n"));
         }
 
         return message.toString().formatted(args);
