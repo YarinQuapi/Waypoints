@@ -7,6 +7,10 @@ DeathPoints: true
 # Should public waypoints be available?
 PublicWaypoints: true
 
+# Sqlite settings
+sqlite:
+  enabled: false
+
 # Permissions limiting players from creating unlimited waypoints
 # Please note! public waypoints are counted when considering total waypoints.
 # Please also note! Having a player granted a few permissions from the lists below will only count the one with the highest number.
@@ -30,6 +34,7 @@ trackers:
     enabled: true
     interval: 20
     indicatorcolor: "§b§l"
+    blockcolor: "§7"
     leftarrow: "<-"
     rightarrow: "->"
 
