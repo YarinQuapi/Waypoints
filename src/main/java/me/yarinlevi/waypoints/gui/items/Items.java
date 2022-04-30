@@ -1,4 +1,4 @@
-package me.yarinlevi.waypoints.gui.global.items;
+package me.yarinlevi.waypoints.gui.items;
 
 import me.yarinlevi.waypoints.utils.MessagesUtils;
 import org.bukkit.Material;

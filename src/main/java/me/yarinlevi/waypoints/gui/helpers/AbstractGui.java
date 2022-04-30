@@ -2,6 +2,7 @@ package me.yarinlevi.waypoints.gui.helpers;
 
 import lombok.Getter;
 import lombok.Setter;
+import me.yarinlevi.waypoints.exceptions.GuiNoItemException;
 import me.yarinlevi.waypoints.exceptions.InventoryDoesNotExistException;
 import me.yarinlevi.waypoints.gui.helpers.types.GuiItem;
 import me.yarinlevi.waypoints.gui.helpers.types.Page;
@@ -16,6 +17,7 @@ import org.bukkit.event.inventory.InventoryMoveItemEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -38,9 +40,14 @@ public abstract class AbstractGui implements Listener, IGui {
 
     public abstract void run(Player player);
 
-    public Inventory initializeInventory() throws InventoryDoesNotExistException {
+    @Nullable
+    public Inventory initializeInventory() throws InventoryDoesNotExistException, GuiNoItemException {
         if (inventoryType.equals(InventoryType.CHEST)) {
             inventory = Bukkit.createInventory(null, slots, title);
+
+            if (items.size() == 0) {
+                throw new GuiNoItemException();
+            }
 
             this.initializeSlots();
 

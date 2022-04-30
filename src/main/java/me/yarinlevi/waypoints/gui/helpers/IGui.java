@@ -1,5 +1,6 @@
 package me.yarinlevi.waypoints.gui.helpers;
 
+import me.yarinlevi.waypoints.exceptions.GuiNoItemException;
 import me.yarinlevi.waypoints.exceptions.InventoryDoesNotExistException;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
@@ -10,5 +11,5 @@ import org.bukkit.inventory.Inventory;
 public interface IGui {
     void run(Player player);
 
-    Inventory initializeInventory() throws InventoryDoesNotExistException;
+    Inventory initializeInventory() throws InventoryDoesNotExistException, GuiNoItemException;
 }

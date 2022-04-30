@@ -1,11 +1,13 @@
 package me.yarinlevi.waypoints.gui.inventories;
 
 import me.yarinlevi.waypoints.Waypoints;
+import me.yarinlevi.waypoints.exceptions.GuiNoItemException;
 import me.yarinlevi.waypoints.exceptions.InventoryDoesNotExistException;
 import me.yarinlevi.waypoints.gui.GuiUtils;
 import me.yarinlevi.waypoints.gui.helpers.AbstractGui;
 import me.yarinlevi.waypoints.gui.helpers.types.GuiItem;
 import me.yarinlevi.waypoints.utils.LocationData;
+import me.yarinlevi.waypoints.utils.MessagesUtils;
 import me.yarinlevi.waypoints.utils.Utils;
 import me.yarinlevi.waypoints.waypoint.Waypoint;
 import me.yarinlevi.waypoints.waypoint.WaypointWorld;
@@ -51,6 +53,9 @@ public class WaypointBrowser extends AbstractGui implements Listener {
             String waypointState = Utils.newMessageNoPrefix("&7State " + wp.getState().getState());
             lore.add(waypointState);
 
+            String waypointBiome = wp.getBiome();
+            lore.add(waypointBiome);
+
             lore.add("\n");
 
             lore.add(Utils.newMessageNoPrefix("&7Owned by &b" + Bukkit.getOfflinePlayer(wp.getOwner()).getName()));
@@ -70,6 +75,9 @@ public class WaypointBrowser extends AbstractGui implements Listener {
         try {
             this.initializeInventory();
         } catch (InventoryDoesNotExistException ignored) { }
+        catch (GuiNoItemException e) {
+            player.sendMessage(MessagesUtils.getMessageFromData("gui.no-items", player.getName()));
+        }
         this.openPage(player, 1);
     }
 
@@ -96,7 +104,7 @@ public class WaypointBrowser extends AbstractGui implements Listener {
 
                     OfflinePlayer offlinePlayer;
 
-                    String offlinePlayerName = ChatColor.stripColor(item.getItemMeta().getLore().get(4)).substring(9);
+                    String offlinePlayerName = ChatColor.stripColor(item.getItemMeta().getLore().get(5)).substring(9);
 
                     offlinePlayer = Bukkit.getOfflinePlayer(offlinePlayerName);
 

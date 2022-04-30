@@ -1,7 +1,7 @@
 package me.yarinlevi.waypoints.gui.helpers.types;
 
 import lombok.Getter;
-import me.yarinlevi.waypoints.gui.global.items.Items;
+import me.yarinlevi.waypoints.gui.items.Items;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -47,7 +47,9 @@ public class Page {
         player.closeInventory();
         inventory.clear();
 
+
         items.entrySet().stream().sorted(Map.Entry.comparingByKey()).forEach(entry -> inventory.setItem(entry.getKey(), entry.getValue()));
+
 
         inventory.setItem(slots - (lockedSlots.length - Items.ITEM_MENU_SLOT), Items.ITEM_MENU);
 

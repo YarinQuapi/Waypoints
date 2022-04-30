@@ -1,6 +1,7 @@
 package me.yarinlevi.waypoints.gui.inventories;
 
 import me.yarinlevi.waypoints.Waypoints;
+import me.yarinlevi.waypoints.exceptions.GuiNoItemException;
 import me.yarinlevi.waypoints.exceptions.InventoryDoesNotExistException;
 import me.yarinlevi.waypoints.gui.GuiUtils;
 import me.yarinlevi.waypoints.gui.helpers.AbstractGui;
@@ -29,14 +30,14 @@ public class ProfileGui extends AbstractGui implements Listener {
     public void run(Player player) {
         this.setKey("gui.personal.profile");
         this.setSlots(9*3);
-        this.setTitle(MessagesUtils.getMessageFromData("gui.menu.title"));
+        this.setTitle(MessagesUtils.getMessageFromData("gui.menu.title", player.getName()));
 
 
         ItemStack itemStack = new ItemStack(Material.PLAYER_HEAD);
         SkullMeta skullMeta = (SkullMeta) itemStack.getItemMeta();
 
         // Statistics
-        skullMeta.setDisplayName(MessagesUtils.getMessageFromData("gui.items.profile.title"));
+        skullMeta.setDisplayName(MessagesUtils.getMessageFromData("gui.items.profile.title", player.getName()));
         skullMeta.setOwningPlayer(player);
 
         int overworldCount = Waypoints.getInstance().getWaypointHandler().getWaypointList(player, WaypointWorld.NORMAL).size();
@@ -44,7 +45,9 @@ public class ProfileGui extends AbstractGui implements Listener {
         int endCount = Waypoints.getInstance().getWaypointHandler().getWaypointList(player, WaypointWorld.THE_END).size();
         int systemInduced = Waypoints.getInstance().getWaypointHandler().getSystemInducedWaypointList(player).size();
 
-        String lore = MessagesUtils.getMessageLines("gui.items.profile.lore", overworldCount, netherCount, endCount, systemInduced);
+        int total = overworldCount + netherCount + endCount + systemInduced;
+
+        String lore = MessagesUtils.getMessageLines("gui.items.profile.lore", total, overworldCount, netherCount, endCount, systemInduced);
 
         skullMeta.setLore(List.of(lore));
         itemStack.setItemMeta(skullMeta);
@@ -87,6 +90,9 @@ public class ProfileGui extends AbstractGui implements Listener {
         try {
             this.initializeInventory();
         } catch (InventoryDoesNotExistException ignored) { }
+        catch (GuiNoItemException e) {
+            player.sendMessage(MessagesUtils.getMessageFromData("gui.no-items", player.getName()));
+        }
         this.openPage(player, 1);
     }
 

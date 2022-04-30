@@ -1,12 +1,14 @@
 package me.yarinlevi.waypoints.gui.inventories;
 
 import me.yarinlevi.waypoints.Waypoints;
+import me.yarinlevi.waypoints.exceptions.GuiNoItemException;
 import me.yarinlevi.waypoints.exceptions.InventoryDoesNotExistException;
 import me.yarinlevi.waypoints.gui.GuiUtils;
-import me.yarinlevi.waypoints.gui.global.items.Items;
 import me.yarinlevi.waypoints.gui.helpers.AbstractGui;
 import me.yarinlevi.waypoints.gui.helpers.types.GuiItem;
+import me.yarinlevi.waypoints.gui.items.Items;
 import me.yarinlevi.waypoints.utils.LocationData;
+import me.yarinlevi.waypoints.utils.MessagesUtils;
 import me.yarinlevi.waypoints.utils.Utils;
 import me.yarinlevi.waypoints.waypoint.Waypoint;
 import me.yarinlevi.waypoints.waypoint.WaypointWorld;
@@ -54,6 +56,9 @@ public class WaypointListGui extends AbstractGui implements Listener {
                 String waypointState = Utils.newMessageNoPrefix("&7State " + wp.getState().getState());
                 lore.add(waypointState);
 
+                String waypointBiome = wp.getBiome();
+                lore.add(waypointBiome);
+
                 lore.add("\n");
 
                 lore.add(Utils.newMessageNoPrefix("&eShift Left click to display in chat!"));
@@ -80,6 +85,9 @@ public class WaypointListGui extends AbstractGui implements Listener {
         try {
             this.initializeInventory();
         } catch (InventoryDoesNotExistException ignored) { }
+        catch (GuiNoItemException e) {
+            player.sendMessage(MessagesUtils.getMessageFromData("gui.no-items", player.getName()));
+        }
         this.openPage(player, 1);
     }
 
