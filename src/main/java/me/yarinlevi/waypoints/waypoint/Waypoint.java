@@ -4,7 +4,6 @@ import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
 import me.yarinlevi.waypoints.Waypoints;
-import me.yarinlevi.waypoints.data.FileUtils;
 import me.yarinlevi.waypoints.exceptions.PlayerDoesNotExistException;
 import me.yarinlevi.waypoints.utils.LocationData;
 import me.yarinlevi.waypoints.utils.MessagesUtils;
@@ -69,7 +68,7 @@ public class Waypoint {
     public void editItem(ItemStack item) {
         this.item = item;
 
-        FileUtils.save(Waypoints.getInstance().getPlayerListener().getWaypointDataFile(), Waypoints.getInstance().getPlayerListener().getWaypointData());
+        Waypoints.getInstance().getPlayerData().saveFile();
     }
 
     public Vector getVector() {
@@ -90,6 +89,10 @@ public class Waypoint {
 
     public int getDistance(Player player) {
         return Utils.calculateDistance(getVector(), player.getLocation().toVector());
+    }
+
+    public String getBiome() {
+        return MessagesUtils.getRawFormattedString("biome_format", location.getBlock().getBiome().name());
     }
 
     /**
@@ -116,12 +119,12 @@ public class Waypoint {
         
         if (this.state == WaypointState.PUBLIC) {
             try {
-                Waypoints.getInstance().getPlayerListener().renamePublicWaypoint(owner, oldName, name);
+                Waypoints.getInstance().getPlayerData().renamePublicWaypoint(owner, oldName, name);
             } catch (PlayerDoesNotExistException e) {
                 e.printStackTrace();
             }
         }
 
-        FileUtils.save(Waypoints.getInstance().getPlayerListener().getWaypointDataFile(), Waypoints.getInstance().getPlayerListener().getWaypointData());
+        Waypoints.getInstance().getPlayerData().saveFile();
     }
 }
