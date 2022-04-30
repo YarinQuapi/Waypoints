@@ -1,4 +1,4 @@
-package me.yarinlevi.waypoints.data;
+package me.yarinlevi.waypoints.data.helpers;
 
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;

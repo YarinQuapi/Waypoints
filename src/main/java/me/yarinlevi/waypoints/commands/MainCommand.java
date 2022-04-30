@@ -249,7 +249,7 @@ public class MainCommand implements CommandExecutor, TabExecutor {
                             case PRIVATE, PUBLIC -> {
                                 if (Waypoints.getInstance().getConfig().getBoolean("PublicWaypoints")) {
                                     try {
-                                        Waypoints.getInstance().getPlayerListener().setWaypointState(p.getUniqueId(), waypoint, state);
+                                        Waypoints.getInstance().getPlayerData().setWaypointState(p.getUniqueId(), waypoint, state);
                                         Waypoints.getInstance().getWaypointHandler().getWaypoint(p, waypoint).setState(state);
 
                                         p.sendMessage(MessagesUtils.getMessage("state_change", state.getState()));
