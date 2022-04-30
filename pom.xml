@@ -6,7 +6,7 @@
 
     <groupId>me.yarinlevi</groupId>
     <artifactId>Waypoints</artifactId>
-    <version>4.1-dev</version>
+    <version>5.0-Early-Alpha</version>
     <packaging>jar</packaging>
 
     <name>QWaypoints</name>
@@ -85,7 +85,7 @@
         <dependency>
             <groupId>org.bstats</groupId>
             <artifactId>bstats-bukkit</artifactId>
-            <version>2.2.1</version>
+            <version>3.0.0</version>
             <scope>compile</scope>
         </dependency>
 
@@ -123,12 +123,5 @@
             <version>22.0.0</version>
             <scope>provided</scope>
         </dependency>
-        <dependency>
-            <groupId>com.comphenix.protocol</groupId>
-            <artifactId>ProtocolLib</artifactId>
-            <version>4.8.0-SNAPSHOT</version>
-            <scope>provided</scope>
-        </dependency>
-
     </dependencies>
 </project>

@@ -3,6 +3,9 @@ package me.yarinlevi.waypoints;
 import lombok.Getter;
 import me.yarinlevi.waypoints.commands.Administration;
 import me.yarinlevi.waypoints.commands.MainCommand;
+import me.yarinlevi.waypoints.data.IData;
+import me.yarinlevi.waypoints.data.sqlite.SQLiteDataManager;
+import me.yarinlevi.waypoints.data.yaml.YamlDataManager;
 import me.yarinlevi.waypoints.gui.GuiUtils;
 import me.yarinlevi.waypoints.listeners.PlayerDeathListener;
 import me.yarinlevi.waypoints.listeners.PlayerListener;
@@ -20,20 +23,22 @@ import org.bukkit.plugin.java.annotation.plugin.Description;
 import org.bukkit.plugin.java.annotation.plugin.Plugin;
 import org.bukkit.plugin.java.annotation.plugin.author.Author;
 
+import java.util.logging.Level;
+
 /**
  * @author YarinQuapi
  */
-@Plugin(name = "QWaypoints", version = "4.1-Dev")
+@Plugin(name = "QWaypoints", version = "5.0-Early-Alpha")
 @Description(value = "A new way to store locations")
 @Author(value = "Quapi")
-@ApiVersion(value = ApiVersion.Target.v1_17)
+@ApiVersion(value = ApiVersion.Target.v1_18)
 @Commands()
 public class Waypoints extends JavaPlugin {
     @Getter private static Waypoints instance;
     @Getter private String prefix;
     @Getter private boolean deathPoints;
     @Getter private WaypointHandler waypointHandler;
-    @Getter private PlayerListener playerListener;
+    @Getter private IData playerData;
     @Getter private TrackerManager trackerManager;
     @Getter private PlayerDataManager playerDataManager;
 
@@ -49,8 +54,15 @@ public class Waypoints extends JavaPlugin {
         this.saveResource("messages.yml", false);
         new MessagesUtils();
 
-        playerListener = new PlayerListener(); // registering player listener
-        Bukkit.getPluginManager().registerEvents(playerListener, this);
+        if (this.getConfig().getBoolean("sqlite.enabled", false)) {
+            playerData = new SQLiteDataManager();
+            this.getLogger().log(Level.FINE, "Using SQLite data manager");
+        } else {
+            playerData = new YamlDataManager();
+            this.getLogger().log(Level.FINE, "Using YAML data manager");
+        }
+
+        Bukkit.getPluginManager().registerEvents(new PlayerListener(), this);
 
         playerDataManager = new PlayerDataManager(); // loads player data manager
 
@@ -64,7 +76,7 @@ public class Waypoints extends JavaPlugin {
         }
 
         // Reload Safe
-        Bukkit.getOnlinePlayers().forEach(player -> playerListener.loadPlayer(player.getUniqueId()));
+        Bukkit.getOnlinePlayers().forEach(player -> playerData.loadPlayer(player.getUniqueId()));
 
         GuiUtils.registerGui(); // registers gui systems
 
@@ -74,7 +86,7 @@ public class Waypoints extends JavaPlugin {
 
     @Override
     public void onDisable() {
-        Bukkit.getOnlinePlayers().forEach(player -> playerListener.unloadPlayer(player.getUniqueId()));
+        Bukkit.getOnlinePlayers().forEach(player -> playerData.unloadPlayer(player.getUniqueId()));
     }
 
     public void registerConfigData() {
