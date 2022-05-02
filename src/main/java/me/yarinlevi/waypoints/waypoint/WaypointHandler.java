@@ -1,6 +1,7 @@
 package me.yarinlevi.waypoints.waypoint;
 
 import me.yarinlevi.waypoints.Waypoints;
+import me.yarinlevi.waypoints.exceptions.PlayerDoesNotExistException;
 import me.yarinlevi.waypoints.exceptions.PlayerNotLoadedException;
 import me.yarinlevi.waypoints.exceptions.WaypointAlreadyExistsException;
 import me.yarinlevi.waypoints.exceptions.WaypointDoesNotExistException;
@@ -101,12 +102,20 @@ public class WaypointHandler {
     public boolean removeWaypoint(OfflinePlayer player, String waypointName) throws PlayerNotLoadedException, WaypointDoesNotExistException {
         if (Waypoints.getInstance().getPlayerDataManager().getPlayerDataMap().containsKey(player.getUniqueId())) {
             PlayerData waypointData = Waypoints.getInstance().getPlayerDataManager().getPlayerDataMap().get(player.getUniqueId());
+
+            try {
+                Waypoints.getInstance().getPlayerData().setWaypointState(player.getUniqueId(), waypointName, WaypointState.PRIVATE);
+            } catch (PlayerDoesNotExistException e) {
+                throw new PlayerNotLoadedException("Hey! your account was not loaded correctly, please reconnect.");
+            }
+
             if (waypointData.getWaypointList().stream().anyMatch(x -> x.getName().equalsIgnoreCase(waypointName))) {
                 waypointData.getWaypointList().remove(waypointData.getWaypointList().stream().filter(x -> x.getName().equalsIgnoreCase(waypointName)).findAny().get());
                 return true;
             } else {
                 throw new WaypointDoesNotExistException(MessagesUtils.getMessage("action_failed_not_found"));
             }
+
         } else {
             throw new PlayerNotLoadedException("Hey! your account was not loaded correctly, please reconnect.");
         }
