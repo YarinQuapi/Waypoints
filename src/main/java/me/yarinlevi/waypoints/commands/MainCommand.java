@@ -89,7 +89,7 @@ public class MainCommand implements CommandExecutor, TabExecutor {
                 case "spawn" -> {
                     if (p.hasPermission("qwaypoints.commands.spawn")) {
                         LocationData locDetail = LocationUtils.handleLocation(p.getWorld().getSpawnLocation());
-                        String msg = MessagesUtils.getMessageLines("spawn_locator_command", locDetail.x(), locDetail.y(), locDetail.z(), Utils.calculateDistance(p.getLocation(), p.getWorld().getSpawnLocation()));
+                        String msg = MessagesUtils.getMessageLines("spawn_locate_command", locDetail.x(), locDetail.y(), locDetail.z(), Utils.calculateDistance(p.getLocation(), p.getWorld().getSpawnLocation()));
                         p.sendMessage(msg);
                     }
                 }
@@ -186,7 +186,7 @@ public class MainCommand implements CommandExecutor, TabExecutor {
                         if (wp != null) {
                             LocationData locationData = wp.getLocationData();
 
-                            String msg = MessagesUtils.getMessage("share_waypoint",
+                            String msg = MessagesUtils.getMessage("share_waypoint", p.getName(),
                                     name, locationData.x(), locationData.y(), locationData.z(), WaypointWorld.valueOf(locationData.world()).getName(), Utils.calculateDistance(p.getLocation().toVector(), wp.getVector()));
                             Bukkit.broadcastMessage(msg);
                             return true;

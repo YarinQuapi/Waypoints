@@ -35,7 +35,7 @@ tracking_destination_reached: "&7Destination reached!"
 state_change_failed_not_allowed: "&cState change failed! &7changing waypoint state is not allowed."
 state_change_failed_syntax: "&cState changed failed! &7Incorrect syntax! please try &e/wp set <waypoint> <state>"
 state_change: "&7Successfully set waypoint state to %s"
-share_waypoint: "&e&lShare &7Waypoint &b%1$s &7is located at &bX &a%2$s &bY &a%3$s &bZ &a%4$s &7in world &b%5$s"
+share_waypoint: "&e&lWaypoint Share &d%1$s &r&l> &7Waypoint &b%2$s &7is located at &bX &a%3$s &bY &a%4$s &bZ &a%5$s &7in world &b%6$s"
 biome_format: "&7Biome: &b%s"
 spawn_locate_command:
   - "&7Spawn locator:"
