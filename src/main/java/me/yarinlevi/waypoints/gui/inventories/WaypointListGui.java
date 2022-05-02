@@ -34,6 +34,11 @@ public class WaypointListGui extends AbstractGui implements Listener {
         this.setSlots(9*3);
         this.setTitle(Utils.newMessageNoPrefix("&7Waypoint List"));
 
+        if (Waypoints.getInstance().getWaypointHandler().getWaypointList(player).isEmpty()) {
+            player.sendMessage(MessagesUtils.getMessageFromData("gui.no-items", player.getName()));
+            return;
+        }
+
         int i = 0;
         for (String waypointName : Waypoints.getInstance().getWaypointHandler().getWaypointList(player)) {
             Waypoint wp;
@@ -95,6 +100,7 @@ public class WaypointListGui extends AbstractGui implements Listener {
     @EventHandler
     public void onInventoryClick(InventoryClickEvent e) {
         if (e.getInventory() == this.getInventory()) {
+            e.setCancelled(true);
 
             ItemStack item = e.getInventory().getItem(e.getRawSlot());
 

@@ -35,6 +35,12 @@ public class WaypointBrowser extends AbstractGui implements Listener {
         this.setSlots(9*3);
         this.setTitle(Utils.newMessageNoPrefix("&7Waypoint Browser"));
 
+
+        if (Waypoints.getInstance().getWaypointHandler().getAllPublicWaypoints().isEmpty()) {
+            player.sendMessage(MessagesUtils.getMessage("gui.no-items"));
+            return;
+        }
+
         int i = 0;
         for (Waypoint wp : Waypoints.getInstance().getWaypointHandler().getAllPublicWaypoints()) {
 
@@ -84,6 +90,8 @@ public class WaypointBrowser extends AbstractGui implements Listener {
     @EventHandler
     public void inventoryClick(InventoryClickEvent e) {
         if (e.getInventory() == this.getInventory()) {
+            e.setCancelled(true);
+
             ItemStack item = e.getInventory().getItem(e.getRawSlot());
 
             if (e.getRawSlot() == 22) {
