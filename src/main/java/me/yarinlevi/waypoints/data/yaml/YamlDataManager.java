@@ -25,7 +25,10 @@ import java.util.UUID;
 
 /**
  * @author YarinQuapi
+ * @since 1.0
+ * @deprecated YAML storage will be fully abandoned in v5.0
  **/
+@Deprecated(forRemoval = true)
 public class YamlDataManager implements IData {
     @Getter private final File waypointDataFile;
     @Getter private final FileConfiguration waypointData;
@@ -81,13 +84,19 @@ public class YamlDataManager implements IData {
         if (waypointSection.contains(waypoint)) {
             ConfigurationSection waypointConfiguration = waypointSection.getConfigurationSection(waypoint);
 
-            waypointConfiguration.set("state", state);
+            waypointConfiguration.set("state", state.name());
 
             if (state.equals(WaypointState.PUBLIC)) {
                 waypointData.set("public_waypoints." + uuid + "." + waypoint, "PUBLIC");
             } else if (state.equals(WaypointState.PRIVATE)) {
                 waypointData.set("public_waypoints." + uuid + "." + waypoint, null);
+
+                if (waypointData.getConfigurationSection("public_waypoints." + uuid).getKeys(false).isEmpty()) {
+                    waypointData.set("public_waypoints." + uuid, null);
+                }
             }
+
+            this.saveFile();
         } else throw new WaypointDoesNotExistException(MessagesUtils.getMessage("action_failed_not_found" , waypoint));
     }
 
