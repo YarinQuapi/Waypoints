@@ -55,7 +55,7 @@ public class ActionBarTracker extends Tracker {
     @Override
     protected void update() {
         bars.forEach((x, y) -> {
-            if (trackedPlayers.get(x).getDistance(x) <= 10) {
+            if (trackedPlayers.containsKey(x) && trackedPlayers.get(x).getDistance(x) <= 10) {
                 trackedPlayers.remove(x);
                 x.sendMessage(Utils.newMessage("&7You have reached your destination!"));
             } else {
