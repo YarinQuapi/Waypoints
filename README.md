@@ -1,3 +1,5 @@
+[![Build](https://github.com/YarinQuapi/Waypoints/actions/workflows/maven-package.yml/badge.svg)](https://github.com/YarinQuapi/Waypoints/actions/workflows/maven-package.yml)
+
 # QWaypoint
 QWaypoints is a location and waypoint storing system with advanced features and ultimate perfomance.
 
