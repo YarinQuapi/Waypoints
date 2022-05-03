@@ -32,7 +32,7 @@ public class Administration implements CommandExecutor {
             LocationData locDetail = LocationUtils.handleLocation(p.getLocation());
             String msg = Utils.newMessage("&7Advanced chunk scan:\n" +
                     String.format("&a  • &7Coordinates &bX &a%s &bY &a%s &bZ &a%s\n", locDetail.x(), locDetail.y(), locDetail.z()) +
-                    String.format("&a  • &7Is Slime Chunk?: &b%s\n", locDetail.slimeChunk()) +
+                    String.format("&a  • &7Is Slime Chunk?: &b%s\n", locDetail.isSlimeChunk()) +
                     String.format("&a  • &7World &b%s", locDetail.world()));
             p.sendMessage(msg);
         } else if (args[0].equalsIgnoreCase("spawn")) {

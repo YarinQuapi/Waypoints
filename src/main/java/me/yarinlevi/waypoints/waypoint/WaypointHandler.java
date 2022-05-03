@@ -39,8 +39,8 @@ public class WaypointHandler {
     }
 
     /**
-     * Get all public waypoints (Loaded players only!)
-     * @return Waypoint list
+     * Get all public waypoints
+     * @return Public waypoint list
      */
     public List<Waypoint> getAllPublicWaypoints() {
         return Waypoints.getInstance().getPlayerData().getPublicWaypoints();
@@ -51,6 +51,12 @@ public class WaypointHandler {
             Waypoints.getInstance().getPlayerDataManager().getPlayerDataMap().get(player.getUniqueId()).getWaypointList().stream()
                     .filter(x -> x.getName().equals(waypoint))
                     .findFirst().get().setName(newWaypointName);
+
+            try {
+                Waypoints.getInstance().getPlayerData().renameWaypoint(player.getUniqueId(), waypoint, newWaypointName);
+            } catch (WaypointDoesNotExistException e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -84,14 +90,14 @@ public class WaypointHandler {
                 Waypoints.getInstance().getPlayerDataManager().getPlayerDataMap().get(player.getUniqueId()).getWaypointList().stream().filter(x -> x.getName().equalsIgnoreCase(name)).findAny().get() : null;
     }
 
-    public boolean addWaypoint(UUID player, Waypoint waypoint) throws WaypointAlreadyExistsException, PlayerNotLoadedException {
+    public boolean  addWaypoint(UUID player, Waypoint waypoint) throws WaypointAlreadyExistsException, PlayerNotLoadedException {
         if (Waypoints.getInstance().getPlayerDataManager().getPlayerDataMap().containsKey(player)) {
             PlayerData waypointData = Waypoints.getInstance().getPlayerDataManager().getPlayerDataMap().get(player);
             if (waypointData.getWaypointList().stream().anyMatch(x -> x.getName().equalsIgnoreCase(waypoint.getName()))) {
                 throw new WaypointAlreadyExistsException(Utils.newMessage(String.format("&7Waypoint with name &b%s &7already exists.", waypoint.getName())));
             } else {
                 waypointData.getWaypointList().add(waypoint);
-                Waypoints.getInstance().getPlayerData().savePlayer(player);
+                Waypoints.getInstance().getPlayerData().addWaypoint(player, waypoint);
                 return true;
             }
         } else {
@@ -103,14 +109,10 @@ public class WaypointHandler {
         if (Waypoints.getInstance().getPlayerDataManager().getPlayerDataMap().containsKey(player.getUniqueId())) {
             PlayerData waypointData = Waypoints.getInstance().getPlayerDataManager().getPlayerDataMap().get(player.getUniqueId());
 
-            try {
-                Waypoints.getInstance().getPlayerData().setWaypointState(player.getUniqueId(), waypointName, WaypointState.PRIVATE);
-            } catch (PlayerDoesNotExistException e) {
-                throw new PlayerNotLoadedException("Hey! your account was not loaded correctly, please reconnect.");
-            }
-
             if (waypointData.getWaypointList().stream().anyMatch(x -> x.getName().equalsIgnoreCase(waypointName))) {
                 waypointData.getWaypointList().remove(waypointData.getWaypointList().stream().filter(x -> x.getName().equalsIgnoreCase(waypointName)).findAny().get());
+
+                Waypoints.getInstance().getPlayerData().removeWaypoint(player.getUniqueId(), waypointName);
                 return true;
             } else {
                 throw new WaypointDoesNotExistException(MessagesUtils.getMessage("action_failed_not_found"));

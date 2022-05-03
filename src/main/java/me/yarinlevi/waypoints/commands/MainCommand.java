@@ -254,7 +254,7 @@ public class MainCommand implements CommandExecutor, TabExecutor {
 
                                         p.sendMessage(MessagesUtils.getMessage("state_change", state.getState()));
 
-                                    } catch (PlayerDoesNotExistException | WaypointDoesNotExistException e) {
+                                    } catch (WaypointDoesNotExistException e) {
                                         p.sendMessage(e.getMessage());
                                     }
                                 } else {

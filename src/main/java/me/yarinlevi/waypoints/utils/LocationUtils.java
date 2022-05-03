@@ -10,7 +10,6 @@ public class LocationUtils {
         return new LocationData(String.valueOf(loc.getBlockX()),
                 String.valueOf(loc.getBlockY()),
                 String.valueOf(loc.getBlockZ()),
-                loc.getWorld().getEnvironment().name(),
-                loc.getWorld().getChunkAt(loc).isSlimeChunk());
+                loc.getWorld().getEnvironment().name());
     }
 }

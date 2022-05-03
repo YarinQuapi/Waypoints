@@ -5,7 +5,6 @@ import me.yarinlevi.waypoints.commands.Administration;
 import me.yarinlevi.waypoints.commands.MainCommand;
 import me.yarinlevi.waypoints.data.IData;
 import me.yarinlevi.waypoints.data.sqlite.SQLiteDataManager;
-import me.yarinlevi.waypoints.data.yaml.YamlDataManager;
 import me.yarinlevi.waypoints.gui.GuiUtils;
 import me.yarinlevi.waypoints.listeners.PlayerDeathListener;
 import me.yarinlevi.waypoints.listeners.PlayerListener;
@@ -54,13 +53,7 @@ public class Waypoints extends JavaPlugin {
         this.saveResource("messages.yml", false);
         new MessagesUtils();
 
-        if (this.getConfig().getBoolean("sqlite.enabled", false)) {
-            playerData = new SQLiteDataManager();
-            this.getLogger().log(Level.FINE, "Using SQLite data manager");
-        } else {
-            playerData = new YamlDataManager();
-            this.getLogger().log(Level.FINE, "Using YAML data manager");
-        }
+        playerData = new SQLiteDataManager(); // Initialize SQLite
 
         Bukkit.getPluginManager().registerEvents(new PlayerListener(), this);
 

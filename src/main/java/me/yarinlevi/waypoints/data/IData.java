@@ -11,15 +11,19 @@ import java.util.UUID;
 public interface IData {
     List<Waypoint> getPublicWaypoints();
 
-    void renamePublicWaypoint(UUID uuid, String waypoint, String name) throws PlayerDoesNotExistException;
+    void renameWaypoint(UUID uuid, String waypoint, String name) throws WaypointDoesNotExistException;
 
-    void setWaypointState(UUID uuid, String waypoint, WaypointState state) throws PlayerDoesNotExistException, WaypointDoesNotExistException;
+    void addWaypoint(UUID uuid, Waypoint waypoint);
+
+    void removeWaypoint(UUID uuid, String waypoint);
+
+    void updateWaypointItem(UUID uuid, String waypoint, String item);
+
+    boolean isWaypoint(UUID uuid, String waypoint);
+
+    void setWaypointState(UUID uuid, String waypoint, WaypointState state) throws WaypointDoesNotExistException;
 
     void loadPlayer(UUID uuid);
 
     void unloadPlayer(UUID uuid);
-
-    void savePlayer(UUID uuid);
-
-    void saveFile();
 }

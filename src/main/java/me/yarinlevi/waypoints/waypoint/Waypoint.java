@@ -5,6 +5,7 @@ import lombok.NonNull;
 import lombok.Setter;
 import me.yarinlevi.waypoints.Waypoints;
 import me.yarinlevi.waypoints.exceptions.PlayerDoesNotExistException;
+import me.yarinlevi.waypoints.exceptions.WaypointDoesNotExistException;
 import me.yarinlevi.waypoints.utils.LocationData;
 import me.yarinlevi.waypoints.utils.MessagesUtils;
 import me.yarinlevi.waypoints.utils.Utils;
@@ -68,7 +69,7 @@ public class Waypoint {
     public void editItem(ItemStack item) {
         this.item = item;
 
-        Waypoints.getInstance().getPlayerData().saveFile();
+        Waypoints.getInstance().getPlayerData().updateWaypointItem(this.owner, this.name, item.getType().name());
     }
 
     public Vector getVector() {
@@ -109,22 +110,17 @@ public class Waypoint {
         return new LocationData(String.valueOf(location.getBlockX()),
                 String.valueOf(location.getBlockY()),
                 String.valueOf(location.getBlockZ()),
-                location.getWorld().getEnvironment().name(),
-                location.getWorld().getChunkAt(location).isSlimeChunk());
+                location.getWorld().getEnvironment().name());
     }
 
     public void setName(String name) {
         String oldName = this.name;
         this.name = name;
-        
-        if (this.state == WaypointState.PUBLIC) {
-            try {
-                Waypoints.getInstance().getPlayerData().renamePublicWaypoint(owner, oldName, name);
-            } catch (PlayerDoesNotExistException e) {
-                e.printStackTrace();
-            }
-        }
 
-        Waypoints.getInstance().getPlayerData().saveFile();
+        try {
+            Waypoints.getInstance().getPlayerData().renameWaypoint(this.owner, oldName, name);
+        } catch (WaypointDoesNotExistException e) {
+            e.printStackTrace();
+        }
     }
 }
