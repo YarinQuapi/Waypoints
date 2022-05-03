@@ -15,7 +15,7 @@ public class EditWaypointItemGui {
     public static void open(Player player, Waypoint wp) {
         new AnvilGUI.Builder()
                 .onComplete((player2, text) -> {
-                    if (Material.getMaterial(text.trim().toUpperCase()) != null) {
+                    if (Material.getMaterial(text.trim().toUpperCase()) != null && !text.trim().equalsIgnoreCase("air")) {
                         wp.editItem(new ItemStack(Material.getMaterial(text.trim().toUpperCase())));
                         player2.sendMessage(MessagesUtils.getMessage("edit_icon", text.trim().toUpperCase()));
                     } else {

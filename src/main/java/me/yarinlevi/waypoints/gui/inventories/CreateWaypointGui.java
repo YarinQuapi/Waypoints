@@ -20,7 +20,7 @@ public class CreateWaypointGui extends AbstractGui {
     public void run(Player player) {
         new AnvilGUI.Builder()
                 .onComplete((player2, text) -> {
-                    if (Utils.allowedCharacters.matcher(text.trim()).matches()) {
+                    if (Utils.allowedCharacters.matcher(text.trim()).matches() && !text.trim().equalsIgnoreCase("air")) {
                         Waypoint waypoint = new Waypoint(player.getUniqueId(), text.trim(), player2.getLocation(), false);
                         try {
                             Waypoints.getInstance().getWaypointHandler().addWaypoint(player2.getUniqueId(), waypoint);

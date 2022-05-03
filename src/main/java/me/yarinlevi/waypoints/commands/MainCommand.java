@@ -183,12 +183,23 @@ public class MainCommand implements CommandExecutor, TabExecutor {
 
                         Waypoint wp = Waypoints.getInstance().getWaypointHandler().getWaypoint(p, name);
 
+                        Player player = null;
+
+                        if (args.length >= 3) {
+                            player = Bukkit.getPlayer(args[2]);
+                        }
+
                         if (wp != null) {
                             LocationData locationData = wp.getLocationData();
 
                             String msg = MessagesUtils.getMessage("share_waypoint", p.getName(),
                                     name, locationData.x(), locationData.y(), locationData.z(), WaypointWorld.valueOf(locationData.world()).getName(), Utils.calculateDistance(p.getLocation().toVector(), wp.getVector()));
-                            Bukkit.broadcastMessage(msg);
+
+                            if (player != null) {
+                                player.sendMessage(msg);
+                            } else {
+                                Bukkit.broadcastMessage(msg);
+                            }
                             return true;
                         } else {
                             p.sendMessage(Utils.newMessage("&cSorry, couldn't find a waypoint with that name."));

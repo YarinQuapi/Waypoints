@@ -69,7 +69,7 @@ public class Waypoint {
     public void editItem(ItemStack item) {
         this.item = item;
 
-        Waypoints.getInstance().getPlayerData().updateWaypointItem(this.owner, this.name, item.getType().name());
+        Waypoints.getInstance().getPlayerData().updateWaypointItem(this.owner, this.name, item.getType().name().toUpperCase());
     }
 
     public Vector getVector() {
