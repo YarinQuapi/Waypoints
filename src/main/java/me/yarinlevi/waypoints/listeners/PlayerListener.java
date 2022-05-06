@@ -13,11 +13,11 @@ import org.bukkit.event.player.PlayerQuitEvent;
 public class PlayerListener implements Listener {
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
-        Bukkit.getScheduler().runTaskAsynchronously(Waypoints.getInstance(), () -> Waypoints.getInstance().getPlayerData().loadPlayer(event.getPlayer().getUniqueId()));
+        Bukkit.getScheduler().runTask(Waypoints.getInstance(), () -> Waypoints.getInstance().getPlayerData().loadPlayer(event.getPlayer().getUniqueId()));
     }
 
     @EventHandler
     public void onPlayerLeave(PlayerQuitEvent event) {
-        Bukkit.getScheduler().runTaskAsynchronously(Waypoints.getInstance(), () -> Waypoints.getInstance().getPlayerData().unloadPlayer(event.getPlayer().getUniqueId()));
+        Bukkit.getScheduler().runTask(Waypoints.getInstance(), () -> Waypoints.getInstance().getPlayerData().unloadPlayer(event.getPlayer().getUniqueId()));
     }
 }

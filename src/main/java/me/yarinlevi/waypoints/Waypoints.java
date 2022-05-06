@@ -4,7 +4,7 @@ import lombok.Getter;
 import me.yarinlevi.waypoints.commands.Administration;
 import me.yarinlevi.waypoints.commands.MainCommand;
 import me.yarinlevi.waypoints.data.IData;
-import me.yarinlevi.waypoints.data.sqlite.SQLiteDataManager;
+import me.yarinlevi.waypoints.data.h2.H2DataManager;
 import me.yarinlevi.waypoints.gui.GuiUtils;
 import me.yarinlevi.waypoints.listeners.PlayerDeathListener;
 import me.yarinlevi.waypoints.listeners.PlayerListener;
@@ -21,8 +21,6 @@ import org.bukkit.plugin.java.annotation.plugin.ApiVersion;
 import org.bukkit.plugin.java.annotation.plugin.Description;
 import org.bukkit.plugin.java.annotation.plugin.Plugin;
 import org.bukkit.plugin.java.annotation.plugin.author.Author;
-
-import java.util.logging.Level;
 
 /**
  * @author YarinQuapi
@@ -53,7 +51,7 @@ public class Waypoints extends JavaPlugin {
         this.saveResource("messages.yml", false);
         new MessagesUtils();
 
-        playerData = new SQLiteDataManager(); // Initialize SQLite
+        playerData = new H2DataManager(); // Initialize SQLite
 
         Bukkit.getPluginManager().registerEvents(new PlayerListener(), this);
 
@@ -80,6 +78,8 @@ public class Waypoints extends JavaPlugin {
     @Override
     public void onDisable() {
         Bukkit.getOnlinePlayers().forEach(player -> playerData.unloadPlayer(player.getUniqueId()));
+
+        this.getPlayerData().closeDatabase();
     }
 
     public void registerConfigData() {
