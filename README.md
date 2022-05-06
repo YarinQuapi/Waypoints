@@ -10,9 +10,10 @@ QWaypoints is a location and waypoint storing system with advanced features and 
 * Waypoint sharing! almost like public waypoints, more like a one time ticket to a private one.
 * Waypoint tracking with advanced trackers
 * A complete gui system with a per-waypoint item capability for recognition
+* H2 Database for fast & reliable data storing
 
 ## Commands
-``/wp help ``- Show all the commands  
+``/wp help``- Show all the commands  
 ``/wp check <waypointName>`` - Check a certain waypoint.  
 ``/wp create <name>`` - Create a new waypoint
 ``/wp list [world]`` - List all (or some) your waypoints  
