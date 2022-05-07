@@ -84,8 +84,7 @@ public abstract class AbstractGui implements Listener, IGui {
 
     public void initializeSlots() {
         int size = items.size() + (lockedSlots.length * (items.size() / slots)); // total size of the inventories combined
-
-        this.maxPages = (int) Math.ceil((double) size / slots); // ceil to round up max pages
+        this.maxPages = (int) Math.ceil((double) size / (slots - lockedSlots.length)); // ceil to round up max pages
 
         Page page = new Page(1, slots, lockedSlots, null, this.maxPages != 1); // create first page
 
