@@ -72,7 +72,7 @@ public class H2DataManager implements IData {
     @Override
     public void closeDatabase() {
         try {
-            connection.close();
+            connection.createStatement().execute("SHUTDOWN");
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -81,7 +81,7 @@ public class H2DataManager implements IData {
     @Override
     public List<Waypoint> getPublicWaypoints() {
         try {
-            ResultSet rs = this.get("SELECT * FROM `waypoints` WHERE `is_public` = 'true'");
+            ResultSet rs = this.get("SELECT * FROM `waypoints` WHERE `is_public`=true");
 
             List<Waypoint> waypoints = new ArrayList<>();
 
@@ -89,7 +89,7 @@ public class H2DataManager implements IData {
                 while (rs.next()) {
                     String[] locations = rs.getString("location").split(",");
                     LocationData data = new LocationData(locations[0], locations[1], locations[2], locations[3]);
-                    Waypoint waypoint = new Waypoint(UUID.fromString(rs.getString("uuid")), rs.getString("waypoint_name"), data.getLocation(), new ItemStack(Material.getMaterial(rs.getString("item"))), WaypointState.valueOf(rs.getString("is_public")), rs.getBoolean("is_deathpoint"));waypoints.add(waypoint);
+                    Waypoint waypoint = new Waypoint(UUID.fromString(rs.getString("player_uuid")), rs.getString("waypoint_name"), data.getLocation(), new ItemStack(Material.getMaterial(rs.getString("item"))), rs.getBoolean("is_public") ? WaypointState.PUBLIC : WaypointState.PRIVATE, rs.getBoolean("is_deathpoint"));
                     waypoints.add(waypoint);
                 }
 
@@ -99,14 +99,14 @@ public class H2DataManager implements IData {
             e.printStackTrace();
         }
 
-        return null;
+        return new ArrayList<>();
     }
 
     @Override
     public void addWaypoint(UUID uuid, Waypoint waypoint) {
         String loc = waypoint.getLocation().getX() + "," + waypoint.getLocation().getY() + "," + waypoint.getLocation().getZ() + ',' + waypoint.getLocation().getWorld().getName();
 
-        String statement = "INSERT INTO `waypoints` (`player_uuid`, `waypoint_name`, `location`, `item`, `is_deathpoint`, `is_public`) VALUES ('%s', '%s', '%s', '%s', '%s', '%s');"
+        String statement = "INSERT INTO `waypoints` (`player_uuid`, `waypoint_name`, `location`, `item`, `is_deathpoint`, `is_public`) VALUES ('%s', '%s', '%s', '%s', %s, %s);"
                 .formatted(uuid.toString(), waypoint.getName(), loc, waypoint.getItem().getType().name(), waypoint.isSystemInduced(), false);
 
         this.insert(statement);
@@ -114,7 +114,7 @@ public class H2DataManager implements IData {
 
     @Override
     public void removeWaypoint(UUID uuid, String waypoint) {
-        String statement = "DELETE FROM `waypoints` WHERE `player_uuid` = \"%s\" AND `waypoint_name` = \"%s\""
+        String statement = "DELETE FROM `waypoints` WHERE `player_uuid` = '%s' AND `waypoint_name` = '%s'"
                 .formatted(uuid.toString(), waypoint);
 
         this.update(statement);
@@ -122,7 +122,7 @@ public class H2DataManager implements IData {
 
     @Override
     public void updateWaypointItem(UUID uuid, String waypoint, String item) {
-        String statement = "UPDATE `waypoints` SET `item` = \"%s\" WHERE `player_uuid` = \"%s\" AND `waypoint_name` = \"%s\""
+        String statement = "UPDATE `waypoints` SET `item` = '%s' WHERE `player_uuid` = '%s' AND `waypoint_name` = '%s'"
                 .formatted(item, uuid.toString(), waypoint);
 
         this.update(statement);
@@ -131,7 +131,7 @@ public class H2DataManager implements IData {
     @Override
     public boolean isWaypoint(UUID uuid, String waypoint) {
         try {
-            ResultSet rs = this.get("SELECT * FROM `waypoints` WHERE `player_uuid` = \"" + uuid.toString() + "\" AND `waypoint_name` = \"" + waypoint + "\"");
+            ResultSet rs = this.get("SELECT * FROM `waypoints` WHERE `player_uuid` = '" + uuid.toString() + "' AND `waypoint_name` = '" + waypoint + "'");
 
             return rs != null && rs.next();
         } catch (SQLException e) {
@@ -165,7 +165,9 @@ public class H2DataManager implements IData {
                 throw new WaypointDoesNotExistException("Waypoint does not exist");
             }
 
-            this.update("UPDATE `waypoints` SET `is_public` = '" + state.name() + "' WHERE `player_uuid` = '" + uuid + "' AND `waypoint_name` = '" + waypoint + "'");
+            boolean is_public = state == WaypointState.PUBLIC;
+
+            this.update("UPDATE `waypoints` SET `is_public` = " + is_public + " WHERE `player_uuid` = '" + uuid + "' AND `waypoint_name` = '" + waypoint + "'");
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -173,8 +175,6 @@ public class H2DataManager implements IData {
 
     @Override
     public void loadPlayer(UUID uuid) {
-        Bukkit.broadcastMessage("called");
-
         try {
             ResultSet rs = this.get("SELECT * FROM `waypoints` WHERE `player_uuid` = '" + uuid.toString() + "'");
 
@@ -185,7 +185,7 @@ public class H2DataManager implements IData {
                 while (rs.next()) {
                     String[] locations = rs.getString("location").split(",");
                     LocationData data = new LocationData(locations[0], locations[1], locations[2], locations[3]);
-                    Waypoint waypoint = new Waypoint(uuid, rs.getString("waypoint_name"), data.getLocation(), new ItemStack(Material.getMaterial(rs.getString("item"))), rs.getString("is_public") == "false" ? WaypointState.PRIVATE : WaypointState.PUBLIC, rs.getBoolean("is_deathpoint"));
+                    Waypoint waypoint = new Waypoint(uuid, rs.getString("waypoint_name"), data.getLocation(), new ItemStack(Material.getMaterial(rs.getString("item"))), rs.getBoolean("is_public") ? WaypointState.PUBLIC : WaypointState.PRIVATE, rs.getBoolean("is_deathpoint"));
                     waypoints.add(waypoint);
                 }
             }
@@ -203,8 +203,6 @@ public class H2DataManager implements IData {
 
     @Nullable
     public ResultSet get(String query) {
-        Bukkit.broadcastMessage(query);
-
         try {
             return connection.createStatement().executeQuery(query);
         } catch (SQLException throwables) {
@@ -214,26 +212,21 @@ public class H2DataManager implements IData {
     }
 
     public int update(String query) {
-        //Bukkit.getScheduler().runTaskAsynchronously(Waypoints.getInstance(), () -> {
-            try {
-                connection.createStatement().executeUpdate(query);
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        //});
+        try {
+            connection.createStatement().executeUpdate(query);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
 
         return 0;
     }
 
     public boolean insert(String query) {
-
-        //Bukkit.getScheduler().runTaskAsynchronously(Waypoints.getInstance(), () -> {
-            try {
-                connection.createStatement().execute(query);
-            } catch (SQLException throwables) {
-                throwables.printStackTrace();
-            }
-        //});
+        try {
+            connection.createStatement().execute(query);
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
 
         return false;
     }
