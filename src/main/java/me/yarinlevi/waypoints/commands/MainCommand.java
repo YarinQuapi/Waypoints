@@ -160,7 +160,7 @@ public class MainCommand implements CommandExecutor, TabExecutor {
 
                         if (Utils.allowedCharacters.matcher(name).matches()) {
 
-                            Waypoint wp = new Waypoint(p.getUniqueId(), name, p.getLocation(), false);
+                            Waypoint wp = new Waypoint(p.getUniqueId(), name, p.getLocation(), WaypointState.PRIVATE, false);
 
                             try {
                                 if (Waypoints.getInstance().getWaypointHandler().addWaypoint(p.getUniqueId(), wp)) {
