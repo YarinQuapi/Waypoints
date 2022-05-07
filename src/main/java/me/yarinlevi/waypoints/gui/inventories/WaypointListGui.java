@@ -31,7 +31,7 @@ public class WaypointListGui extends AbstractGui implements Listener {
     @Override
     public void run(Player player) {
         this.setKey("gui.personal.waypointlist");
-        this.setSlots(9*3);
+        this.setSlots(9*4);
         this.setTitle(Utils.newMessageNoPrefix("&7Waypoint List"));
 
         if (Waypoints.getInstance().getWaypointHandler().getWaypointList(player).isEmpty()) {
@@ -80,10 +80,8 @@ public class WaypointListGui extends AbstractGui implements Listener {
                 itemStack.setItemMeta(itemMeta);
 
                 this.getItems().put(i, new GuiItem(i, itemStack));
+
                 i++;
-                if (i == 22) {
-                    i++;
-                }
             }
         }
 

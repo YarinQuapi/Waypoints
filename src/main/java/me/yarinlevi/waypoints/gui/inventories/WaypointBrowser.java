@@ -24,6 +24,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.util.Vector;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author YarinQuapi
@@ -35,14 +36,16 @@ public class WaypointBrowser extends AbstractGui implements Listener {
         this.setSlots(9*3);
         this.setTitle(Utils.newMessageNoPrefix("&7Waypoint Browser"));
 
+        List<Waypoint> waypoints = Waypoints.getInstance().getWaypointHandler().getAllPublicWaypoints();
 
-        if (Waypoints.getInstance().getWaypointHandler().getAllPublicWaypoints().isEmpty()) {
+        if (waypoints.isEmpty()) {
             player.sendMessage(MessagesUtils.getMessage("gui.no-items"));
             return;
         }
 
+
         int i = 0;
-        for (Waypoint wp : Waypoints.getInstance().getWaypointHandler().getAllPublicWaypoints()) {
+        for (Waypoint wp : waypoints) {
 
             ItemStack itemStack = wp.getItem();
             ItemMeta itemMeta = itemStack.getItemMeta();
@@ -72,10 +75,8 @@ public class WaypointBrowser extends AbstractGui implements Listener {
             itemStack.setItemMeta(itemMeta);
 
             this.getItems().put(i, new GuiItem(i, itemStack));
+
             i++;
-            if (i == 22) {
-                i++;
-            }
         }
 
         try {
