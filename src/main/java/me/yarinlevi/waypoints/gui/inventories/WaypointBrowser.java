@@ -56,7 +56,7 @@ public class WaypointBrowser extends AbstractGui implements Listener {
             String coordinatesString = String.format(Utils.newMessageNoPrefix("&7Coordinates &bX &a%s &bY &a%s &bZ &a%s"), vec.getBlockX(), vec.getBlockY(), vec.getBlockZ());
             lore.add(coordinatesString);
 
-            String waypointWorld = String.format(Utils.newMessageNoPrefix("&7World &b%s"), wp.getWorld().getName());
+            String waypointWorld = wp.getWorld();
             lore.add(waypointWorld);
 
             String waypointState = Utils.newMessageNoPrefix("&7State " + wp.getState().getState());

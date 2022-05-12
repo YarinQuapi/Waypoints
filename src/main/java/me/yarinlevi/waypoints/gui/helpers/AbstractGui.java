@@ -7,6 +7,7 @@ import me.yarinlevi.waypoints.exceptions.InventoryDoesNotExistException;
 import me.yarinlevi.waypoints.gui.helpers.types.GuiItem;
 import me.yarinlevi.waypoints.gui.helpers.types.Page;
 import me.yarinlevi.waypoints.utils.MessagesUtils;
+import me.yarinlevi.waypoints.waypoint.Waypoint;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -37,6 +38,8 @@ public abstract class AbstractGui implements Listener, IGui {
     @Getter private final LinkedHashMap<Integer, ItemStack> gitems = new LinkedHashMap<>();
     @Getter private final LinkedHashMap<Integer, GuiItem> items = new LinkedHashMap<>();
     private final int[] lockedSlots = new int[]{ slots-1, slots-2, slots-3, slots-4, slots-5, slots-6, slots-7, slots-8, slots-9 };
+    @Getter @Setter private Waypoint waypoint;
+
 
     public abstract void run(Player player);
 

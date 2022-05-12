@@ -26,7 +26,7 @@ public class Waypoint {
     @Getter private final Location location;
     @Getter private final boolean systemInduced;
     @Getter private ItemStack item = new ItemStack(Material.DIRT);
-    @Getter private final WaypointWorld world;
+    private final WaypointWorld world;
     @Getter private final UUID owner;
     @Getter @Setter private WaypointState state = WaypointState.PRIVATE;
 
@@ -94,6 +94,10 @@ public class Waypoint {
 
     public String getBiome() {
         return MessagesUtils.getRawFormattedString("biome_format", location.getBlock().getBiome().name());
+    }
+
+    public String getWorld() {
+        return MessagesUtils.getRawFormattedString("world_format", this.world.name);
     }
 
     /**

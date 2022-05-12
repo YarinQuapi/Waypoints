@@ -90,7 +90,7 @@ public class WaypointHandler {
                 Waypoints.getInstance().getPlayerDataManager().getPlayerDataMap().get(player.getUniqueId()).getWaypointList().stream().filter(x -> x.getName().equalsIgnoreCase(name)).findAny().get() : null;
     }
 
-    public boolean  addWaypoint(UUID player, Waypoint waypoint) throws WaypointAlreadyExistsException, PlayerNotLoadedException {
+    public boolean addWaypoint(UUID player, Waypoint waypoint) throws WaypointAlreadyExistsException, PlayerNotLoadedException {
         if (Waypoints.getInstance().getPlayerDataManager().getPlayerDataMap().containsKey(player)) {
             PlayerData waypointData = Waypoints.getInstance().getPlayerDataManager().getPlayerDataMap().get(player);
             if (waypointData.getWaypointList().stream().anyMatch(x -> x.getName().equalsIgnoreCase(waypoint.getName()))) {
@@ -121,5 +121,14 @@ public class WaypointHandler {
         } else {
             throw new PlayerNotLoadedException("Hey! your account was not loaded correctly, please reconnect.");
         }
+    }
+
+    public boolean removeWaypoint(OfflinePlayer player, Waypoint waypoint) {
+        PlayerData waypointData = Waypoints.getInstance().getPlayerDataManager().getPlayerDataMap().get(player.getUniqueId());
+
+        waypointData.getWaypointList().remove(waypoint);
+
+        Waypoints.getInstance().getPlayerData().removeWaypoint(player.getUniqueId(), waypoint.getName());
+        return true;
     }
 }

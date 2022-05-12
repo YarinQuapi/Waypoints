@@ -49,13 +49,11 @@ public class WaypointListGui extends AbstractGui implements Listener {
                 ItemStack itemStack = wp.getItem();
                 ItemMeta itemMeta = itemStack.getItemMeta();
 
-                Vector vec = wp.getVector();
-
                 ArrayList<String> lore = new ArrayList<>();
-                String coordinatesString = String.format(Utils.newMessageNoPrefix("&7Coordinates &bX &a%s &bY &a%s &bZ &a%s"), vec.getBlockX(), vec.getBlockY(), vec.getBlockZ());
+                String coordinatesString = wp.getFormattedCoordinates();
                 lore.add(coordinatesString);
 
-                String waypointWorld = String.format(Utils.newMessageNoPrefix("&7World &b%s"), wp.getWorld().getName());
+                String waypointWorld = wp.getWorld();
                 lore.add(waypointWorld);
 
                 String waypointState = Utils.newMessageNoPrefix("&7State " + wp.getState().getState());
@@ -66,12 +64,10 @@ public class WaypointListGui extends AbstractGui implements Listener {
 
                 lore.add("\n");
 
-                lore.add(Utils.newMessageNoPrefix("&eShift Left click to display in chat!"));
-
-                String rightClickToEdit = Utils.newMessageNoPrefix("&eRight click to edit item!");
+                String rightClickToEdit = Utils.newMessageNoPrefix("&eRight click to open settings!");
                 lore.add(rightClickToEdit);
 
-                String leftClickToEdit = Utils.newMessageNoPrefix("&eLeft click to rename!");
+                String leftClickToEdit = Utils.newMessageNoPrefix("&eLeft click to display in chat!");
                 lore.add(leftClickToEdit);
 
                 itemMeta.setLore(lore);
@@ -128,9 +124,10 @@ public class WaypointListGui extends AbstractGui implements Listener {
 
                 if (wp != null) {
                     switch (e.getClick()) {
-                        case RIGHT -> EditWaypointItemGui.open(player, wp);
-                        case LEFT -> RenameWaypointGUI.open(player, wp);
-                        case SHIFT_LEFT -> {
+                        case RIGHT -> {
+                            GuiUtils.openInventory("gui.personal.waypoint-settings", player, wp);
+                        }
+                        case LEFT -> {
                             LocationData locationData = wp.getLocationData();
 
                             String msg = Utils.newMessage(String.format("&7Waypoint &b%s &7is located at &bX &a%s &bY &a%s &bZ &a%s &7in world &b%s &7You are &b%s &7blocks away.",

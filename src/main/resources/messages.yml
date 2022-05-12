@@ -37,6 +37,7 @@ state_change_failed_syntax: "&cState changed failed! &7Incorrect syntax! please 
 state_change: "&7Successfully set waypoint state to %s"
 share_waypoint: "&e&lWaypoint Share &d%1$s &r&l> &7Waypoint &b%2$s &7is located at &bX &a%3$s &bY &a%4$s &bZ &a%5$s &7in world &b%6$s"
 biome_format: "&7Biome: &b%s"
+world_format: "&7World: &b%s"
 spawn_locate_command:
   - "&7Spawn locator:"
   - "&a  • &7Coordinates &bX &a%1$s &bY &a%2$s &bZ &a%3$s"
@@ -57,6 +58,8 @@ help_command:
   - "&a  • &b/wp share <&awaypoint&b> &f- &7Shares a waypoint in chat"
 edit_icon: "&7Successfully changed waypoint's item to: &b%s"
 edit_icon_failed: "&cEdit failed! &7The item id was not found."
+click_edit_icon: "&7Click to edit waypoint's item."
+waypoint_delete_name_not_match: "&cDelete failed! &7The waypoint name doesn't match!"
 gui:
   no-items: "&7Action Failed! &cNo items found!"
   last-page: "&7Action Failed! &cYou were on the last page."
@@ -87,4 +90,12 @@ gui:
       title: "Rename waypoint"
   menu:
     title: "&b%1$s&7's Profile"
+  delete:
+    title: "&cDelete waypoint"
+  waypoint-settings:
+    title: "&b%1$s&7 - Settings"
+    rename: "&6Rename waypoint"
+    delete: "&cDelete waypoint"
+    state: "%1$s &7Waypoint"
+
 
