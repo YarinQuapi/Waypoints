@@ -66,6 +66,10 @@ public abstract class AbstractGui implements Listener, IGui {
         this.pages.get(page).constructPage(player, inventory);
     }
 
+    public void openPage(Player player, int page, GuiItem... items) {
+        this.pages.get(page).constructPage(player, inventory, items);
+    }
+
     public void nextPage(Player player) {
         if (currentPage < maxPages) {
             currentPage++;

@@ -39,6 +39,16 @@ public class WaypointListGui extends AbstractGui implements Listener {
             return;
         }
 
+        ItemStack item = new ItemStack(Material.END_CRYSTAL);
+        ItemMeta meta = item.getItemMeta();
+
+        meta.setDisplayName(MessagesUtils.getMessage("gui.items.public_waypoints.title"));
+
+        item.setItemMeta(meta);
+
+        GuiItem publicWaypointItem = new GuiItem(9*4-2, item);
+
+
         int i = 0;
         for (String waypointName : Waypoints.getInstance().getWaypointHandler().getWaypointList(player)) {
             Waypoint wp;
@@ -87,7 +97,7 @@ public class WaypointListGui extends AbstractGui implements Listener {
         catch (GuiNoItemException e) {
             player.sendMessage(MessagesUtils.getMessageFromData("gui.no-items", player.getName()));
         }
-        this.openPage(player, 1);
+        this.openPage(player, 1, publicWaypointItem);
     }
 
     @Override

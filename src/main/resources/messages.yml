@@ -73,6 +73,8 @@ gui:
     previous:
       title: "&6&lPrevious Page"
       slot: 1
+    public_waypoints:
+      title: "§a§lPublic Waypoints"
     profile:
       title: "&d%1$s&7's Stats"
       lore:

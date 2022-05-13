@@ -65,6 +65,37 @@ public class Page {
     }
 
     /**
+     * Construct and views the page for the player
+     * @param player the player to view the page for
+     * @param inventory the inventory to view the page in (Must be created before with @see {@link me.yarinlevi.waypoints.gui.helpers.AbstractGui})
+     * @param guiItems override items in the gui. can be used to add extra items to the locked slots section
+     */
+    public void constructPage(Player player, Inventory inventory, GuiItem... guiItems) {
+        player.closeInventory();
+        inventory.clear();
+
+
+        items.entrySet().stream().sorted(Map.Entry.comparingByKey()).forEach(entry -> inventory.setItem(entry.getKey(), entry.getValue()));
+
+
+        inventory.setItem(slots - (lockedSlots.length - Items.ITEM_MENU_SLOT), Items.ITEM_MENU);
+
+        if (this.id > 1) {
+            inventory.setItem(slots - (lockedSlots.length - Items.ITEM_PREVIOUS_SLOT), Items.ITEM_PREVIOUS);
+        }
+
+        if (hasNext) {
+            inventory.setItem(slots - (lockedSlots.length - Items.ITEM_NEXT_SLOT), Items.ITEM_NEXT);
+        }
+
+        for (GuiItem guiItem : guiItems) {
+            inventory.setItem(guiItem.slot(), guiItem.item());
+        }
+
+        player.openInventory(inventory);
+    }
+
+    /**
      * Adds a new item to the page
      * @param slot the slot to add the item to
      * @param item the item to add
