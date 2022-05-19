@@ -59,7 +59,7 @@ help_command:
 edit_icon: "&7Successfully changed waypoint's item to: &b%s"
 edit_icon_failed: "&cEdit failed! &7The item id was not found."
 click_edit_icon: "&7Click to edit waypoint's item."
-waypoint_delete_name_not_match: "&cDelete failed! &7The waypoint name doesn't match!"
+waypoint_delete_name_not_match: "&cDelete failed! &7confirmation failed!"
 gui:
   no-items: "&7Action Failed! &cNo items found!"
   last-page: "&7Action Failed! &cYou were on the last page."
@@ -75,6 +75,8 @@ gui:
       slot: 1
     public_waypoints:
       title: "§a§lPublic Waypoints"
+    delete_deathpoints:
+      title: "§c§lDelete All Deathpoints"
     profile:
       title: "&d%1$s&7's Stats"
       lore:
@@ -99,5 +101,13 @@ gui:
     rename: "&6Rename waypoint"
     delete: "&cDelete waypoint"
     state: "%1$s &7Waypoint"
+  player-settings:
+    toggledeathpoints: "&7Deathpoints: %1$s"
+    tracker: "&7Tracker: &d%1$s"
+  tracker:
+    title: "&7Tracker change"
+    actionbar: "&bActionBar &dTracker"
+    bossbar: "&5BossBar &dTracker"
+    particle: "&aParticle &dTracker"
 
 

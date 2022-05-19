@@ -60,6 +60,8 @@ public class GuiUtils implements Listener {
         guiList.put("gui.create.waypoint", CreateWaypointGui.class);
         guiList.put("gui.public.browser", WaypointBrowser.class);
         guiList.put("gui.personal.waypoint-settings", WaypointSettingsGUI.class);
+        guiList.put("gui.personal.player-settings", PlayerSettingsGUI.class);
+        guiList.put("gui.personal.tracker", ChangeTrackerGUI.class);
 
         return guiList;
     }
