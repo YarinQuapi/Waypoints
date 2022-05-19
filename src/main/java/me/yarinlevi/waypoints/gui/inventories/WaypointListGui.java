@@ -46,7 +46,16 @@ public class WaypointListGui extends AbstractGui implements Listener {
 
         item.setItemMeta(meta);
 
-        GuiItem publicWaypointItem = new GuiItem(9*4-2, item);
+        GuiItem publicWaypointItem = new GuiItem(26, item);
+
+        ItemStack deathpointsItem = new ItemStack(Material.END_CRYSTAL);
+        ItemMeta deathpointMeta = deathpointsItem.getItemMeta();
+
+        deathpointMeta.setDisplayName(MessagesUtils.getMessage("gui.items.delete_deathpoints.title"));
+
+        deathpointsItem.setItemMeta(deathpointMeta);
+
+        GuiItem deleteDeathpointsItem = new GuiItem(25, item);
 
 
         int i = 0;
@@ -97,7 +106,7 @@ public class WaypointListGui extends AbstractGui implements Listener {
         catch (GuiNoItemException e) {
             player.sendMessage(MessagesUtils.getMessageFromData("gui.no-items", player.getName()));
         }
-        this.openPage(player, 1, publicWaypointItem);
+        this.openPage(player, 1, publicWaypointItem, deleteDeathpointsItem);
     }
 
     @Override
@@ -125,6 +134,20 @@ public class WaypointListGui extends AbstractGui implements Listener {
 
                 if (e.getRawSlot() == this.getSlots() -9+ Items.ITEM_PREVIOUS_SLOT) {
                     this.previousPage(player);
+                }
+
+                if (e.getRawSlot() == 26) {
+                    GuiUtils.openInventory("gui.public.browser", player);
+                }
+
+                if (e.getRawSlot() == 27) {
+                    for (Waypoint waypoint : Waypoints.getInstance().getWaypointHandler().getWaypoints(player)) {
+                        if (waypoint.isSystemInduced()) {
+                            Waypoints.getInstance().getWaypointHandler().removeWaypoint(player, waypoint);
+                        }
+                    }
+
+                    GuiUtils.openInventory("gui.personal.waypointlist", player);
                 }
 
                 assert item.getItemMeta() != null;
