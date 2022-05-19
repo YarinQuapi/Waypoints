@@ -7,6 +7,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
+import java.text.MessageFormat;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Pattern;
@@ -48,11 +49,13 @@ public class MessagesUtils {
             return getMessageFromData(key, args);
         }
 
-        return messages.get(key).formatted(args).replaceAll("&", "§");
+        return MessageFormat.format(messages.get(key), args).replaceAll("&", "§");
+        //return messages.get(key).formatted(args).replaceAll("&", "§");
     }
 
     public static String getMessageFromData(String key, Object... args) {
-        return messagesData.getString(key, key).formatted(args).replaceAll("&", "§");
+        return MessageFormat.format(messagesData.getString(key, key), args).replaceAll("&", "§");
+        //return messagesData.getString(key, key).formatted(args).replaceAll("&", "§");
     }
 
 
