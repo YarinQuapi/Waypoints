@@ -22,6 +22,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -66,7 +67,7 @@ public abstract class AbstractGui implements Listener, IGui {
         this.pages.get(page).constructPage(player, inventory);
     }
 
-    public void openPage(Player player, int page, GuiItem... items) {
+    public void openPage(Player player, int page, List<GuiItem> items) {
         this.pages.get(page).constructPage(player, inventory, items);
     }
 
