@@ -107,6 +107,8 @@ public class ProfileGui extends AbstractGui implements Listener {
                 GuiUtils.openInventory("gui.create.waypoint", player);
             } else if (e.getRawSlot() == 16) {
                 GuiUtils.openInventory("gui.personal.waypointlist", player);
+            } else if (e.getRawSlot() == 13) {
+                GuiUtils.openInventory("gui.personal.player-settings", player);
             }
         }
     }
