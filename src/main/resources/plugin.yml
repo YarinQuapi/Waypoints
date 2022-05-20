@@ -1,0 +1,17 @@
+name: QWaypoints
+version: ${project.version}
+main: me.yarinlevi.waypoints.Waypoints
+api-version: 1.18
+author: Quapi
+description: A new way to save locations
+
+commands:
+  waypoint:
+    aliases: [waypoints, wp]
+  waypointadmin:
+    aliases: [wpa, wpadmin]
+    permission: qwaypoints.admin
+
+permissions:
+  qwaypoints.command.spawn:
+    default: not op
