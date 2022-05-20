@@ -4,7 +4,6 @@ import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
 import me.yarinlevi.waypoints.Waypoints;
-import me.yarinlevi.waypoints.exceptions.PlayerDoesNotExistException;
 import me.yarinlevi.waypoints.exceptions.WaypointDoesNotExistException;
 import me.yarinlevi.waypoints.utils.LocationData;
 import me.yarinlevi.waypoints.utils.MessagesUtils;
@@ -24,44 +23,44 @@ import java.util.UUID;
 public class Waypoint {
     @Getter private String name;
     @Getter private final Location location;
-    @Getter private final boolean systemInduced;
+    @Getter private final boolean deathpoints;
     @Getter private ItemStack item = new ItemStack(Material.DIRT);
     private final WaypointWorld world;
     @Getter private final UUID owner;
     @Getter @Setter private WaypointState state = WaypointState.PRIVATE;
 
-    public Waypoint(UUID owner, String name, Location location, boolean systemInduced) {
+    public Waypoint(UUID owner, String name, Location location, boolean deathpoints) {
         this.owner = owner;
         this.name = name;
         this.location = location;
-        this.systemInduced = systemInduced;
+        this.deathpoints = deathpoints;
         world = WaypointWorld.valueOf(location.getWorld().getEnvironment().name());
     }
 
-    public Waypoint(UUID owner, String name, Location location, ItemStack item, boolean systemInduced) {
+    public Waypoint(UUID owner, String name, Location location, ItemStack item, boolean deathpoints) {
         this.owner = owner;
         this.name = name;
         this.location = location;
         this.item = item;
-        this.systemInduced = systemInduced;
+        this.deathpoints = deathpoints;
         world = WaypointWorld.valueOf(location.getWorld().getEnvironment().name());
     }
 
-    public Waypoint(UUID owner, String name, Location location, WaypointState state, boolean systemInduced) {
+    public Waypoint(UUID owner, String name, Location location, WaypointState state, boolean deathpoints) {
         this.owner = owner;
         this.name = name;
         this.location = location;
-        this.systemInduced = systemInduced;
+        this.deathpoints = deathpoints;
         this.state = state;
         world = WaypointWorld.valueOf(location.getWorld().getEnvironment().name());
     }
 
-    public Waypoint(UUID owner, String name, Location location, ItemStack item, WaypointState state, boolean systemInduced) {
+    public Waypoint(UUID owner, String name, Location location, ItemStack item, WaypointState state, boolean deathpoints) {
         this.owner = owner;
         this.name = name;
         this.location = location;
         this.item = item;
-        this.systemInduced = systemInduced;
+        this.deathpoints = deathpoints;
         this.state = state;
         world = WaypointWorld.valueOf(location.getWorld().getEnvironment().name());
     }

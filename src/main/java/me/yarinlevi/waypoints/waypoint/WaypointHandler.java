@@ -1,7 +1,6 @@
 package me.yarinlevi.waypoints.waypoint;
 
 import me.yarinlevi.waypoints.Waypoints;
-import me.yarinlevi.waypoints.exceptions.PlayerDoesNotExistException;
 import me.yarinlevi.waypoints.exceptions.PlayerNotLoadedException;
 import me.yarinlevi.waypoints.exceptions.WaypointAlreadyExistsException;
 import me.yarinlevi.waypoints.exceptions.WaypointDoesNotExistException;
@@ -78,7 +77,7 @@ public class WaypointHandler {
     public Set<String> getSystemInducedWaypointList(OfflinePlayer player) {
         Set<String> list = new HashSet<>();
 
-        Waypoints.getInstance().getPlayerDataManager().getPlayerDataMap().get(player.getUniqueId()).getWaypointList().stream().filter(Waypoint::isSystemInduced).forEach(x -> list.add(x.getName()));
+        Waypoints.getInstance().getPlayerDataManager().getPlayerDataMap().get(player.getUniqueId()).getWaypointList().stream().filter(Waypoint::isDeathpoints).forEach(x -> list.add(x.getName()));
 
         return list;
     }

@@ -1,6 +1,5 @@
 package me.yarinlevi.waypoints.utils;
 
-import me.yarinlevi.waypoints.Waypoints;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Color;
 import org.bukkit.Location;
@@ -15,7 +14,7 @@ public class Utils {
     public static final Pattern allowedCharacters = Pattern.compile("([A-z0-9]\\w+)");
 
     public static String newMessage(String message) {
-        return ChatColor.translateAlternateColorCodes('&', Waypoints.getInstance().getPrefix()) + ChatColor.translateAlternateColorCodes('&', message);
+        return ChatColor.translateAlternateColorCodes('&', Constants.PREFIX) + ChatColor.translateAlternateColorCodes('&', message);
     }
 
     public static String newMessageNoPrefix(String message) {

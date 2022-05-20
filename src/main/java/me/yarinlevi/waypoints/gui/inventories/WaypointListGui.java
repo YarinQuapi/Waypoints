@@ -20,9 +20,9 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.util.Vector;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author YarinQuapi
@@ -39,23 +39,23 @@ public class WaypointListGui extends AbstractGui implements Listener {
             return;
         }
 
-        ItemStack item = new ItemStack(Material.END_CRYSTAL);
+        ItemStack item = new ItemStack(Material.GREEN_CONCRETE);
         ItemMeta meta = item.getItemMeta();
 
         meta.setDisplayName(MessagesUtils.getMessage("gui.items.public_waypoints.title"));
 
         item.setItemMeta(meta);
 
-        GuiItem publicWaypointItem = new GuiItem(26, item);
+        GuiItem publicWaypointItem = new GuiItem(34, item);
 
-        ItemStack deathpointsItem = new ItemStack(Material.END_CRYSTAL);
+        ItemStack deathpointsItem = new ItemStack(Material.RED_CONCRETE);
         ItemMeta deathpointMeta = deathpointsItem.getItemMeta();
 
         deathpointMeta.setDisplayName(MessagesUtils.getMessage("gui.items.delete_deathpoints.title"));
 
         deathpointsItem.setItemMeta(deathpointMeta);
 
-        GuiItem deleteDeathpointsItem = new GuiItem(25, item);
+        GuiItem deleteDeathpointsItem = new GuiItem(33, deathpointsItem);
 
 
         int i = 0;
@@ -106,7 +106,11 @@ public class WaypointListGui extends AbstractGui implements Listener {
         catch (GuiNoItemException e) {
             player.sendMessage(MessagesUtils.getMessageFromData("gui.no-items", player.getName()));
         }
-        this.openPage(player, 1, publicWaypointItem, deleteDeathpointsItem);
+        List<GuiItem> waypoints = new ArrayList<>();
+        waypoints.add(publicWaypointItem);
+        waypoints.add(deleteDeathpointsItem);
+
+        this.openPage(player, 1, waypoints);
     }
 
     @Override
@@ -136,13 +140,13 @@ public class WaypointListGui extends AbstractGui implements Listener {
                     this.previousPage(player);
                 }
 
-                if (e.getRawSlot() == 26) {
+                if (e.getRawSlot() == 34) {
                     GuiUtils.openInventory("gui.public.browser", player);
                 }
 
-                if (e.getRawSlot() == 27) {
+                if (e.getRawSlot() == 33) {
                     for (Waypoint waypoint : Waypoints.getInstance().getWaypointHandler().getWaypoints(player)) {
-                        if (waypoint.isSystemInduced()) {
+                        if (waypoint.isDeathpoints()) {
                             Waypoints.getInstance().getWaypointHandler().removeWaypoint(player, waypoint);
                         }
                     }

@@ -8,13 +8,14 @@ import me.yarinlevi.waypoints.exceptions.WaypointDoesNotExistException;
 import me.yarinlevi.waypoints.utils.LocationData;
 import me.yarinlevi.waypoints.waypoint.Waypoint;
 import me.yarinlevi.waypoints.waypoint.WaypointState;
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.Nullable;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -107,7 +108,7 @@ public class H2DataManager implements IData {
         String loc = waypoint.getLocation().getX() + "," + waypoint.getLocation().getY() + "," + waypoint.getLocation().getZ() + ',' + waypoint.getLocation().getWorld().getName();
 
         String statement = "INSERT INTO `waypoints` (`player_uuid`, `waypoint_name`, `location`, `item`, `is_deathpoint`, `is_public`) VALUES ('%s', '%s', '%s', '%s', %s, %s);"
-                .formatted(uuid.toString(), waypoint.getName(), loc, waypoint.getItem().getType().name(), waypoint.isSystemInduced(), false);
+                .formatted(uuid.toString(), waypoint.getName(), loc, waypoint.getItem().getType().name(), waypoint.isDeathpoints(), false);
 
         this.insert(statement);
     }

@@ -8,6 +8,7 @@ import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -70,7 +71,7 @@ public class Page {
      * @param inventory the inventory to view the page in (Must be created before with @see {@link me.yarinlevi.waypoints.gui.helpers.AbstractGui})
      * @param guiItems override items in the gui. can be used to add extra items to the locked slots section
      */
-    public void constructPage(Player player, Inventory inventory, GuiItem... guiItems) {
+    public void constructPage(Player player, Inventory inventory, List<GuiItem> guiItems) {
         player.closeInventory();
         inventory.clear();
 
