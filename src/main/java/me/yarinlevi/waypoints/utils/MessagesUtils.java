@@ -49,12 +49,12 @@ public class MessagesUtils {
             return getMessageFromData(key, args);
         }
 
-        return MessageFormat.format(messages.get(key), args).replaceAll("&", "§");
+        return new MessageFormat(messages.get(key).replaceAll("&", "§")).format(args);
         //return messages.get(key).formatted(args).replaceAll("&", "§");
     }
 
     public static String getMessageFromData(String key, Object... args) {
-        return MessageFormat.format(messagesData.getString(key, key), args).replaceAll("&", "§");
+        return new MessageFormat(messagesData.getString(key, key).replaceAll("&", "§")).format(args);
         //return messagesData.getString(key, key).formatted(args).replaceAll("&", "§");
     }
 
@@ -67,13 +67,14 @@ public class MessagesUtils {
             message.append(ChatColor.translateAlternateColorCodes('&', string + "\n"));
         }
 
-        return message.toString().formatted(args);
+        return new MessageFormat(message.toString()).format(args);
     }
 
 
 
     public static String getRawFormattedString(String key, Object... args) {
-        return messages.getOrDefault(key, key).replaceAll("&", "§").formatted(args);
+        return new MessageFormat(messages.getOrDefault(key, key).replaceAll("&", "§")).format(args);
+        //return messages.getOrDefault(key, key).replaceAll("&", "§").formatted(args);
     }
 
 

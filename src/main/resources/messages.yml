@@ -36,8 +36,8 @@ state_change_failed_not_allowed: "&cState change failed! &7changing waypoint sta
 state_change_failed_syntax: "&cState changed failed! &7Incorrect syntax! please try &e/wp set <waypoint> <state>"
 state_change: "&7Successfully set waypoint state to {0}"
 share_waypoint: "&e&lWaypoint Share &d{0} &r&l> &7Waypoint &b{1} &7is located at &bX &a{2} &bY &a{3} &bZ &a{4} &7in world &b{5}"
-biome_format: "&7Biome: &b%s"
-world_format: "&7World: &b%s"
+biome_format: "&7Biome: &b{0}"
+world_format: "&7World: &b{0}"
 spawn_locate_command:
   - "&7Spawn locator:"
   - "&a  • &7Coordinates &bX &a{0} &bY &a{1} &bZ &a{2}"
@@ -78,7 +78,7 @@ gui:
     delete_deathpoints:
       title: "§c§lDelete All Deathpoints"
     profile:
-      title: "&d%1$s&7's Stats"
+      title: "&d{0}&7's Stats"
       lore:
         - "&a{0} &7Total waypoints"
         - "&a{1} &7Waypoints in &bOverworld"
@@ -102,6 +102,7 @@ gui:
     delete: "&cDelete waypoint"
     state: "{1} &7Waypoint"
   player-settings:
+    title: "&7Player settings"
     toggledeathpoints: "&7Deathpoints: {0}"
     tracker: "&7Tracker: &d{0}"
   tracker:
