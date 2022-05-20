@@ -3,14 +3,12 @@ package me.yarinlevi.waypoints.gui.inventories;
 import me.yarinlevi.waypoints.Waypoints;
 import me.yarinlevi.waypoints.exceptions.GuiNoItemException;
 import me.yarinlevi.waypoints.exceptions.InventoryDoesNotExistException;
-import me.yarinlevi.waypoints.exceptions.WaypointDoesNotExistException;
 import me.yarinlevi.waypoints.gui.GuiUtils;
 import me.yarinlevi.waypoints.gui.helpers.AbstractGui;
 import me.yarinlevi.waypoints.gui.helpers.types.GuiItem;
 import me.yarinlevi.waypoints.gui.items.Items;
 import me.yarinlevi.waypoints.player.PlayerData;
 import me.yarinlevi.waypoints.utils.MessagesUtils;
-import me.yarinlevi.waypoints.waypoint.WaypointState;
 import me.yarinlevi.waypoints.waypoint.WaypointWorld;
 import org.bukkit.Material;
 import org.bukkit.Sound;
@@ -21,7 +19,6 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -32,7 +29,7 @@ public class PlayerSettingsGUI extends AbstractGui {
     public void run(Player player) {
         this.setKey("gui.personal.player-settings");
         this.setSlots(9*3);
-        this.setTitle(MessagesUtils.getMessage("gui.player-settings.title", this.getWaypoint().getName()));
+        this.setTitle(MessagesUtils.getMessage("gui.player-settings.title"));
 
         PlayerData playerData = Waypoints.getInstance().getPlayerDataManager().getPlayerDataMap().get(player.getUniqueId());
 
