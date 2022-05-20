@@ -1,7 +1,6 @@
 package me.yarinlevi.waypoints.gui.inventories;
 
 import me.yarinlevi.waypoints.Waypoints;
-import me.yarinlevi.waypoints.exceptions.WaypointDoesNotExistException;
 import me.yarinlevi.waypoints.gui.GuiUtils;
 import me.yarinlevi.waypoints.gui.helpers.AbstractGui;
 import me.yarinlevi.waypoints.gui.helpers.types.GuiItem;
@@ -9,8 +8,6 @@ import me.yarinlevi.waypoints.gui.items.Items;
 import me.yarinlevi.waypoints.player.PlayerData;
 import me.yarinlevi.waypoints.player.trackers.ETracker;
 import me.yarinlevi.waypoints.utils.MessagesUtils;
-import me.yarinlevi.waypoints.utils.Utils;
-import me.yarinlevi.waypoints.waypoint.WaypointState;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
