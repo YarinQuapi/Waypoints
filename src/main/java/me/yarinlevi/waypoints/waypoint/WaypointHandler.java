@@ -84,6 +84,11 @@ public class WaypointHandler {
 
 
     @Nullable
+    public Waypoint getOfflineWaypoint(OfflinePlayer player, String name) {
+        return Waypoints.getInstance().getPlayerData().getWaypoint(player.getUniqueId(), name);
+    }
+
+    @Nullable
     public Waypoint getWaypoint(OfflinePlayer player, String name) {
         return Waypoints.getInstance().getPlayerDataManager().getPlayerDataMap().containsKey(player.getUniqueId()) && Waypoints.getInstance().getPlayerDataManager().getPlayerDataMap().get(player.getUniqueId()).getWaypointList().stream().anyMatch(x -> x.getName().equalsIgnoreCase(name)) ?
                 Waypoints.getInstance().getPlayerDataManager().getPlayerDataMap().get(player.getUniqueId()).getWaypointList().stream().filter(x -> x.getName().equalsIgnoreCase(name)).findAny().get() : null;

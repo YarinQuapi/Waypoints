@@ -20,7 +20,7 @@ public class CheckSubCommand extends SubCommand {
             String[] checkArgs = args[1].split(":");
 
             if (checkArgs.length == 2 && Bukkit.getOfflinePlayer(checkArgs[0]).hasPlayedBefore()) {
-                Waypoint wp = Waypoints.getInstance().getWaypointHandler().getWaypoint(Bukkit.getOfflinePlayer(checkArgs[0]), checkArgs[1]);
+                Waypoint wp = Waypoints.getInstance().getWaypointHandler().getOfflineWaypoint(Bukkit.getOfflinePlayer(checkArgs[0]), checkArgs[1]);
 
                 if (wp != null) {
                     LocationData locationData = wp.getLocationData();

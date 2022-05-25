@@ -18,6 +18,8 @@ public interface IData {
 
     void removeWaypoint(UUID uuid, String waypoint);
 
+    Waypoint getWaypoint(UUID uuid, String waypoint);
+
     void updateWaypointItem(UUID uuid, String waypoint, String item);
 
     boolean isWaypoint(UUID uuid, String waypoint);

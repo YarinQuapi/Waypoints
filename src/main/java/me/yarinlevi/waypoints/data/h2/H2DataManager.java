@@ -122,6 +122,24 @@ public class H2DataManager implements IData {
     }
 
     @Override
+    public Waypoint getWaypoint(UUID uuid, String waypointName) {
+        try {
+            ResultSet rs = this.get("SELECT * FROM `waypoints` WHERE `player_uuid` = '%s' AND `waypoint_name` = '%s'".formatted(uuid.toString(), waypointName));
+
+            if (rs != null && rs.next()) {
+                String[] locations = rs.getString("location").split(",");
+                LocationData data = new LocationData(locations[0], locations[1], locations[2], locations[3]);
+
+                return new Waypoint(UUID.fromString(rs.getString("player_uuid")), rs.getString("waypoint_name"), data.getLocation(), new ItemStack(Material.getMaterial(rs.getString("item"))), rs.getBoolean("is_public") ? WaypointState.PUBLIC : WaypointState.PRIVATE, rs.getBoolean("is_deathpoint"));
+            }
+        } catch (SQLException e) {
+            return null;
+        }
+
+        return null;
+    }
+
+    @Override
     public void updateWaypointItem(UUID uuid, String waypoint, String item) {
         String statement = "UPDATE `waypoints` SET `item` = '%s' WHERE `player_uuid` = '%s' AND `waypoint_name` = '%s'"
                 .formatted(item, uuid.toString(), waypoint);
