@@ -24,6 +24,7 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Stream;
 
 /**
  * @author YarinQuapi
@@ -96,11 +97,13 @@ public abstract class AbstractGui implements Listener, IGui {
 
         Page page = new Page(1, slots, lockedSlots, null, this.maxPages != 1); // create first page
 
+
+        Stream<Map.Entry<Integer, GuiItem>> itemStream = items.entrySet().stream().sorted(Map.Entry.comparingByKey());
         int j = 0; // item slot
         for (int i = 0; i < size; i++) {
 
             if (j < (slots - lockedSlots.length)) { // is in locked slots?
-                GuiItem item = items.entrySet().stream().sorted(Map.Entry.comparingByKey()).skip(i).findFirst().get().getValue(); // gets the item and the slot for the specified item
+                GuiItem item = itemStream.skip(i).findFirst().get().getValue(); // gets the item and the slot for the specified item
 
                 page.addItem(item.slot() < this.slots-lockedSlots.length ? item.slot() : j, item.item()); // add item to page
                 j++; // increase slot
