@@ -1,6 +1,8 @@
 # This messages file is updated for QWaypoints v${project.version}
+# Note: all arguments should start at 1 and not 0.
 no_permission: "&cFailed! &7You are not permitted to use this."
 must_be_player: "&cYou are required to be a player to use this command."
+offline_player: "&cSorry, the player was not found."
 excessive_arguments: "&cExcessive arguments."
 no_waypoints: "&cYou do not have any waypoints."
 no_waypoint_world: "&cNo waypoints detected in world {0}"
@@ -19,6 +21,8 @@ setting_change_failed_not_found: "&cSetting change failed! &7Setting &e{0} &7not
 setting_toggled: "&7Setting '&e{0}&7' was toggled {1}&7!"
 tracker_changed: "&7Tracker updated! now using &b{0}&7!"
 create_failed_args: "&cCreate failed! &7Not enough arguments!"
+create_failed_exists: "&cCreate failed! &7You already have a waypoint named &b{0}&7!"
+create_failed_limit: "&cCreate failed! &7You have reached your {0} &7waypoint limit!"
 waypoint_created: "&7Created new waypoint &b{0}"
 waypoint_deleted: "&7Deleted waypoint &b{0}"
 waypoint_check: "&7Waypoint &b{0} &7is located at &bX &a{1} &bY &a{2} &bZ &a{3} &7in world &b{4} &7You are &b{5} &7blocks away."
