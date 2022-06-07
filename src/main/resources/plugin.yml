@@ -1,7 +1,7 @@
 name: QWaypoints
 version: ${project.version}
 main: me.yarinlevi.waypoints.Waypoints
-api-version: 1.18
+api-version: 1.19
 author: Quapi
 description: A new way to save locations
 
@@ -14,4 +14,6 @@ commands:
 
 permissions:
   qwaypoints.command.spawn:
+    default: not op
+  qwaypoints-default:
     default: not op
