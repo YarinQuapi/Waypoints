@@ -1,6 +1,8 @@
 package me.yarinlevi.waypoints.waypoint;
 
 import lombok.Getter;
+import org.bukkit.Location;
+import org.bukkit.OfflinePlayer;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -20,5 +22,13 @@ public enum WaypointWorld {
     WaypointWorld(String name, @Nullable List<String> keys) {
         this.name = name;
         this.keys = keys;
+    }
+
+    public static WaypointWorld findWorld(OfflinePlayer player) {
+        return WaypointWorld.findWorld(player.getPlayer().getLocation());
+    }
+
+    public static WaypointWorld findWorld(Location location) {
+        return WaypointWorld.valueOf(location.getWorld().getEnvironment().name());
     }
 }

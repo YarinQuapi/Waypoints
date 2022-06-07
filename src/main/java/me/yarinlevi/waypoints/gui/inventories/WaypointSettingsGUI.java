@@ -9,7 +9,7 @@ import me.yarinlevi.waypoints.gui.helpers.AbstractGui;
 import me.yarinlevi.waypoints.gui.helpers.types.GuiItem;
 import me.yarinlevi.waypoints.gui.items.Items;
 import me.yarinlevi.waypoints.utils.MessagesUtils;
-import me.yarinlevi.waypoints.waypoint.WaypointState;
+import me.yarinlevi.waypoints.waypoint.types.StateIdentifier;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
@@ -84,7 +84,7 @@ public class WaypointSettingsGUI extends AbstractGui {
         /*
          * Waypoint settings - state
          */
-        ItemStack stateItem = this.getWaypoint().getState() == WaypointState.PUBLIC ? new ItemStack(Material.GREEN_WOOL) : new ItemStack(Material.RED_WOOL);
+        ItemStack stateItem = this.getWaypoint().getState() == StateIdentifier.PUBLIC ? new ItemStack(Material.GREEN_WOOL) : new ItemStack(Material.RED_WOOL);
         ItemMeta stateMeta = stateItem.getItemMeta();
 
         stateMeta.setDisplayName(MessagesUtils.getMessage("gui.waypoint-settings.state", this.getWaypoint().getState().getState()));
@@ -128,8 +128,8 @@ public class WaypointSettingsGUI extends AbstractGui {
                 }
 
                 if (e.getRawSlot() == 13) { // State
-                    WaypointState currentState = this.getWaypoint().getState();
-                    WaypointState newState = currentState == WaypointState.PUBLIC ? WaypointState.PRIVATE : WaypointState.PUBLIC;
+                    StateIdentifier currentState = this.getWaypoint().getState();
+                    StateIdentifier newState = currentState == StateIdentifier.PUBLIC ? StateIdentifier.PRIVATE : StateIdentifier.PUBLIC;
                     this.getWaypoint().setState(newState);
 
                     try {
@@ -140,7 +140,7 @@ public class WaypointSettingsGUI extends AbstractGui {
                         return;
                     }
 
-                    ItemStack stateItem = newState == WaypointState.PUBLIC ? new ItemStack(Material.GREEN_WOOL) : new ItemStack(Material.RED_WOOL);
+                    ItemStack stateItem = newState == StateIdentifier.PUBLIC ? new ItemStack(Material.GREEN_WOOL) : new ItemStack(Material.RED_WOOL);
                     ItemMeta stateMeta = stateItem.getItemMeta();
 
                     stateMeta.setDisplayName(MessagesUtils.getMessage("gui.waypoint-settings.state", this.getWaypoint().getState().getState()));

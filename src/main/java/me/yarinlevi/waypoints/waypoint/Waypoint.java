@@ -8,6 +8,7 @@ import me.yarinlevi.waypoints.exceptions.WaypointDoesNotExistException;
 import me.yarinlevi.waypoints.utils.LocationData;
 import me.yarinlevi.waypoints.utils.MessagesUtils;
 import me.yarinlevi.waypoints.utils.Utils;
+import me.yarinlevi.waypoints.waypoint.types.StateIdentifier;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -23,17 +24,17 @@ import java.util.UUID;
 public class Waypoint {
     @Getter private String name;
     @Getter private final Location location;
-    @Getter private final boolean deathpoints;
+    @Getter private final boolean deathpoint;
     @Getter private ItemStack item = new ItemStack(Material.DIRT);
     private final WaypointWorld world;
     @Getter private final UUID owner;
-    @Getter @Setter private WaypointState state = WaypointState.PRIVATE;
+    @Getter @Setter private StateIdentifier state = StateIdentifier.PRIVATE;
 
     public Waypoint(UUID owner, String name, Location location, boolean deathpoints) {
         this.owner = owner;
         this.name = name;
         this.location = location;
-        this.deathpoints = deathpoints;
+        this.deathpoint = deathpoints;
         world = WaypointWorld.valueOf(location.getWorld().getEnvironment().name());
     }
 
@@ -42,25 +43,25 @@ public class Waypoint {
         this.name = name;
         this.location = location;
         this.item = item;
-        this.deathpoints = deathpoints;
+        this.deathpoint = deathpoints;
         world = WaypointWorld.valueOf(location.getWorld().getEnvironment().name());
     }
 
-    public Waypoint(UUID owner, String name, Location location, WaypointState state, boolean deathpoints) {
+    public Waypoint(UUID owner, String name, Location location, StateIdentifier state, boolean deathpoints) {
         this.owner = owner;
         this.name = name;
         this.location = location;
-        this.deathpoints = deathpoints;
+        this.deathpoint = deathpoints;
         this.state = state;
         world = WaypointWorld.valueOf(location.getWorld().getEnvironment().name());
     }
 
-    public Waypoint(UUID owner, String name, Location location, ItemStack item, WaypointState state, boolean deathpoints) {
+    public Waypoint(UUID owner, String name, Location location, ItemStack item, StateIdentifier state, boolean deathpoints) {
         this.owner = owner;
         this.name = name;
         this.location = location;
         this.item = item;
-        this.deathpoints = deathpoints;
+        this.deathpoint = deathpoints;
         this.state = state;
         world = WaypointWorld.valueOf(location.getWorld().getEnvironment().name());
     }
@@ -97,6 +98,10 @@ public class Waypoint {
 
     public String getWorld() {
         return MessagesUtils.getRawFormattedString("world_format", this.world.name);
+    }
+
+    public WaypointWorld getWorldIdentifier() {
+        return world;
     }
 
     /**

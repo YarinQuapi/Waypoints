@@ -4,6 +4,8 @@ import me.yarinlevi.waypoints.Waypoints;
 import me.yarinlevi.waypoints.commands.SubCommand;
 import me.yarinlevi.waypoints.commands.waypoint.sub.*;
 import me.yarinlevi.waypoints.gui.GuiUtils;
+import me.yarinlevi.waypoints.utils.MessagesUtils;
+import me.yarinlevi.waypoints.waypoint.Waypoint;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -53,7 +55,7 @@ public class WaypointCommand implements CommandExecutor, TabExecutor {
             }
         }
 
-        sender.sendMessage("You are required to be a player to execute this command.");
+        sender.sendMessage(MessagesUtils.getMessage("must_be_player"));
         return false;
     }
 
@@ -68,14 +70,14 @@ public class WaypointCommand implements CommandExecutor, TabExecutor {
 
         if (args.length == 2) {
             switch (args[0].toLowerCase()) {
-                case "delete", "check", "distance", "track" -> list.addAll(Waypoints.getInstance().getWaypointHandler().getWaypointList((Player) commandSender));
+                case "delete", "check", "distance", "track" -> Waypoints.getInstance().getWaypointHandler().getWaypoints((Player) commandSender).stream().forEach(waypoint -> list.add(waypoint.getName()));
             }
         }
 
         else if (args.length == 3) {
             if ("distance".equalsIgnoreCase(args[0])) {
-                List<String> waypointList = Waypoints.getInstance().getWaypointHandler().getWaypointList((Player) commandSender).stream().toList();
-                list.addAll(waypointList);
+                List<Waypoint> waypointList = Waypoints.getInstance().getWaypointHandler().getWaypoints((Player) commandSender).stream().toList();
+                waypointList.forEach(wp -> list.add(wp.getName()));
             }
         }
 

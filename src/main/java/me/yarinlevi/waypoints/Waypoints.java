@@ -8,12 +8,13 @@ import me.yarinlevi.waypoints.data.h2.H2DataManager;
 import me.yarinlevi.waypoints.gui.GuiUtils;
 import me.yarinlevi.waypoints.listeners.PlayerDeathListener;
 import me.yarinlevi.waypoints.listeners.PlayerListener;
-import me.yarinlevi.waypoints.player.PlayerDataManager;
+import me.yarinlevi.waypoints.player.PlayerSettingsManager;
 import me.yarinlevi.waypoints.player.trackers.TrackerManager;
 import me.yarinlevi.waypoints.utils.Constants;
 import me.yarinlevi.waypoints.utils.MessagesUtils;
 import me.yarinlevi.waypoints.utils.Utils;
-import me.yarinlevi.waypoints.waypoint.WaypointHandler;
+import me.yarinlevi.waypoints.waypoint.handler.WaypointHandler;
+import me.yarinlevi.waypoints.waypoint.types.IWaypointHandler;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -23,10 +24,10 @@ import org.bukkit.plugin.java.JavaPlugin;
  */
 public class Waypoints extends JavaPlugin {
     @Getter private static Waypoints instance;
-    @Getter private WaypointHandler waypointHandler;
+    @Getter private IWaypointHandler waypointHandler;
     @Getter private IData playerData;
     @Getter private TrackerManager trackerManager;
-    @Getter private PlayerDataManager playerDataManager;
+    @Getter private PlayerSettingsManager playerSettingsManager;
 
     @Override
     public void onEnable() {
@@ -44,7 +45,7 @@ public class Waypoints extends JavaPlugin {
 
         Bukkit.getPluginManager().registerEvents(new PlayerListener(), this);
 
-        playerDataManager = new PlayerDataManager(); // loads player data manager
+        playerSettingsManager = new PlayerSettingsManager(); // loads player data manager
 
         waypointHandler = new WaypointHandler(); // loads waypoint handler
 
@@ -56,7 +57,7 @@ public class Waypoints extends JavaPlugin {
         }
 
         // Reload Safe
-        Bukkit.getOnlinePlayers().forEach(player -> playerData.loadPlayer(player.getUniqueId()));
+        Bukkit.getOnlinePlayers().forEach(player -> playerData.loadPlayer(player));
 
         GuiUtils.registerGui(); // registers gui systems
 
@@ -66,7 +67,7 @@ public class Waypoints extends JavaPlugin {
 
     @Override
     public void onDisable() {
-        Bukkit.getOnlinePlayers().forEach(player -> playerData.unloadPlayer(player.getUniqueId()));
+        Bukkit.getOnlinePlayers().forEach(player -> playerData.unloadPlayer(player));
 
         this.getPlayerData().closeDatabase();
     }

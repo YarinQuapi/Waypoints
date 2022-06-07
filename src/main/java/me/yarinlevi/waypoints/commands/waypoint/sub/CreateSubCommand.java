@@ -4,10 +4,11 @@ import me.yarinlevi.waypoints.Waypoints;
 import me.yarinlevi.waypoints.commands.SubCommand;
 import me.yarinlevi.waypoints.exceptions.PlayerNotLoadedException;
 import me.yarinlevi.waypoints.exceptions.WaypointAlreadyExistsException;
+import me.yarinlevi.waypoints.exceptions.WaypointLimitReachedException;
 import me.yarinlevi.waypoints.utils.MessagesUtils;
 import me.yarinlevi.waypoints.utils.Utils;
 import me.yarinlevi.waypoints.waypoint.Waypoint;
-import me.yarinlevi.waypoints.waypoint.WaypointState;
+import me.yarinlevi.waypoints.waypoint.types.StateIdentifier;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.Nullable;
 
@@ -22,13 +23,14 @@ public class CreateSubCommand extends SubCommand {
 
             if (Utils.allowedCharacters.matcher(name).matches()) {
 
-                Waypoint wp = new Waypoint(player.getUniqueId(), name, player.getLocation(), WaypointState.PRIVATE, false);
+                Waypoint wp = new Waypoint(player.getUniqueId(), name, player.getLocation(), StateIdentifier.PRIVATE, false);
 
                 try {
-                    if (Waypoints.getInstance().getWaypointHandler().addWaypoint(player.getUniqueId(), wp)) {
-                        player.sendMessage(MessagesUtils.getMessage("waypoint_created", name));
-                    }
-                } catch (WaypointAlreadyExistsException | PlayerNotLoadedException exception) {
+                    Waypoints.getInstance().getWaypointHandler().addWaypoint(player, wp);
+
+                    player.sendMessage(MessagesUtils.getMessage("waypoint_created", name));
+                } catch (WaypointAlreadyExistsException | PlayerNotLoadedException |
+                         WaypointLimitReachedException exception) {
                     player.sendMessage(exception.getMessage());
                 }
             } else {

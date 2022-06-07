@@ -69,7 +69,7 @@ public class ChangeTrackerGUI extends AbstractGui {
             if (!item.getType().equals(Material.AIR)) {
                 Player player = (Player) e.getWhoClicked();
 
-                PlayerData playerData = Waypoints.getInstance().getPlayerDataManager().getPlayerDataMap().get(player.getUniqueId());
+                PlayerData playerData = Waypoints.getInstance().getWaypointHandler().getPlayer(player);
 
                 if (e.getRawSlot() == 12) {
                     playerData.setETracker(ETracker.ActionBar);

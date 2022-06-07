@@ -1,15 +1,16 @@
-package me.yarinlevi.waypoints.waypoint;
+package me.yarinlevi.waypoints.waypoint.types;
 
 import lombok.Getter;
 
-public enum WaypointState {
+public enum StateIdentifier {
+    ALL("&6Total"),
     PRIVATE("&cPrivate"),
     PUBLIC("&aPublic"),
     SERVER("&bServer");
 
     @Getter String state;
 
-    WaypointState(String state) {
+    StateIdentifier(String state) {
         this.state = state;
     }
 }

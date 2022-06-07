@@ -28,7 +28,6 @@ import java.util.Objects;
 public class ProfileGui extends AbstractGui implements Listener {
     @Override
     public void run(Player player) {
-        this.setKey("gui.personal.profile");
         this.setSlots(9*3);
         this.setTitle(MessagesUtils.getMessageFromData("gui.menu.title", player.getName()));
 
@@ -40,10 +39,10 @@ public class ProfileGui extends AbstractGui implements Listener {
         skullMeta.setDisplayName(MessagesUtils.getMessageFromData("gui.items.profile.title", player.getName()));
         skullMeta.setOwningPlayer(player);
 
-        int overworldCount = Waypoints.getInstance().getWaypointHandler().getWaypointList(player, WaypointWorld.NORMAL).size();
-        int netherCount = Waypoints.getInstance().getWaypointHandler().getWaypointList(player, WaypointWorld.NETHER).size();
-        int endCount = Waypoints.getInstance().getWaypointHandler().getWaypointList(player, WaypointWorld.THE_END).size();
-        int systemInduced = Waypoints.getInstance().getWaypointHandler().getSystemInducedWaypointList(player).size();
+        int overworldCount = Waypoints.getInstance().getWaypointHandler().getWaypoints(player, WaypointWorld.NORMAL).size();
+        int netherCount = Waypoints.getInstance().getWaypointHandler().getWaypoints(player, WaypointWorld.NETHER).size();
+        int endCount = Waypoints.getInstance().getWaypointHandler().getWaypoints(player, WaypointWorld.THE_END).size();
+        int systemInduced = Waypoints.getInstance().getWaypointHandler().getDeathPoints(player).size();
 
         int total = overworldCount + netherCount + endCount + systemInduced;
 

@@ -31,13 +31,13 @@ public class TrackSubCommand extends SubCommand {
                     String playerName = args[1].split(":")[0];
                     String waypointName = args[1].split(":")[1];
 
-                    wp = Waypoints.getInstance().getWaypointHandler().getAllPublicWaypoints().stream()
+                    wp = Waypoints.getInstance().getWaypointHandler().getPublicWaypoints().stream()
                             .filter(waypoint -> waypoint.getOwner().equals(Bukkit.getOfflinePlayer(playerName).getUniqueId()))
                             .filter(waypoint -> waypoint.getName().equalsIgnoreCase(waypointName)).findFirst().orElse(null);
                 }
 
                 if (wp != null) {
-                    if (Waypoints.getInstance().getTrackerManager().track(player, wp, Waypoints.getInstance().getPlayerDataManager().getPlayerDataMap().get(player.getUniqueId()).getETracker())) {
+                    if (Waypoints.getInstance().getTrackerManager().track(player, wp, Waypoints.getInstance().getWaypointHandler().getPlayer(player).getETracker())) {
 
                         player.sendMessage(MessagesUtils.getMessage("tracking", wp.getName()));
                         player.setCompassTarget(wp.getLocation());

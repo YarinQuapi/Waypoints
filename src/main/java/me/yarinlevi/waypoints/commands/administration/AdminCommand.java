@@ -3,7 +3,7 @@ package me.yarinlevi.waypoints.commands.administration;
 import me.yarinlevi.waypoints.commands.SubCommand;
 import me.yarinlevi.waypoints.commands.administration.sub.CheckSubCommand;
 import me.yarinlevi.waypoints.commands.administration.sub.ChunkScanSubCommand;
-import me.yarinlevi.waypoints.gui.GuiUtils;
+import me.yarinlevi.waypoints.utils.MessagesUtils;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -36,7 +36,7 @@ public class AdminCommand implements CommandExecutor {
             }
         }
 
-        sender.sendMessage("You are required to be a player to execute this command.");
+        sender.sendMessage(MessagesUtils.getMessage("must_be_player"));
         return false;
     }
 }

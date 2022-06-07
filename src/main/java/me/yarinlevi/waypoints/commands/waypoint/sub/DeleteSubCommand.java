@@ -18,9 +18,8 @@ public class DeleteSubCommand extends SubCommand {
             String name = args[1];
 
             try {
-                if (Waypoints.getInstance().getWaypointHandler().removeWaypoint(player, name)) {
-                    player.sendMessage(MessagesUtils.getMessage("waypoint_deleted", name));
-                }
+                Waypoints.getInstance().getWaypointHandler().removeWaypoint(player, name);
+                player.sendMessage(MessagesUtils.getMessage("waypoint_deleted", name));
             } catch (PlayerNotLoadedException | WaypointDoesNotExistException exception) {
                 player.sendMessage(exception.getMessage());
             }

@@ -1,6 +1,7 @@
 package me.yarinlevi.waypoints.gui.inventories;
 
 import me.yarinlevi.waypoints.Waypoints;
+import me.yarinlevi.waypoints.exceptions.PlayerNotLoadedException;
 import me.yarinlevi.waypoints.utils.MessagesUtils;
 import me.yarinlevi.waypoints.waypoint.Waypoint;
 import net.wesjd.anvilgui.AnvilGUI;
@@ -17,7 +18,11 @@ public class DeleteWaypointGUI {
         new AnvilGUI.Builder()
                 .onComplete((player2, text) -> {
                     if (text.trim().equalsIgnoreCase("confirm")) {
-                        Waypoints.getInstance().getWaypointHandler().removeWaypoint(Bukkit.getOfflinePlayer(wp.getOwner()), wp);
+                        try {
+                            Waypoints.getInstance().getWaypointHandler().removeWaypoint(Bukkit.getOfflinePlayer(wp.getOwner()), wp);
+                        } catch (PlayerNotLoadedException e) {
+                            throw new RuntimeException(e);
+                        }
                         player2.sendMessage(MessagesUtils.getMessage("waypoint_deleted", wp.getName()));
                     } else {
                         player2.sendMessage(MessagesUtils.getMessage("waypoint_delete_name_not_match"));

@@ -4,6 +4,7 @@ import me.yarinlevi.waypoints.Waypoints;
 import me.yarinlevi.waypoints.commands.SubCommand;
 import me.yarinlevi.waypoints.utils.Constants;
 import me.yarinlevi.waypoints.utils.MessagesUtils;
+import me.yarinlevi.waypoints.waypoint.Waypoint;
 import me.yarinlevi.waypoints.waypoint.WaypointWorld;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.ClickEvent;
@@ -24,7 +25,7 @@ public class ListSubCommand extends SubCommand {
     public void run(Player player, String[] args) {
         if (args.length == 1) {
             if (Waypoints.getInstance().getWaypointHandler().getWaypoints(player).size() > 0) {
-                this.list(player, Waypoints.getInstance().getWaypointHandler().getWaypointList(player).iterator());
+                this.list(player, Waypoints.getInstance().getWaypointHandler().getWaypoints(player).iterator());
             } else {
                 player.sendMessage(MessagesUtils.getMessage("no_waypoints"));
             }
@@ -34,7 +35,7 @@ public class ListSubCommand extends SubCommand {
             if (Arrays.stream(WaypointWorld.values()).anyMatch(x -> x.getKeys().contains(world.toLowerCase()))) {
                 WaypointWorld waypointWorld = Arrays.stream(WaypointWorld.values()).filter(x -> x.getKeys().contains(world.toLowerCase())).findFirst().get();
 
-                Iterator<String> waypoints = Waypoints.getInstance().getWaypointHandler().getWaypointList(player, waypointWorld).iterator();
+                Iterator<Waypoint> waypoints = Waypoints.getInstance().getWaypointHandler().getWaypoints(player, waypointWorld).iterator();
 
                 if (waypoints.hasNext()) {
                     this.list(player, waypoints);
@@ -52,18 +53,18 @@ public class ListSubCommand extends SubCommand {
         return null;
     }
 
-    private void list(Player p, Iterator<String> waypointList) {
+    private void list(Player p, Iterator<Waypoint> waypointList) {
         TextComponent message = new TextComponent(ChatColor.translateAlternateColorCodes('&', Constants.PREFIX));
         final TextComponent SPACE = new TextComponent(ChatColor.DARK_GRAY + ", ");
-        String waypoint;
+        Waypoint waypoint;
         TextComponent waypointText;
 
         do {
             waypoint = waypointList.next();
 
-            waypointText = new TextComponent(ChatColor.GRAY + waypoint);
-            waypointText.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/wp check " + waypoint));
-            waypointText.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(ChatColor.GRAY + "Click to check waypoint " + ChatColor.AQUA + waypoint).create()));
+            waypointText = new TextComponent(ChatColor.GRAY + waypoint.getName());
+            waypointText.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/wp check " + waypoint.getName()));
+            waypointText.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(ChatColor.GRAY + "Click to check waypoint " + ChatColor.AQUA + waypoint.getName()).create()));
             message.addExtra(waypointText);
 
             if (waypointList.hasNext()) {

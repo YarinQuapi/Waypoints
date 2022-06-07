@@ -31,7 +31,7 @@ public class PlayerSettingsGUI extends AbstractGui {
         this.setSlots(9*3);
         this.setTitle(MessagesUtils.getMessage("gui.player-settings.title"));
 
-        PlayerData playerData = Waypoints.getInstance().getPlayerDataManager().getPlayerDataMap().get(player.getUniqueId());
+        PlayerData playerData = Waypoints.getInstance().getWaypointHandler().getPlayer(player);
 
         /*
          * Player settings - profile
@@ -43,10 +43,10 @@ public class PlayerSettingsGUI extends AbstractGui {
         skullMeta.setDisplayName(MessagesUtils.getMessageFromData("gui.items.profile.title", player.getName()));
         skullMeta.setOwningPlayer(player);
 
-        int overworldCount = Waypoints.getInstance().getWaypointHandler().getWaypointList(player, WaypointWorld.NORMAL).size();
-        int netherCount = Waypoints.getInstance().getWaypointHandler().getWaypointList(player, WaypointWorld.NETHER).size();
-        int endCount = Waypoints.getInstance().getWaypointHandler().getWaypointList(player, WaypointWorld.THE_END).size();
-        int systemInduced = Waypoints.getInstance().getWaypointHandler().getSystemInducedWaypointList(player).size();
+        int overworldCount = Waypoints.getInstance().getWaypointHandler().getWaypoints(player, WaypointWorld.NORMAL).size();
+        int netherCount = Waypoints.getInstance().getWaypointHandler().getWaypoints(player, WaypointWorld.NETHER).size();
+        int endCount = Waypoints.getInstance().getWaypointHandler().getWaypoints(player, WaypointWorld.THE_END).size();
+        int systemInduced = Waypoints.getInstance().getWaypointHandler().getDeathPoints(player).size();
 
         int total = overworldCount + netherCount + endCount + systemInduced;
 
@@ -110,7 +110,7 @@ public class PlayerSettingsGUI extends AbstractGui {
             if (!item.getType().equals(Material.AIR)) {
                 Player player = (Player) e.getWhoClicked();
 
-                PlayerData playerData = Waypoints.getInstance().getPlayerDataManager().getPlayerDataMap().get(player.getUniqueId());
+                PlayerData playerData = Waypoints.getInstance().getWaypointHandler().getPlayer(player);
 
                 if (e.getRawSlot() == 10) { // todo: find setting to put here lol.
 

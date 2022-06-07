@@ -36,7 +36,7 @@ public class WaypointBrowser extends AbstractGui implements Listener {
         this.setSlots(9*3);
         this.setTitle(Utils.newMessageNoPrefix("&7Waypoint Browser"));
 
-        List<Waypoint> waypoints = Waypoints.getInstance().getWaypointHandler().getAllPublicWaypoints();
+        List<Waypoint> waypoints = Waypoints.getInstance().getWaypointHandler().getPublicWaypoints();
 
         if (waypoints.isEmpty()) {
             player.sendMessage(MessagesUtils.getMessage("gui.no-items"));
@@ -118,7 +118,7 @@ public class WaypointBrowser extends AbstractGui implements Listener {
                     offlinePlayer = Bukkit.getOfflinePlayer(offlinePlayerName);
 
                     Waypoint wp;
-                    wp = Waypoints.getInstance().getWaypointHandler().getAllPublicWaypoints().stream().filter(x -> x.getName().equals(name)).filter(y -> y.getOwner().equals(offlinePlayer.getUniqueId())).findAny().get();
+                    wp = Waypoints.getInstance().getWaypointHandler().getPublicWaypoints().stream().filter(x -> x.getName().equals(name)).filter(y -> y.getOwner().equals(offlinePlayer.getUniqueId())).findAny().get();
 
                     switch (e.getClick()) {
                         case LEFT -> {
@@ -130,7 +130,7 @@ public class WaypointBrowser extends AbstractGui implements Listener {
                         }
 
                         case RIGHT -> {
-                            Waypoints.getInstance().getTrackerManager().track(player, wp, Waypoints.getInstance().getPlayerDataManager().getPlayerDataMap().get(player.getUniqueId()).getETracker());
+                            Waypoints.getInstance().getTrackerManager().track(player, wp, Waypoints.getInstance().getWaypointHandler().getPlayer(player).getETracker());
                         }
                     }
                 }

@@ -3,6 +3,7 @@ package me.yarinlevi.waypoints.gui.inventories;
 import me.yarinlevi.waypoints.Waypoints;
 import me.yarinlevi.waypoints.exceptions.GuiNoItemException;
 import me.yarinlevi.waypoints.exceptions.InventoryDoesNotExistException;
+import me.yarinlevi.waypoints.exceptions.PlayerNotLoadedException;
 import me.yarinlevi.waypoints.gui.GuiUtils;
 import me.yarinlevi.waypoints.gui.helpers.AbstractGui;
 import me.yarinlevi.waypoints.gui.helpers.types.GuiItem;
@@ -34,7 +35,7 @@ public class WaypointListGui extends AbstractGui implements Listener {
         this.setSlots(9*4);
         this.setTitle(Utils.newMessageNoPrefix("&7Waypoint List"));
 
-        if (Waypoints.getInstance().getWaypointHandler().getWaypointList(player).isEmpty()) {
+        if (Waypoints.getInstance().getWaypointHandler().getWaypoints(player).isEmpty()) {
             player.sendMessage(MessagesUtils.getMessageFromData("gui.no-items", player.getName()));
             return;
         }
@@ -59,10 +60,7 @@ public class WaypointListGui extends AbstractGui implements Listener {
 
 
         int i = 0;
-        for (String waypointName : Waypoints.getInstance().getWaypointHandler().getWaypointList(player)) {
-            Waypoint wp;
-            wp = Waypoints.getInstance().getWaypointHandler().getWaypoint(player, waypointName);
-
+        for (Waypoint wp : Waypoints.getInstance().getWaypointHandler().getWaypoints(player)) {
             if (wp != null) {
 
                 ItemStack itemStack = wp.getItem();
@@ -90,7 +88,7 @@ public class WaypointListGui extends AbstractGui implements Listener {
                 lore.add(leftClickToEdit);
 
                 itemMeta.setLore(lore);
-                itemMeta.setDisplayName(Utils.newMessageNoPrefix("&b" + waypointName));
+                itemMeta.setDisplayName(Utils.newMessageNoPrefix("&b" + wp.getName()));
 
                 itemStack.setItemMeta(itemMeta);
 
@@ -146,8 +144,11 @@ public class WaypointListGui extends AbstractGui implements Listener {
 
                 if (e.getRawSlot() == 33) {
                     for (Waypoint waypoint : Waypoints.getInstance().getWaypointHandler().getWaypoints(player)) {
-                        if (waypoint.isDeathpoints()) {
-                            Waypoints.getInstance().getWaypointHandler().removeWaypoint(player, waypoint);
+                        if (waypoint.isDeathpoint()) {
+                            try {
+                                Waypoints.getInstance().getWaypointHandler().removeWaypoint(player, waypoint);
+                            } catch (PlayerNotLoadedException ignored) {
+                            }
                         }
                     }
 

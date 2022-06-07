@@ -5,10 +5,13 @@ import com.zaxxer.hikari.HikariDataSource;
 import me.yarinlevi.waypoints.Waypoints;
 import me.yarinlevi.waypoints.data.IData;
 import me.yarinlevi.waypoints.exceptions.WaypointDoesNotExistException;
+import me.yarinlevi.waypoints.player.PlayerData;
 import me.yarinlevi.waypoints.utils.LocationData;
 import me.yarinlevi.waypoints.waypoint.Waypoint;
-import me.yarinlevi.waypoints.waypoint.WaypointState;
+import me.yarinlevi.waypoints.waypoint.types.StateIdentifier;
 import org.bukkit.Material;
+import org.bukkit.OfflinePlayer;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.Nullable;
 
@@ -90,7 +93,7 @@ public class H2DataManager implements IData {
                 while (rs.next()) {
                     String[] locations = rs.getString("location").split(",");
                     LocationData data = new LocationData(locations[0], locations[1], locations[2], locations[3]);
-                    Waypoint waypoint = new Waypoint(UUID.fromString(rs.getString("player_uuid")), rs.getString("waypoint_name"), data.getLocation(), new ItemStack(Material.getMaterial(rs.getString("item"))), rs.getBoolean("is_public") ? WaypointState.PUBLIC : WaypointState.PRIVATE, rs.getBoolean("is_deathpoint"));
+                    Waypoint waypoint = new Waypoint(UUID.fromString(rs.getString("player_uuid")), rs.getString("waypoint_name"), data.getLocation(), new ItemStack(Material.getMaterial(rs.getString("item"))), rs.getBoolean("is_public") ? StateIdentifier.PUBLIC : StateIdentifier.PRIVATE, rs.getBoolean("is_deathpoint"));
                     waypoints.add(waypoint);
                 }
 
@@ -108,7 +111,7 @@ public class H2DataManager implements IData {
         String loc = waypoint.getLocation().getX() + "," + waypoint.getLocation().getY() + "," + waypoint.getLocation().getZ() + ',' + waypoint.getLocation().getWorld().getName();
 
         String statement = "INSERT INTO `waypoints` (`player_uuid`, `waypoint_name`, `location`, `item`, `is_deathpoint`, `is_public`) VALUES ('%s', '%s', '%s', '%s', %s, %s);"
-                .formatted(uuid.toString(), waypoint.getName(), loc, waypoint.getItem().getType().name(), waypoint.isDeathpoints(), false);
+                .formatted(uuid.toString(), waypoint.getName(), loc, waypoint.getItem().getType().name(), waypoint.isDeathpoint(), false);
 
         this.insert(statement);
     }
@@ -130,7 +133,7 @@ public class H2DataManager implements IData {
                 String[] locations = rs.getString("location").split(",");
                 LocationData data = new LocationData(locations[0], locations[1], locations[2], locations[3]);
 
-                return new Waypoint(UUID.fromString(rs.getString("player_uuid")), rs.getString("waypoint_name"), data.getLocation(), new ItemStack(Material.getMaterial(rs.getString("item"))), rs.getBoolean("is_public") ? WaypointState.PUBLIC : WaypointState.PRIVATE, rs.getBoolean("is_deathpoint"));
+                return new Waypoint(UUID.fromString(rs.getString("player_uuid")), rs.getString("waypoint_name"), data.getLocation(), new ItemStack(Material.getMaterial(rs.getString("item"))), rs.getBoolean("is_public") ? StateIdentifier.PUBLIC : StateIdentifier.PRIVATE, rs.getBoolean("is_deathpoint"));
             }
         } catch (SQLException e) {
             return null;
@@ -176,7 +179,7 @@ public class H2DataManager implements IData {
     }
 
     @Override
-    public void setWaypointState(UUID uuid, String waypoint, WaypointState state) throws WaypointDoesNotExistException {
+    public void setWaypointState(UUID uuid, String waypoint, StateIdentifier state) throws WaypointDoesNotExistException {
         try {
             ResultSet rs = this.get("SELECT * FROM `waypoints` WHERE `player_uuid` = '" + uuid.toString() + "' AND `waypoint_name` = '" + waypoint + "'");
 
@@ -184,7 +187,7 @@ public class H2DataManager implements IData {
                 throw new WaypointDoesNotExistException("Waypoint does not exist");
             }
 
-            boolean is_public = state == WaypointState.PUBLIC;
+            boolean is_public = state == StateIdentifier.PUBLIC;
 
             this.update("UPDATE `waypoints` SET `is_public` = " + is_public + " WHERE `player_uuid` = '" + uuid + "' AND `waypoint_name` = '" + waypoint + "'");
         } catch (SQLException e) {
@@ -193,9 +196,9 @@ public class H2DataManager implements IData {
     }
 
     @Override
-    public void loadPlayer(UUID uuid) {
+    public void loadPlayer(OfflinePlayer offlinePlayer) {
         try {
-            ResultSet rs = this.get("SELECT * FROM `waypoints` WHERE `player_uuid` = '" + uuid.toString() + "'");
+            ResultSet rs = this.get("SELECT * FROM `waypoints` WHERE `player_uuid` = '" + offlinePlayer.getUniqueId() + "'");
 
 
             List<Waypoint> waypoints = new ArrayList<>();
@@ -204,20 +207,20 @@ public class H2DataManager implements IData {
                 while (rs.next()) {
                     String[] locations = rs.getString("location").split(",");
                     LocationData data = new LocationData(locations[0], locations[1], locations[2], locations[3]);
-                    Waypoint waypoint = new Waypoint(uuid, rs.getString("waypoint_name"), data.getLocation(), new ItemStack(Material.getMaterial(rs.getString("item"))), rs.getBoolean("is_public") ? WaypointState.PUBLIC : WaypointState.PRIVATE, rs.getBoolean("is_deathpoint"));
+                    Waypoint waypoint = new Waypoint(offlinePlayer.getUniqueId(), rs.getString("waypoint_name"), data.getLocation(), new ItemStack(Material.getMaterial(rs.getString("item"))), rs.getBoolean("is_public") ? StateIdentifier.PUBLIC : StateIdentifier.PRIVATE, rs.getBoolean("is_deathpoint"));
                     waypoints.add(waypoint);
                 }
             }
 
-            Waypoints.getInstance().getPlayerDataManager().insertPlayer(uuid, waypoints);
+            Waypoints.getInstance().getWaypointHandler().addPlayer(offlinePlayer, new PlayerData(offlinePlayer, waypoints));
         } catch (SQLException e) {
-            Waypoints.getInstance().getPlayerDataManager().insertPlayer(uuid, new ArrayList<>());
+            Waypoints.getInstance().getWaypointHandler().addPlayer(offlinePlayer, new PlayerData(offlinePlayer, new ArrayList<>()));
         }
     }
 
     @Override
-    public void unloadPlayer(UUID uuid) {
-        Waypoints.getInstance().getPlayerDataManager().removePlayer(uuid);
+    public void unloadPlayer(Player player) {
+        Waypoints.getInstance().getWaypointHandler().removePlayer(player);
     }
 
     @Nullable

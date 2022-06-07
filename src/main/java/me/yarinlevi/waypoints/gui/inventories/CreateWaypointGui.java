@@ -3,6 +3,7 @@ package me.yarinlevi.waypoints.gui.inventories;
 import me.yarinlevi.waypoints.Waypoints;
 import me.yarinlevi.waypoints.exceptions.PlayerNotLoadedException;
 import me.yarinlevi.waypoints.exceptions.WaypointAlreadyExistsException;
+import me.yarinlevi.waypoints.exceptions.WaypointLimitReachedException;
 import me.yarinlevi.waypoints.gui.helpers.AbstractGui;
 import me.yarinlevi.waypoints.utils.MessagesUtils;
 import me.yarinlevi.waypoints.utils.Utils;
@@ -23,9 +24,9 @@ public class CreateWaypointGui extends AbstractGui {
                     if (Utils.allowedCharacters.matcher(text.trim()).matches() && !text.trim().equalsIgnoreCase("air")) {
                         Waypoint waypoint = new Waypoint(player.getUniqueId(), text.trim(), player2.getLocation(), false);
                         try {
-                            Waypoints.getInstance().getWaypointHandler().addWaypoint(player2.getUniqueId(), waypoint);
+                            Waypoints.getInstance().getWaypointHandler().addWaypoint(player2, waypoint);
                             player2.sendMessage(MessagesUtils.getMessage("waypoint_created", text.trim()));
-                        } catch (WaypointAlreadyExistsException | PlayerNotLoadedException e) {
+                        } catch (WaypointAlreadyExistsException | WaypointLimitReachedException | PlayerNotLoadedException e) {
                             player2.sendMessage(e.getMessage());
                         }
                     } else {
