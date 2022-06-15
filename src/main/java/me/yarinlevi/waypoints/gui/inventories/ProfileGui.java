@@ -29,14 +29,14 @@ public class ProfileGui extends AbstractGui implements Listener {
     @Override
     public void run(Player player) {
         this.setSlots(9*3);
-        this.setTitle(MessagesUtils.getMessageFromData("gui.menu.title", player.getName()));
+        this.setTitle(MessagesUtils.getMessage("gui.menu.title", player.getName()));
 
 
         ItemStack itemStack = new ItemStack(Material.PLAYER_HEAD);
         SkullMeta skullMeta = (SkullMeta) itemStack.getItemMeta();
 
         // Statistics
-        skullMeta.setDisplayName(MessagesUtils.getMessageFromData("gui.items.profile.title", player.getName()));
+        skullMeta.setDisplayName(MessagesUtils.getMessage("gui.items.profile.title", player.getName()));
         skullMeta.setOwningPlayer(player);
 
         int overworldCount = Waypoints.getInstance().getWaypointHandler().getWaypoints(player, WaypointWorld.NORMAL).size();
@@ -90,7 +90,7 @@ public class ProfileGui extends AbstractGui implements Listener {
             this.initializeInventory();
         } catch (InventoryDoesNotExistException ignored) { }
         catch (GuiNoItemException e) {
-            player.sendMessage(MessagesUtils.getMessageFromData("gui.no-items", player.getName()));
+            player.sendMessage(MessagesUtils.getMessage("gui.no-items", player.getName()));
         }
         this.openPage(player, 1);
     }

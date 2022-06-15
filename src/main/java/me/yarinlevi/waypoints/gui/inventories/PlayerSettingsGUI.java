@@ -40,7 +40,7 @@ public class PlayerSettingsGUI extends AbstractGui {
         SkullMeta skullMeta = (SkullMeta) itemStack.getItemMeta();
 
         // Statistics
-        skullMeta.setDisplayName(MessagesUtils.getMessageFromData("gui.items.profile.title", player.getName()));
+        skullMeta.setDisplayName(MessagesUtils.getMessage("gui.items.profile.title", player.getName()));
         skullMeta.setOwningPlayer(player);
 
         int overworldCount = Waypoints.getInstance().getWaypointHandler().getWaypoints(player, WaypointWorld.NORMAL).size();
@@ -88,7 +88,7 @@ public class PlayerSettingsGUI extends AbstractGui {
             this.initializeInventory();
         } catch (InventoryDoesNotExistException ignored) { }
         catch (GuiNoItemException e) {
-            player.sendMessage(MessagesUtils.getMessageFromData("gui.no-items", player.getName()));
+            player.sendMessage(MessagesUtils.getMessage("gui.no-items", player.getName()));
         }
         this.openPage(player, 1);
     }

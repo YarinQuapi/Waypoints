@@ -76,10 +76,6 @@ public class Waypoint {
         return this.location.toVector();
     }
 
-    public String getFormattedCoordinates() {
-        return Utils.newMessageNoPrefix(MessagesUtils.getRawFormattedString("coordinates_format", getVector().getBlockX(), getVector().getBlockY(), getVector().getBlockZ()));
-    }
-
     /**
      * Only run if player is online, check online status on YOUR side!
      * @return distance between the waypoint and the player
@@ -92,12 +88,16 @@ public class Waypoint {
         return Utils.calculateDistance(getVector(), player.getLocation().toVector());
     }
 
+    public String getFormattedCoordinates() {
+        return MessagesUtils.getMessage("coordinates_format", getVector().getBlockX(), getVector().getBlockY(), getVector().getBlockZ());
+    }
+
     public String getBiome() {
-        return MessagesUtils.getRawFormattedString("biome_format", location.getBlock().getBiome().name());
+        return MessagesUtils.getMessage("biome_format", location.getBlock().getBiome().name());
     }
 
     public String getWorld() {
-        return MessagesUtils.getRawFormattedString("world_format", this.world.name);
+        return MessagesUtils.getMessage("world_format", this.world.name);
     }
 
     public WaypointWorld getWorldIdentifier() {

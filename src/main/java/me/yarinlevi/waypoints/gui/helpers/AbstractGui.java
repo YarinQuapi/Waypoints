@@ -20,10 +20,8 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
@@ -79,7 +77,7 @@ public abstract class AbstractGui implements Listener, IGui {
             this.openPage(player, currentPage);
         } else {
             player.closeInventory();
-            player.sendMessage(MessagesUtils.getMessageFromData("gui.last-page"));
+            player.sendMessage(MessagesUtils.getMessage("gui.last-page"));
         }
     }
 
@@ -98,12 +96,12 @@ public abstract class AbstractGui implements Listener, IGui {
         Page page = new Page(1, slots, lockedSlots, null, this.maxPages != 1); // create first page
 
 
-        Stream<Map.Entry<Integer, GuiItem>> itemStream = items.entrySet().stream().sorted(Map.Entry.comparingByKey());
+        List<Map.Entry<Integer, GuiItem>> itemList = items.entrySet().stream().sorted(Map.Entry.comparingByKey()).toList();
         int j = 0; // item slot
         for (int i = 0; i < size; i++) {
 
             if (j < (slots - lockedSlots.length)) { // is in locked slots?
-                GuiItem item = itemStream.skip(i).findFirst().get().getValue(); // gets the item and the slot for the specified item
+                GuiItem item = itemList.stream().skip(i).findFirst().get().getValue(); // gets the item and the slot for the specified item
 
                 page.addItem(item.slot() < this.slots-lockedSlots.length ? item.slot() : j, item.item()); // add item to page
                 j++; // increase slot

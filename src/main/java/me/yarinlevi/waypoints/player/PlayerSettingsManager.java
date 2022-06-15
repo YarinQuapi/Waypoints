@@ -30,7 +30,7 @@ public class PlayerSettingsManager {
         FileUtils.registerData(settingsFile, settingsData);
         FileUtils.save(settingsFile, settingsData);
 
-        ConfigurationSection config = Waypoints.getInstance().getConfig().getConfigurationSection("permissions");
+        //ConfigurationSection config = Waypoints.getInstance().getConfig().getConfigurationSection("permissions");
 
         waypointLimits.put("total", new HashMap<>());
         waypointLimits.put("nether", new HashMap<>());
@@ -38,11 +38,13 @@ public class PlayerSettingsManager {
 
         //todo: figure out limits
 
-        {
+        /*{
             config.getConfigurationSection("totalwaypoints").getKeys(false).forEach(key -> {
                 waypointLimits.get("total").put(key, config.getInt("totalwaypoints." + key));
             });
         }
+
+         */
 
     }
 

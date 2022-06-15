@@ -23,15 +23,15 @@ public class Items {
         ITEM_PREVIOUS = new ItemStack(Material.RED_WOOL, 1);
 
         ItemMeta itemMenuMeta = ITEM_MENU.getItemMeta();
-        itemMenuMeta.setDisplayName(MessagesUtils.getMessageFromData("gui.items.menu.title"));
+        itemMenuMeta.setDisplayName(MessagesUtils.getMessage("gui.items.menu.title"));
         ITEM_MENU.setItemMeta(itemMenuMeta);
 
         ItemMeta itemNextMeta = ITEM_NEXT.getItemMeta();
-        itemNextMeta.setDisplayName(MessagesUtils.getMessageFromData("gui.items.next.title"));
+        itemNextMeta.setDisplayName(MessagesUtils.getMessage("gui.items.next.title"));
         ITEM_NEXT.setItemMeta(itemNextMeta);
 
         ItemMeta itemPreviousMeta = ITEM_PREVIOUS.getItemMeta();
-        itemPreviousMeta.setDisplayName(MessagesUtils.getMessageFromData("gui.items.previous.title"));
+        itemPreviousMeta.setDisplayName(MessagesUtils.getMessage("gui.items.previous.title"));
         ITEM_PREVIOUS.setItemMeta(itemPreviousMeta);
 
         ITEM_MENU_SLOT = MessagesUtils.getInt("gui.items.menu.slot")-1;

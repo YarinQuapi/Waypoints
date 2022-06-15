@@ -37,7 +37,7 @@ public class CreateWaypointGui extends AbstractGui {
                 })
                 .text(" ")
                 .itemLeft(new ItemStack(Material.PAPER))
-                .title(MessagesUtils.getMessageFromData("gui.create.title"))
+                .title(MessagesUtils.getMessage("gui.create.title"))
                 .plugin(Waypoints.getInstance())
                 .open(player);
     }

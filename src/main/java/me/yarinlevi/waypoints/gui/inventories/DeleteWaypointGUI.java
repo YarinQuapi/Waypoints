@@ -32,7 +32,7 @@ public class DeleteWaypointGUI {
                 })
                 .text("Type confirm.")
                 .itemLeft(new ItemStack(Material.PAPER))
-                .title(MessagesUtils.getMessageFromData("gui.delete.title"))
+                .title(MessagesUtils.getMessage("gui.delete.title"))
                 .plugin(Waypoints.getInstance())
                 .open(player);
     }

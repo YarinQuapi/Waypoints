@@ -83,7 +83,7 @@ public class WaypointBrowser extends AbstractGui implements Listener {
             this.initializeInventory();
         } catch (InventoryDoesNotExistException ignored) { }
         catch (GuiNoItemException e) {
-            player.sendMessage(MessagesUtils.getMessageFromData("gui.no-items", player.getName()));
+            player.sendMessage(MessagesUtils.getMessage("gui.no-items", player.getName()));
         }
         this.openPage(player, 1);
     }

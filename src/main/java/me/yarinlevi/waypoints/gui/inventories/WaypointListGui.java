@@ -36,7 +36,7 @@ public class WaypointListGui extends AbstractGui implements Listener {
         this.setTitle(Utils.newMessageNoPrefix("&7Waypoint List"));
 
         if (Waypoints.getInstance().getWaypointHandler().getWaypoints(player).isEmpty()) {
-            player.sendMessage(MessagesUtils.getMessageFromData("gui.no-items", player.getName()));
+            player.sendMessage(MessagesUtils.getMessage("gui.no-items", player.getName()));
             return;
         }
 
@@ -102,7 +102,7 @@ public class WaypointListGui extends AbstractGui implements Listener {
             this.initializeInventory();
         } catch (InventoryDoesNotExistException ignored) { }
         catch (GuiNoItemException e) {
-            player.sendMessage(MessagesUtils.getMessageFromData("gui.no-items", player.getName()));
+            player.sendMessage(MessagesUtils.getMessage("gui.no-items", player.getName()));
         }
         List<GuiItem> waypoints = new ArrayList<>();
         waypoints.add(publicWaypointItem);

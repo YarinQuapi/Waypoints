@@ -7,20 +7,6 @@ DeathPoints: true
 # Should public waypoints be available?
 PublicWaypoints: true
 
-# Permissions limiting players from creating unlimited waypoints
-# Please note! public waypoints are counted when considering total waypoints.
-# Please also note! Having a player granted a few permissions from the lists below will only count the one with the highest number.
-permissions:
-  totalwaypoints: # Total waypoints allowed, regardless of nether or end
-    qwaypoints-default: 10
-    qwaypoints-vip: 15
-  netherwaypoints: # Max nether waypoints allowed
-    qwaypoints-default: 5
-    qwaypoints-vip: 10
-  endwaypoints: # Max end waypoints allowed
-    qwaypoints-default: 5
-    qwaypoints-vip: 10
-
 # Configurations for all the trackers available
 trackers:
   enabled: true
