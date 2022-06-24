@@ -6,7 +6,7 @@
 
     <groupId>me.yarinlevi</groupId>
     <artifactId>Waypoints</artifactId>
-    <version>5.0-Beta 1</version>
+    <version>5.0-Beta 2</version>
     <packaging>jar</packaging>
 
     <name>QWaypoints</name>
@@ -105,13 +105,6 @@
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot-api</artifactId>
             <version>1.19-R0.1-SNAPSHOT</version>
-            <scope>provided</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>org.spigotmc</groupId>
-            <artifactId>plugin-annotations</artifactId>
-            <version>1.2.3-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
 
