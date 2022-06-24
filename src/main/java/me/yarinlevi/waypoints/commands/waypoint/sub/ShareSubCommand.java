@@ -11,6 +11,8 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.List;
+
 /**
  * @author YarinQuapi
  **/
@@ -49,6 +51,11 @@ public class ShareSubCommand extends SubCommand {
 
     @Override
     public @Nullable String getPermission() {
+        return null;
+    }
+
+    @Override
+    public @Nullable List<String> getAliases() {
         return null;
     }
 }

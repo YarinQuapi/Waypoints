@@ -8,6 +8,10 @@ import me.yarinlevi.waypoints.utils.MessagesUtils;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 /**
  * @author YarinQuapi
  **/
@@ -31,5 +35,10 @@ public class DeleteSubCommand extends SubCommand {
     @Override
     public @Nullable String getPermission() {
         return null;
+    }
+
+    @Override
+    public @Nullable List<String> getAliases() {
+        return List.of("remove");
     }
 }

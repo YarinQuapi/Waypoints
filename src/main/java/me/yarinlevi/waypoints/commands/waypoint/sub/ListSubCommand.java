@@ -16,6 +16,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Arrays;
 import java.util.Iterator;
+import java.util.List;
 
 /**
  * @author YarinQuapi
@@ -50,6 +51,11 @@ public class ListSubCommand extends SubCommand {
 
     @Override
     public @Nullable String getPermission() {
+        return null;
+    }
+
+    @Override
+    public @Nullable List<String> getAliases() {
         return null;
     }
 

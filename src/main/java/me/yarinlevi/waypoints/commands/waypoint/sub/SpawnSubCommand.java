@@ -7,6 +7,8 @@ import me.yarinlevi.waypoints.utils.MessagesUtils;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.List;
+
 /**
  * @author YarinQuapi
  **/
@@ -21,5 +23,10 @@ public class SpawnSubCommand extends SubCommand {
     @Override
     public @Nullable String getPermission() {
         return "qwaypoints.command.spawn";
+    }
+
+    @Override
+    public @Nullable List<String> getAliases() {
+        return null;
     }
 }
