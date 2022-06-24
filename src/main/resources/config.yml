@@ -7,6 +7,11 @@ DeathPoints: true
 # Should public waypoints be available?
 PublicWaypoints: true
 
+# Waypoint limits
+total_limits:
+  waypoints.limit.default: 10
+  waypoints.limit.vip: 15
+
 # Configurations for all the trackers available
 trackers:
   enabled: true

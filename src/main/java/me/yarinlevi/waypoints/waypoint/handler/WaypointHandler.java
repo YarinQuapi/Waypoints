@@ -89,15 +89,10 @@ public class WaypointHandler implements IWaypointHandler {
             PlayerData data = playerData.get(player);
 
             if (!data.getWaypointList().isEmpty()) {
-                if (data.getWaypointList().size() == data.getWaypointLimit()) {
+                if (data.getWaypointList().size() >= data.getWaypointLimit()) {
                     throw new WaypointLimitReachedException();
                 }
-                else if (data.getWaypointList().stream().filter(worldWaypoint -> worldWaypoint.getState() == StateIdentifier.PRIVATE).toList().size() == data.getWaypointLimit(StateIdentifier.PRIVATE)) {
-                    throw new WaypointLimitReachedException(StateIdentifier.PRIVATE);
-                }
-                else if (data.getWaypointList().stream().filter(worldWaypoint -> worldWaypoint.getState() == StateIdentifier.PUBLIC).toList().size() == data.getWaypointLimit(StateIdentifier.PUBLIC)) {
-                    throw new WaypointLimitReachedException(StateIdentifier.PUBLIC);
-                }
+
                 else if (data.getWaypointList().stream().anyMatch(waypoint1 -> waypoint1.getName().equals(waypoint.getName()))) {
                     throw new WaypointAlreadyExistsException();
                 }
