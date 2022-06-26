@@ -219,7 +219,7 @@ public class H2DataManager implements IData {
     }
 
     @Override
-    public void unloadPlayer(Player player) {
+    public void unloadPlayer(OfflinePlayer player) {
         Waypoints.getInstance().getWaypointHandler().removePlayer(player);
     }
 

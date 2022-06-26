@@ -30,5 +30,5 @@ public interface IData {
 
     void loadPlayer(OfflinePlayer offlinePlayer);
 
-    void unloadPlayer(Player offlinePlayer);
+    void unloadPlayer(OfflinePlayer offlinePlayer);
 }
