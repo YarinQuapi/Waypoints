@@ -1,6 +1,8 @@
 package me.yarinlevi.waypoints.gui.inventories;
 
 import me.yarinlevi.waypoints.Waypoints;
+import me.yarinlevi.waypoints.exceptions.GuiNoItemException;
+import me.yarinlevi.waypoints.exceptions.InventoryDoesNotExistException;
 import me.yarinlevi.waypoints.gui.GuiUtils;
 import me.yarinlevi.waypoints.gui.helpers.AbstractGui;
 import me.yarinlevi.waypoints.gui.helpers.types.GuiItem;
@@ -52,6 +54,14 @@ public class ChangeTrackerGUI extends AbstractGui {
 
         particleItem.setItemMeta(particleMeta);
         this.getItems().put(14, new GuiItem(14, particleItem));
+
+        try {
+            this.initializeInventory();
+        } catch (InventoryDoesNotExistException ignored) { }
+        catch (GuiNoItemException e) {
+            player.sendMessage(MessagesUtils.getMessage("gui.no-items", player.getName()));
+        }
+        this.openPage(player, 1);
     }
 
     @EventHandler
