@@ -43,13 +43,14 @@ public class Waypoints extends JavaPlugin {
 
         playerData = new H2DataManager(); // Initialize SQLite
 
+        trackerManager = new TrackerManager(); // loads tracking systems
+
         Bukkit.getPluginManager().registerEvents(new PlayerListener(), this);
 
         playerSettingsManager = new PlayerSettingsManager(); // loads player data manager
 
         waypointHandler = new WaypointHandler(); // loads waypoint handler
 
-        trackerManager = new TrackerManager(); // loads tracking systems
 
         if (Constants.DEATH_POINTS) { // death point registerer
             Bukkit.getPluginManager().registerEvents(new PlayerDeathListener(), this);
