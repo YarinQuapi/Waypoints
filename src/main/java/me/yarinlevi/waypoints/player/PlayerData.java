@@ -30,12 +30,10 @@ public class PlayerData {
         this.player = player;
         this.waypointList.addAll(waypoints);
 
-        if (player.isOnline()) {
-            try {
-                this.loadLimit();
-            } catch (PlayerNotLoadedException ignored) {
-                // no need to load limit as the player can't create waypoints if he is not online.
-            }
+        try {
+            this.loadLimit();
+        } catch (PlayerNotLoadedException ignored) {
+            // no need to load limit as the player can't create waypoints if he is not online.
         }
 
         Waypoints.getInstance().getPlayerSettingsManager().loadPlayerSettings(this.player.getUniqueId(), this);
@@ -54,8 +52,8 @@ public class PlayerData {
 
         FileConfiguration config = Waypoints.getInstance().getConfig();
 
-        for (String perm : config.getStringList("total_limits")) {
-            if (_player.hasPermission(perm)) {
+        for (String perm : config.getConfigurationSection("total_limits").getKeys(false)) {
+            if (_player.hasPermission(perm.replaceAll("-", "."))) {
                 if (limit <= config.getInt("total_limits." + perm)) {
                     limit = config.getInt("total_limits." + perm);
                 }

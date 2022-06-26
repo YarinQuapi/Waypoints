@@ -15,5 +15,5 @@ commands:
 permissions:
   qwaypoints.command.spawn:
     default: not op
-  qwaypoints-default:
+  waypoints.limit.default:
     default: not op
