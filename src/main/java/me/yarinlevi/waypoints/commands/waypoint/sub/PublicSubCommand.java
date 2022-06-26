@@ -14,10 +14,6 @@ import java.util.List;
 public class PublicSubCommand extends SubCommand {
     @Override
     public void run(Player player, String[] args) {
-        player.sendMessage(new Utils.RGBController(15,20,30 ).toColor() + "hello");
-
-        // &<15,15,15>hello
-
         GuiUtils.openInventory("gui.public.browser", player);
     }
 
