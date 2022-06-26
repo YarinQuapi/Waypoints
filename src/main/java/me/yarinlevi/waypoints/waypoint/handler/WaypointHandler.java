@@ -27,7 +27,8 @@ public class WaypointHandler implements IWaypointHandler {
     }
 
     @Override
-    public void removePlayer(Player player) {
+    public void removePlayer(OfflinePlayer player) {
+        Waypoints.getInstance().getPlayerSettingsManager().unloadPlayerSettings(player.getUniqueId(), playerData.get(player));
         this.playerData.remove(player);
     }
 
