@@ -24,7 +24,7 @@ public class PlayerData {
     @Getter private final OfflinePlayer player;
 
     @Getter @Setter private boolean playerDeathPoints = true;
-    @Getter @Setter private ETracker eTracker = ETracker.ActionBar;
+    @Getter @Setter private ETracker eTracker = Waypoints.getInstance().getTrackerManager().getDefaultTracker();
 
     @Getter private int limit = 0;
 
