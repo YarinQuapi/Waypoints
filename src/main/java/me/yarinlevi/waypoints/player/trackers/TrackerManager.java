@@ -1,5 +1,6 @@
 package me.yarinlevi.waypoints.player.trackers;
 
+import lombok.Getter;
 import me.yarinlevi.waypoints.Waypoints;
 import me.yarinlevi.waypoints.waypoint.Waypoint;
 import org.bukkit.Bukkit;
@@ -10,7 +11,7 @@ import java.util.Map;
 
 public class TrackerManager {
     private final Map<ETracker, Tracker> trackers = new HashMap<>();
-    private ETracker defaultTracker;
+    @Getter private ETracker defaultTracker;
 
     public TrackerManager() {
         if (Waypoints.getInstance().getConfig().getBoolean("trackers.enabled")) {
