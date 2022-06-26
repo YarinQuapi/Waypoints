@@ -23,7 +23,7 @@ public class CreateSubCommand extends SubCommand {
         if (args.length >= 2) {
             String name = args[1].trim();
 
-            if (Utils.allowedCharacters.matcher(name).matches()) {
+            if (!Utils.disallowedCharacters.matcher(name).matches()) {
 
                 Waypoint wp = new Waypoint(player.getUniqueId(), name, player.getLocation(), StateIdentifier.PRIVATE, false);
 

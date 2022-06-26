@@ -16,7 +16,7 @@ public class RenameWaypointGUI {
     public static void open(Player player, Waypoint wp) {
         new AnvilGUI.Builder()
                 .onComplete((player2, text) -> {
-                    if (Utils.allowedCharacters.matcher(text.trim()).matches()) {
+                    if (!Utils.disallowedCharacters.matcher(text.trim()).matches()) {
                         wp.setName(text.trim());
                         player2.sendMessage(Utils.newMessage("&7Successfully changed waypoint's name to: &b" + text.trim()));
                     } else {
