@@ -6,10 +6,8 @@ import me.yarinlevi.waypoints.Waypoints;
 import me.yarinlevi.waypoints.exceptions.PlayerNotLoadedException;
 import me.yarinlevi.waypoints.player.trackers.ETracker;
 import me.yarinlevi.waypoints.waypoint.Waypoint;
-import me.yarinlevi.waypoints.waypoint.types.StateIdentifier;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
-import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 

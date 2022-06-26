@@ -6,7 +6,6 @@ import me.yarinlevi.waypoints.utils.Utils;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Collections;
 import java.util.List;
 
 /**

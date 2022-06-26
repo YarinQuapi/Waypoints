@@ -3,12 +3,10 @@ package me.yarinlevi.waypoints.utils;
 import me.yarinlevi.waypoints.Waypoints;
 import me.yarinlevi.waypoints.data.helpers.FileUtils;
 import net.md_5.bungee.api.ChatColor;
-import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
-import java.text.MessageFormat;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Matcher;

@@ -5,7 +5,6 @@ import lombok.Setter;
 import me.yarinlevi.waypoints.Waypoints;
 import me.yarinlevi.waypoints.data.helpers.FileUtils;
 import me.yarinlevi.waypoints.player.trackers.ETracker;
-import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
@@ -29,23 +28,6 @@ public class PlayerSettingsManager {
 
         FileUtils.registerData(settingsFile, settingsData);
         FileUtils.save(settingsFile, settingsData);
-
-        //ConfigurationSection config = Waypoints.getInstance().getConfig().getConfigurationSection("permissions");
-
-        waypointLimits.put("total", new HashMap<>());
-        waypointLimits.put("nether", new HashMap<>());
-        waypointLimits.put("end", new HashMap<>());
-
-        //todo: figure out limits
-
-        /*{
-            config.getConfigurationSection("totalwaypoints").getKeys(false).forEach(key -> {
-                waypointLimits.get("total").put(key, config.getInt("totalwaypoints." + key));
-            });
-        }
-
-         */
-
     }
 
     public void loadPlayerSettings(UUID uuid, PlayerData data) {
@@ -55,9 +37,9 @@ public class PlayerSettingsManager {
         }
     }
 
-    public void unloadPlayerSettings(UUID uuid, PlayerData playerData) {
-        settingsData.set(uuid + ".deathpoints", playerData.isPlayerDeathPoints());
-        settingsData.set(uuid + ".etracker", playerData.getETracker().getKey());
+    public void unloadPlayerSettings(UUID uuid, PlayerData data) {
+        settingsData.set(uuid + ".deathpoints", data.isPlayerDeathPoints());
+        settingsData.set(uuid + ".etracker", data.getETracker().getKey());
 
         FileUtils.save(settingsFile, settingsData);
     }
