@@ -15,7 +15,7 @@ import java.util.List;
 public interface IWaypointHandler {
     void addPlayer(OfflinePlayer player, PlayerData data);
 
-    void removePlayer(Player player);
+    void removePlayer(OfflinePlayer player);
 
     PlayerData getPlayer(OfflinePlayer offlinePlayer);
 
