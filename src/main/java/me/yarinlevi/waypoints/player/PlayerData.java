@@ -36,18 +36,22 @@ public class PlayerData {
             try {
                 this.loadLimit();
             } catch (PlayerNotLoadedException ignored) {
-                // this lied. I'm hurt.
+                // no need to load limit as the player can't create waypoints if he is not online.
             }
         }
 
         Waypoints.getInstance().getPlayerSettingsManager().loadPlayerSettings(this.player.getUniqueId(), this);
     }
 
+    /**
+     * Loads the waypoint limit for the player that connects. Please note, if granted a new permission, the player needs to reconnect to update his limit.
+     * @throws PlayerNotLoadedException if the player is offline.
+     */
     public void loadLimit() throws PlayerNotLoadedException {
         Player _player = Bukkit.getPlayer(player.getUniqueId());
 
         if (_player == null) {
-            throw new PlayerNotLoadedException("Player not online.");
+            throw new PlayerNotLoadedException("Player is not online.");
         }
 
         FileConfiguration config = Waypoints.getInstance().getConfig();
@@ -59,12 +63,6 @@ public class PlayerData {
                 }
             }
         }
-    }
-
-    @Deprecated(forRemoval = true)
-    public PlayerData(List<Waypoint> waypoints) {
-        this.waypointList.addAll(waypoints);
-        this.player = null;
     }
 
     /**
