@@ -3,7 +3,7 @@ package me.yarinlevi.waypoints.commands.administration;
 import me.yarinlevi.waypoints.commands.shared.SubCommand;
 import me.yarinlevi.waypoints.commands.administration.sub.CheckSubCommand;
 import me.yarinlevi.waypoints.commands.administration.sub.ChunkScanSubCommand;
-import me.yarinlevi.waypoints.commands.shared.TeleportSubCommand;
+import me.yarinlevi.waypoints.commands.administration.sub.TeleportSubCommand;
 import me.yarinlevi.waypoints.utils.MessagesUtils;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
