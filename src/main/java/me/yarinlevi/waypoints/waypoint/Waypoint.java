@@ -76,6 +76,10 @@ public class Waypoint {
         return this.location.toVector();
     }
 
+    public void teleportToWaypoint(Player player) {
+        player.teleport(this.location);
+    }
+
     /**
      * Only run if player is online, check online status on YOUR side!
      * @return distance between the waypoint and the player

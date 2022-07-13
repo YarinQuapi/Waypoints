@@ -1,7 +1,7 @@
 package me.yarinlevi.waypoints.commands.waypoint.sub;
 
 import me.yarinlevi.waypoints.Waypoints;
-import me.yarinlevi.waypoints.commands.SubCommand;
+import me.yarinlevi.waypoints.commands.shared.SubCommand;
 import me.yarinlevi.waypoints.exceptions.PlayerNotLoadedException;
 import me.yarinlevi.waypoints.exceptions.WaypointDoesNotExistException;
 import me.yarinlevi.waypoints.utils.MessagesUtils;

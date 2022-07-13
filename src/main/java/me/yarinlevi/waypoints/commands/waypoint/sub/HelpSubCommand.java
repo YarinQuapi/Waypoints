@@ -1,6 +1,6 @@
 package me.yarinlevi.waypoints.commands.waypoint.sub;
 
-import me.yarinlevi.waypoints.commands.SubCommand;
+import me.yarinlevi.waypoints.commands.shared.SubCommand;
 import me.yarinlevi.waypoints.utils.MessagesUtils;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.Nullable;

@@ -1,4 +1,4 @@
-package me.yarinlevi.waypoints.commands;
+package me.yarinlevi.waypoints.commands.shared;
 
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.Nullable;
