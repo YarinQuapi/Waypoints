@@ -3,6 +3,7 @@
 no_permission: "&cFailed! &7You are not permitted to use this."
 must_be_player: "&cYou are required to be a player to use this command."
 offline_player: "&cSorry, the player was not found."
+never_played: "&cSorry, the player {1} never player and has no waypoints."
 excessive_arguments: "&cExcessive arguments."
 no_waypoints: "&cYou do not have any waypoints."
 no_waypoint_world: "&cNo waypoints detected in world {1}"
