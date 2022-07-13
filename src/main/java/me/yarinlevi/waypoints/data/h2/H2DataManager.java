@@ -81,6 +81,10 @@ public class H2DataManager implements IData {
         }
     }
 
+    /**
+     * Todo: add caching to avoid large-scale lags if multiple players open the public browser when there are many waypoints to be listed
+     * Todo: will be done at some point in the future as no complaints so far
+     */
     @Override
     public List<Waypoint> getPublicWaypoints() {
         try {
