@@ -2,8 +2,11 @@ package me.yarinlevi.waypoints.commands.waypoint.sub;
 
 import me.yarinlevi.waypoints.Waypoints;
 import me.yarinlevi.waypoints.commands.shared.SubCommand;
+import me.yarinlevi.waypoints.external.EconomyExtension;
+import me.yarinlevi.waypoints.utils.Constants;
 import me.yarinlevi.waypoints.utils.MessagesUtils;
 import me.yarinlevi.waypoints.waypoint.Waypoint;
+import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
@@ -44,8 +47,24 @@ public class TeleportSubCommand extends SubCommand {
                         .filter(x -> x.getOwner().equals(waypointOwner.getUniqueId()))
                         .findFirst()
                         .ifPresentOrElse(waypoint -> {
-                            waypoint.teleportToWaypoint(player);
-                            player.sendMessage(MessagesUtils.getMessage("teleported_to_waypoint", waypoint.getName()));
+                            boolean proceed = true;
+
+                            if (Constants.ECONOMY_SUPPORT) {
+                                Economy economy = Waypoints.getInstance().getEconomyExtension().getEconomy();
+
+                                if (economy.has(player, Constants.WAYPOINT_TELEPORT_COST)) {
+                                    economy.withdrawPlayer(player, Constants.WAYPOINT_TELEPORT_COST);
+                                } else {
+                                    proceed = false;
+                                }
+                            }
+
+                            if (proceed) {
+                                waypoint.teleportToWaypoint(player);
+                                player.sendMessage(MessagesUtils.getMessage("teleported_to_waypoint", waypoint.getName()));
+                            } else {
+                                player.sendMessage(MessagesUtils.getMessage("teleport_failed_no_money"));
+                            }
                         }, () -> {
                             player.sendMessage(MessagesUtils.getMessage("action_failed_not_found"));
                         });

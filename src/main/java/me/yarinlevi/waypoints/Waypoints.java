@@ -5,6 +5,8 @@ import me.yarinlevi.waypoints.commands.administration.AdminCommand;
 import me.yarinlevi.waypoints.commands.waypoint.WaypointCommand;
 import me.yarinlevi.waypoints.data.IData;
 import me.yarinlevi.waypoints.data.h2.H2DataManager;
+import me.yarinlevi.waypoints.exceptions.ExtensionLoadingErrorException;
+import me.yarinlevi.waypoints.external.EconomyExtension;
 import me.yarinlevi.waypoints.gui.GuiUtils;
 import me.yarinlevi.waypoints.listeners.PlayerDeathListener;
 import me.yarinlevi.waypoints.listeners.PlayerListener;
@@ -19,6 +21,8 @@ import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.util.logging.Level;
+
 /**
  * @author YarinQuapi
  */
@@ -28,6 +32,11 @@ public class Waypoints extends JavaPlugin {
     @Getter private IData playerData;
     @Getter private TrackerManager trackerManager;
     @Getter private PlayerSettingsManager playerSettingsManager;
+
+    /*
+     * Extensions
+     */
+    @Getter private EconomyExtension economyExtension;
 
     @Override
     public void onEnable() {
@@ -61,6 +70,20 @@ public class Waypoints extends JavaPlugin {
         Bukkit.getOnlinePlayers().forEach(player -> playerData.loadPlayer(player));
 
         GuiUtils.registerGui(); // registers gui systems
+
+        /*
+         * Extension loading
+         */
+        if (Constants.WAYPOINT_TELEPORTING && Constants.ECONOMY_SUPPORT) {
+            try {
+                economyExtension = new EconomyExtension();
+            } catch (ExtensionLoadingErrorException e) {
+                this.getLogger().log(Level.SEVERE, "An error has occurred!");
+                this.getLogger().log(Level.SEVERE, e.getMessage());
+                this.getLogger().log(Level.SEVERE, "Stacktrace:");
+                e.printStackTrace();
+            }
+        }
 
         this.getCommand("waypointadmin").setExecutor(new AdminCommand());
         this.getCommand("waypoint").setExecutor(new WaypointCommand());

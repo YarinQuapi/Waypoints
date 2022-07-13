@@ -7,6 +7,14 @@ DeathPoints: true
 # Should public waypoints be available?
 PublicWaypoints: true
 
+# This is regarding the member-to-member waypoint teleporting, admin teleporting is unaffected by this!
+# Economy means vault-api support, it is a must for economy, along with an economy plugin for obvious reasons.
+# Please note: Even if waypoint teleporting is enabled, players must have the qwaypoints.command.teleport permission for this to work for them.
+WaypointTeleporting:
+  enabled: false
+  economy: false
+  cost: 20
+
 # Waypoint limits, replace dots with '-' instead
 total_limits:
   "waypoints-limit-default": 10

@@ -4,6 +4,7 @@ import me.yarinlevi.waypoints.Waypoints;
 import me.yarinlevi.waypoints.commands.shared.SubCommand;
 import me.yarinlevi.waypoints.commands.waypoint.sub.*;
 import me.yarinlevi.waypoints.gui.GuiUtils;
+import me.yarinlevi.waypoints.utils.Constants;
 import me.yarinlevi.waypoints.utils.MessagesUtils;
 import me.yarinlevi.waypoints.waypoint.Waypoint;
 import org.bukkit.command.Command;
@@ -38,8 +39,10 @@ public class WaypointCommand implements CommandExecutor, TabExecutor {
         commandMap.put("nearest", new NearestSubCommand());
         commandMap.put("spawn", new SpawnSubCommand());
         commandMap.put("public", new PublicSubCommand());
-        commandMap.put("teleport", new TeleportSubCommand());
 
+        if (Constants.WAYPOINT_TELEPORTING) {
+            commandMap.put("teleport", new TeleportSubCommand());
+        }
         // register aliases
         commandMap.forEach((key, cmd) -> {
             if (cmd.getAliases() != null && !cmd.getAliases().isEmpty()) {
@@ -93,11 +96,15 @@ public class WaypointCommand implements CommandExecutor, TabExecutor {
 
         if (args.length == 1) {
             list.addAll(List.of("list", "create", "delete", "remove", "public", "browser", "check", "distance", "track", "nearest", "help", "spawn"));
+
+            if (Constants.WAYPOINT_TELEPORTING) {
+                list.add("teleport");
+            }
         }
 
         if (args.length == 2) {
             switch (args[0].toLowerCase()) {
-                case "delete", "remove", "check", "distance", "track" -> Waypoints.getInstance().getWaypointHandler().getWaypoints((Player) commandSender).stream().forEach(waypoint -> list.add(waypoint.getName()));
+                case "delete", "remove", "check", "distance", "track", "teleport" -> Waypoints.getInstance().getWaypointHandler().getWaypoints((Player) commandSender).stream().forEach(waypoint -> list.add(waypoint.getName()));
             }
         }
 
