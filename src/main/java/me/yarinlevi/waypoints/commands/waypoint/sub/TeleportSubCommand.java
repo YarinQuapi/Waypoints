@@ -2,7 +2,6 @@ package me.yarinlevi.waypoints.commands.waypoint.sub;
 
 import me.yarinlevi.waypoints.Waypoints;
 import me.yarinlevi.waypoints.commands.shared.SubCommand;
-import me.yarinlevi.waypoints.external.EconomyExtension;
 import me.yarinlevi.waypoints.utils.Constants;
 import me.yarinlevi.waypoints.utils.MessagesUtils;
 import me.yarinlevi.waypoints.waypoint.Waypoint;
@@ -20,7 +19,7 @@ import java.util.stream.Stream;
  **/
 public class TeleportSubCommand extends SubCommand {
     @Override
-    public void run(Player player, String[] args) {
+    public void run(Player player, String[] args) { // /wp tp <player:waypoint> if public, /wp tp <waypoint> if private.
         if (args.length >= 2) {
 
             String[] checkArgs;
@@ -49,7 +48,7 @@ public class TeleportSubCommand extends SubCommand {
                         .ifPresentOrElse(waypoint -> {
                             boolean proceed = true;
 
-                            if (Constants.ECONOMY_SUPPORT) {
+                            if (Constants.TELEPROT_ECONOMY_SUPPORT) {
                                 Economy economy = Waypoints.getInstance().getEconomyExtension().getEconomy();
 
                                 if (economy.has(player, Constants.WAYPOINT_TELEPORT_COST)) {

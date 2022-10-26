@@ -11,7 +11,7 @@ public class Constants {
     public static boolean DEATH_POINTS;
     public static boolean PUBLIC_WAYPOINTS;
     public static boolean WAYPOINT_TELEPORTING;
-    public static boolean ECONOMY_SUPPORT;
+    public static boolean TELEPROT_ECONOMY_SUPPORT;
     public static int WAYPOINT_TELEPORT_COST;
 
     public Constants() {
@@ -21,7 +21,7 @@ public class Constants {
         DEATH_POINTS = config.getBoolean("DeathPoints");
         PUBLIC_WAYPOINTS = config.getBoolean("PublicWaypoints");
         WAYPOINT_TELEPORTING = config.getBoolean("WaypointTeleporting.enabled", false);
-        ECONOMY_SUPPORT = config.getBoolean("WaypointTeleporting.economy", false);
+        TELEPROT_ECONOMY_SUPPORT = config.getBoolean("WaypointTeleporting.economy", false);
         WAYPOINT_TELEPORT_COST = config.getInt("WaypointTeleporting.cost", 20);
     }
 }

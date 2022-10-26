@@ -5,6 +5,7 @@ import me.yarinlevi.waypoints.commands.shared.SubCommand;
 import me.yarinlevi.waypoints.exceptions.PlayerNotLoadedException;
 import me.yarinlevi.waypoints.exceptions.WaypointAlreadyExistsException;
 import me.yarinlevi.waypoints.exceptions.WaypointLimitReachedException;
+import me.yarinlevi.waypoints.utils.Constants;
 import me.yarinlevi.waypoints.utils.MessagesUtils;
 import me.yarinlevi.waypoints.utils.Utils;
 import me.yarinlevi.waypoints.waypoint.Waypoint;
@@ -26,6 +27,9 @@ public class CreateSubCommand extends SubCommand {
             if (!Utils.disallowedCharacters.matcher(name).matches()) {
 
                 Waypoint wp = new Waypoint(player.getUniqueId(), name, player.getLocation(), StateIdentifier.PRIVATE, false);
+
+                //Todo: add economy support for creating waypoints
+                // Maybe add ability to buy extended limit for waypoints? (v5.x+)
 
                 try {
                     Waypoints.getInstance().getWaypointHandler().addWaypoint(player, wp);

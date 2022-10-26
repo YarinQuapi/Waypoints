@@ -74,10 +74,11 @@ public class Waypoints extends JavaPlugin {
         /*
          * Extension loading
          */
-        if (Constants.WAYPOINT_TELEPORTING && Constants.ECONOMY_SUPPORT) {
+        if (Constants.WAYPOINT_TELEPORTING && Constants.TELEPROT_ECONOMY_SUPPORT) {
             try {
                 economyExtension = new EconomyExtension();
             } catch (ExtensionLoadingErrorException e) {
+
                 this.getLogger().log(Level.SEVERE, "An error has occurred!");
                 this.getLogger().log(Level.SEVERE, e.getMessage());
                 this.getLogger().log(Level.SEVERE, "Stacktrace:");
