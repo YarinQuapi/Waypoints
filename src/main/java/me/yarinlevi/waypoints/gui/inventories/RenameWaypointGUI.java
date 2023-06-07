@@ -9,7 +9,7 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.Arrays;
+import java.util.List;
 
 /**
  * @author YarinQuapi
@@ -29,9 +29,9 @@ public class RenameWaypointGUI {
                             player2.sendMessage(Utils.newMessage("&cRename failed! &7illegal characters were found."));
                         }
                     } else {
-                        return Arrays.asList(AnvilGUI.ResponseAction.replaceInputText(MessagesUtils.getMessage("gui.try_again")));
+                        return List.of(AnvilGUI.ResponseAction.replaceInputText(MessagesUtils.getMessage("gui.try_again")));
                     }
-                    return Arrays.asList(AnvilGUI.ResponseAction.close());
+                    return List.of(AnvilGUI.ResponseAction.close());
                 })
                 .text(" ")
                 .itemLeft(new ItemStack(Material.PAPER))

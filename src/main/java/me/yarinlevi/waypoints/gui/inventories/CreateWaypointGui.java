@@ -13,8 +13,7 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.Arrays;
-import java.util.Collections;
+import java.util.List;
 
 /**
  * @author YarinQuapi
@@ -38,13 +37,13 @@ public class CreateWaypointGui extends AbstractGui {
                                 player2.sendMessage(e.getMessage());
                             }
                         } else {
-                            return Arrays.asList(AnvilGUI.ResponseAction.replaceInputText(MessagesUtils.getMessage("illegal_characters")));
+                            return List.of(AnvilGUI.ResponseAction.replaceInputText(MessagesUtils.getMessage("illegal_characters")));
                         }
                     } else {
-                        return Arrays.asList(AnvilGUI.ResponseAction.replaceInputText(MessagesUtils.getMessage("gui.try_again")));
+                        return List.of(AnvilGUI.ResponseAction.replaceInputText(MessagesUtils.getMessage("gui.try_again")));
                     }
 
-                    return Arrays.asList(AnvilGUI.ResponseAction.close());
+                    return List.of(AnvilGUI.ResponseAction.close());
 
                 })
                 .text(" ")
