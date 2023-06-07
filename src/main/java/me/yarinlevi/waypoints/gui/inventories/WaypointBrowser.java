@@ -6,6 +6,7 @@ import me.yarinlevi.waypoints.exceptions.InventoryDoesNotExistException;
 import me.yarinlevi.waypoints.gui.GuiUtils;
 import me.yarinlevi.waypoints.gui.helpers.AbstractGui;
 import me.yarinlevi.waypoints.gui.helpers.types.GuiItem;
+import me.yarinlevi.waypoints.gui.items.Items;
 import me.yarinlevi.waypoints.utils.LocationData;
 import me.yarinlevi.waypoints.utils.MessagesUtils;
 import me.yarinlevi.waypoints.utils.Utils;
@@ -109,6 +110,18 @@ public class WaypointBrowser extends AbstractGui implements Listener {
 
                 Player player = (Player) e.getWhoClicked();
 
+                if (e.getRawSlot() == this.getSlots() -9+ Items.ITEM_MENU_SLOT) {
+                    GuiUtils.openInventory("gui.personal.profile", player);
+                }
+
+                if (e.getRawSlot() == this.getSlots() -9+ Items.ITEM_NEXT_SLOT) {
+                    this.nextPage(player);
+                }
+
+                if (e.getRawSlot() == this.getSlots() -9+ Items.ITEM_PREVIOUS_SLOT) {
+                    this.previousPage(player);
+                }
+
                 if (item.getItemMeta().hasLore()) {
 
                     OfflinePlayer offlinePlayer;
@@ -129,9 +142,7 @@ public class WaypointBrowser extends AbstractGui implements Listener {
                             player.sendMessage(msg);
                         }
 
-                        case RIGHT -> {
-                            Waypoints.getInstance().getTrackerManager().track(player, wp, Waypoints.getInstance().getWaypointHandler().getPlayer(player).getETracker());
-                        }
+                        case RIGHT -> Waypoints.getInstance().getTrackerManager().track(player, wp, Waypoints.getInstance().getWaypointHandler().getPlayer(player).getETracker());
                     }
                 }
             }
