@@ -6,7 +6,7 @@
 
     <groupId>me.yarinlevi</groupId>
     <artifactId>Waypoints</artifactId>
-    <version>5.0-Beta 3</version>
+    <version>5.0</version>
     <packaging>jar</packaging>
 
     <name>QWaypoints</name>
@@ -126,7 +126,7 @@
         <dependency>
             <groupId>net.wesjd</groupId>
             <artifactId>anvilgui</artifactId>
-            <version>1.5.3-SNAPSHOT</version>
+            <version>1.6.5-SNAPSHOT</version>
         </dependency>
 
         <dependency>

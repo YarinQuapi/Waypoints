@@ -8,20 +8,30 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.Arrays;
+
 /**
  * @author YarinQuapi
  */
 public class EditWaypointItemGui {
     public static void open(Player player, Waypoint wp) {
         new AnvilGUI.Builder()
-                .onComplete((player2, text) -> {
-                    if (Material.getMaterial(text.trim().toUpperCase()) != null && !text.trim().equalsIgnoreCase("air")) {
-                        wp.editItem(new ItemStack(Material.getMaterial(text.trim().toUpperCase())));
-                        player2.sendMessage(MessagesUtils.getMessage("edit_icon", text.trim().toUpperCase()));
+                .onClick((slot, state) -> {
+                    Player player2 = state.getPlayer();
+                    String text = state.getText();
+
+                    if (slot == AnvilGUI.Slot.OUTPUT) {
+                        if (Material.getMaterial(text.trim().toUpperCase()) != null && !text.trim().equalsIgnoreCase("air")) {
+                            wp.editItem(new ItemStack(Material.getMaterial(text.trim().toUpperCase())));
+                            player2.sendMessage(MessagesUtils.getMessage("edit_icon", text.trim().toUpperCase()));
+                        } else {
+                            player2.sendMessage(MessagesUtils.getMessage("edit_icon_failed"));
+                        }
                     } else {
-                        player2.sendMessage(MessagesUtils.getMessage("edit_icon_failed"));
+                        return Arrays.asList(AnvilGUI.ResponseAction.replaceInputText(MessagesUtils.getMessage("gui.try_again")));
                     }
-                    return AnvilGUI.Response.close();
+
+                    return Arrays.asList(AnvilGUI.ResponseAction.close());
                 })
                 .text(" ")
                 .itemLeft(new ItemStack(Material.PAPER))

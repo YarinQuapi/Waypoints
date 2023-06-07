@@ -10,25 +10,34 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.Arrays;
+
 /**
  * @author YarinQuapi
  **/
 public class DeleteWaypointGUI {
     public static void open(Player player, Waypoint wp) {
         new AnvilGUI.Builder()
-                .onComplete((player2, text) -> {
-                    if (text.trim().equalsIgnoreCase("confirm")) {
-                        try {
-                            Waypoints.getInstance().getWaypointHandler().removeWaypoint(Bukkit.getOfflinePlayer(wp.getOwner()), wp);
-                        } catch (PlayerNotLoadedException e) {
-                            throw new RuntimeException(e);
+                .onClick((slot, state) -> {
+                    Player player2 = state.getPlayer();
+                    String text = state.getText();
+
+                    if (slot == AnvilGUI.Slot.OUTPUT) {
+                        if (text.trim().equalsIgnoreCase("confirm")) {
+                            try {
+                                Waypoints.getInstance().getWaypointHandler().removeWaypoint(Bukkit.getOfflinePlayer(wp.getOwner()), wp);
+                            } catch (PlayerNotLoadedException e) {
+                                throw new RuntimeException(e);
+                            }
+                            player2.sendMessage(MessagesUtils.getMessage("waypoint_deleted", wp.getName()));
+                        } else {
+                            player2.sendMessage(MessagesUtils.getMessage("waypoint_delete_name_not_match"));
                         }
-                        player2.sendMessage(MessagesUtils.getMessage("waypoint_deleted", wp.getName()));
                     } else {
-                        player2.sendMessage(MessagesUtils.getMessage("waypoint_delete_name_not_match"));
+                        return Arrays.asList(AnvilGUI.ResponseAction.replaceInputText(MessagesUtils.getMessage("gui.try_again")));
                     }
 
-                    return AnvilGUI.Response.close();
+                    return Arrays.asList(AnvilGUI.ResponseAction.close());
                 })
                 .text("Type confirm.")
                 .itemLeft(new ItemStack(Material.PAPER))

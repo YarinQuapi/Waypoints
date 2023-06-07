@@ -13,6 +13,9 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.Arrays;
+import java.util.Collections;
+
 /**
  * @author YarinQuapi
  */
@@ -20,19 +23,28 @@ public class CreateWaypointGui extends AbstractGui {
     @Override
     public void run(Player player) {
         new AnvilGUI.Builder()
-                .onComplete((player2, text) -> {
-                    if (!Utils.disallowedCharacters.matcher(text.trim()).matches() && !text.trim().equalsIgnoreCase("air")) {
-                        Waypoint waypoint = new Waypoint(player.getUniqueId(), text.trim(), player2.getLocation(), false);
-                        try {
-                            Waypoints.getInstance().getWaypointHandler().addWaypoint(player2, waypoint);
-                            player2.sendMessage(MessagesUtils.getMessage("waypoint_created", text.trim()));
-                        } catch (WaypointAlreadyExistsException | WaypointLimitReachedException | PlayerNotLoadedException e) {
-                            player2.sendMessage(e.getMessage());
+                .onClick((slot, state) -> {
+                    String text = state.getText();
+                    Player player2 = state.getPlayer();
+
+                    if (slot == AnvilGUI.Slot.OUTPUT) {
+                        if (!Utils.disallowedCharacters.matcher(text.trim()).matches() && !text.trim().equalsIgnoreCase("air")) {
+                            Waypoint waypoint = new Waypoint(player.getUniqueId(), text.trim(), player2.getLocation(), false);
+                            try {
+                                Waypoints.getInstance().getWaypointHandler().addWaypoint(player2, waypoint);
+                                player2.sendMessage(MessagesUtils.getMessage("waypoint_created", text.trim()));
+                            } catch (WaypointAlreadyExistsException | WaypointLimitReachedException |
+                                     PlayerNotLoadedException e) {
+                                player2.sendMessage(e.getMessage());
+                            }
+                        } else {
+                            return Arrays.asList(AnvilGUI.ResponseAction.replaceInputText(MessagesUtils.getMessage("illegal_characters")));
                         }
                     } else {
-                        player2.sendMessage(MessagesUtils.getMessage("illegal_characters"));
+                        return Arrays.asList(AnvilGUI.ResponseAction.replaceInputText(MessagesUtils.getMessage("gui.try_again")));
                     }
-                    return AnvilGUI.Response.close();
+
+                    return Arrays.asList(AnvilGUI.ResponseAction.close());
 
                 })
                 .text(" ")

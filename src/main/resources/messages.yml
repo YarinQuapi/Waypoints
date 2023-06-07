@@ -68,6 +68,7 @@ edit_icon_failed: "&cEdit failed! &7The item id was not found."
 click_edit_icon: "&7Click to edit waypoint's item."
 waypoint_delete_name_not_match: "&cDelete failed! &7confirmation failed!"
 gui:
+  try_again: "Try Again"
   no-items: "&7Action Failed! &cNo items found!"
   last-page: "&7Action Failed! &cYou were on the last page."
   items: # Please note: When there are multiple pages, the last row is always locked to these items. Their slots are the slot at the last row.

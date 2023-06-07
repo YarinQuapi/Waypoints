@@ -9,21 +9,29 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.Arrays;
+
 /**
  * @author YarinQuapi
  */
 public class RenameWaypointGUI {
     public static void open(Player player, Waypoint wp) {
         new AnvilGUI.Builder()
-                .onComplete((player2, text) -> {
-                    if (!Utils.disallowedCharacters.matcher(text.trim()).matches()) {
-                        wp.setName(text.trim());
-                        player2.sendMessage(Utils.newMessage("&7Successfully changed waypoint's name to: &b" + text.trim()));
-                    } else {
-                        player2.sendMessage(Utils.newMessage("&cRename failed! &7illegal characters were found."));
+                .onClick((slot, state) -> {
+                    Player player2 = state.getPlayer();
+                    String text = state.getText();
 
+                    if (slot == AnvilGUI.Slot.OUTPUT) {
+                        if (!Utils.disallowedCharacters.matcher(text.trim()).matches()) {
+                            wp.setName(text.trim());
+                            player2.sendMessage(Utils.newMessage("&7Successfully changed waypoint's name to: &b" + text.trim()));
+                        } else {
+                            player2.sendMessage(Utils.newMessage("&cRename failed! &7illegal characters were found."));
+                        }
+                    } else {
+                        return Arrays.asList(AnvilGUI.ResponseAction.replaceInputText(MessagesUtils.getMessage("gui.try_again")));
                     }
-                    return AnvilGUI.Response.close();
+                    return Arrays.asList(AnvilGUI.ResponseAction.close());
                 })
                 .text(" ")
                 .itemLeft(new ItemStack(Material.PAPER))
