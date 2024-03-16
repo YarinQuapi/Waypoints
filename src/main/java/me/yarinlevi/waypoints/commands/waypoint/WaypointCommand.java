@@ -39,6 +39,7 @@ public class WaypointCommand implements CommandExecutor, TabExecutor {
         commandMap.put("nearest", new NearestSubCommand());
         commandMap.put("spawn", new SpawnSubCommand());
         commandMap.put("public", new PublicSubCommand());
+        commandMap.put("credits", new CreditSubCommand());
 
         if (Constants.WAYPOINT_TELEPORTING) {
             commandMap.put("teleport", new TeleportSubCommand());

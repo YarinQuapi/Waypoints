@@ -88,7 +88,7 @@ public class WaypointHandler implements IWaypointHandler {
             PlayerData data = playerData.get(player);
 
             if (!data.getWaypointList().isEmpty()) {
-                if (data.getWaypointList().size() >= data.getWaypointLimit()) {
+                if (data.getWaypointList().size() >= data.getWaypointLimit() -1) { // -1 because Java starts counting ints at 0 (e.g. 15 is actually 16)
                     throw new WaypointLimitReachedException();
                 }
 

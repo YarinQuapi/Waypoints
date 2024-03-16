@@ -24,15 +24,28 @@ public class TrackSubCommand extends SubCommand {
                 } else {
                     player.sendMessage(MessagesUtils.getMessage("tracking_off"));
                 }
-
             } else {
                 Waypoint wp;
+
                 if (!args[1].contains(":")) {
-                    wp = Waypoints.getInstance().getWaypointHandler().getWaypoint(player, args[1]);
+                    {
+                        // Personal waypoint tracking
+                        wp = Waypoints.getInstance().getWaypointHandler().getWaypoint(player, args[1]);
+                    }
                 } else {
                     String playerName = args[1].split(":")[0];
                     String waypointName = args[1].split(":")[1];
 
+                    // Player tracking
+                    if (playerName.equalsIgnoreCase("player") || playerName.equalsIgnoreCase("p")) {
+                        @Nullable Player playerToTrack = Bukkit.getPlayer(waypointName);
+
+                        if (playerToTrack == null) {
+                            player.sendMessage(MessagesUtils.getMessage("tracking_failed_tracking_3"));
+                        }
+                    }
+
+                    // Public waypoint tracking
                     wp = Waypoints.getInstance().getWaypointHandler().getPublicWaypoints().stream()
                             .filter(waypoint -> waypoint.getOwner().equals(Bukkit.getOfflinePlayer(playerName).getUniqueId()))
                             .filter(waypoint -> waypoint.getName().equalsIgnoreCase(waypointName)).findFirst().orElse(null);

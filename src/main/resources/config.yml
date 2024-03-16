@@ -1,21 +1,21 @@
 # Plugin prefix:
-Prefix: "&b&lQWaypoints &f&l> &r"
+prefix: "&b&lQWaypoints &f&l> &r"
 
 # Death points? true : false
-DeathPoints: true
+death_points: true
 
 # Should public waypoints be available?
-PublicWaypoints: true
+public_waypoints: true
 
 # This is regarding the member-to-member waypoint teleporting, admin teleporting is unaffected by this!
 # Economy means vault-api support, it is a must for economy, along with an economy plugin for obvious reasons.
 # Please note: Even if waypoint teleporting is enabled, players must have the qwaypoints.command.teleport permission for this to work for them.
-WaypointTeleporting:
+waypoint_teleporting:
   enabled: false
   economy: false
   cost: 20
 
-# Waypoint limits, replace dots with '-' instead
+# Waypoint limits (this is permission based, in order to grant it you grant it using dots instead of dash's, e.g. "waypoints.limit.default")
 total_limits:
   "waypoints-limit-default": 10
   "waypoints-limit-vip": 15

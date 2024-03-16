@@ -4,7 +4,7 @@
 QWaypoints is a location and waypoint storing system with advanced features and ultimate perfomance.
 
 ## Features
-* 1.18.2 Support!
+* 1.20 Support!
 * Unlimited waypoints
 * Public & Private waypoints for sharing cool locations!
 * Waypoint sharing! almost like public waypoints, more like a one time ticket to a private one.

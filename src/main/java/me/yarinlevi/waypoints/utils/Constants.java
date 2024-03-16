@@ -8,6 +8,10 @@ import org.bukkit.configuration.file.FileConfiguration;
  */
 public class Constants {
     public static String PREFIX;
+
+    public static String PLUGIN_NAME = "§b§lQWaypoints";
+    public static String PLUGIN_VERSION = "§e§l5.0";
+
     public static boolean DEATH_POINTS;
     public static boolean PUBLIC_WAYPOINTS;
     public static boolean WAYPOINT_TELEPORTING;
@@ -17,11 +21,11 @@ public class Constants {
     public Constants() {
         FileConfiguration config = Waypoints.getInstance().getConfig();
 
-        PREFIX = config.getString("Prefix").replaceAll("&", "§");
-        DEATH_POINTS = config.getBoolean("DeathPoints");
-        PUBLIC_WAYPOINTS = config.getBoolean("PublicWaypoints");
-        WAYPOINT_TELEPORTING = config.getBoolean("WaypointTeleporting.enabled", false);
-        TELEPROT_ECONOMY_SUPPORT = config.getBoolean("WaypointTeleporting.economy", false);
-        WAYPOINT_TELEPORT_COST = config.getInt("WaypointTeleporting.cost", 20);
+        PREFIX = config.getString("prefix").replaceAll("&", "§");
+        DEATH_POINTS = config.getBoolean("death_points");
+        PUBLIC_WAYPOINTS = config.getBoolean("public_waypoints");
+        WAYPOINT_TELEPORTING = config.getBoolean("waypoint_teleporting.enabled", false);
+        TELEPROT_ECONOMY_SUPPORT = config.getBoolean("waypoint_teleporting.economy", false);
+        WAYPOINT_TELEPORT_COST = config.getInt("waypoint_teleporting.cost", 20);
     }
 }

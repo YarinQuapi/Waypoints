@@ -18,16 +18,22 @@ import java.util.stream.Stream;
  * @author YarinQuapi
  **/
 public class TeleportSubCommand extends SubCommand {
-    @Override
-    public void run(Player player, String[] args) { // /wp tp <player:waypoint> if public, /wp tp <waypoint> if private.
+    @Override                                       // /wp tp <player>
+    public void run(Player player, String[] args) { // /wp tp <"player":waypoint> if public, /wp tp <waypoint> if private.
         if (args.length >= 2) {
 
             String[] checkArgs;
             OfflinePlayer waypointOwner;
             boolean isPublic;
+            boolean playerTP = false;
 
             if (args[1].contains(":")) {
                 checkArgs = args[1].split(":");
+
+                if (checkArgs[0].equalsIgnoreCase("player")) {
+                    playerTP = true;
+                }
+
                 waypointOwner = Bukkit.getOfflinePlayer(checkArgs[0]); // The player isn't the owner and this is a public waypoint.
                 isPublic = true;
             } else {
