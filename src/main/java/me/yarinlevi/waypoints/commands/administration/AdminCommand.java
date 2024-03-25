@@ -2,6 +2,7 @@ package me.yarinlevi.waypoints.commands.administration;
 
 import me.yarinlevi.waypoints.commands.administration.sub.CheckSubCommand;
 import me.yarinlevi.waypoints.commands.administration.sub.ChunkScanSubCommand;
+import me.yarinlevi.waypoints.commands.administration.sub.ServerWaypointSubCommand;
 import me.yarinlevi.waypoints.commands.administration.sub.TeleportSubCommand;
 import me.yarinlevi.waypoints.commands.shared.SubCommand;
 import me.yarinlevi.waypoints.utils.MessagesUtils;
@@ -26,6 +27,7 @@ public class AdminCommand implements CommandExecutor {
         commandMap.put("check", new CheckSubCommand());
         commandMap.put("chunkscan", new ChunkScanSubCommand());
         commandMap.put("teleport", new TeleportSubCommand());
+        commandMap.put("serverwaypoint", new ServerWaypointSubCommand());
 
         commandMap.forEach((key, cmd) -> {
             if (cmd.getAliases() != null && !cmd.getAliases().isEmpty()) {
