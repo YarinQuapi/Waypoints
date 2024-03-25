@@ -43,6 +43,8 @@ public class TrackSubCommand extends SubCommand {
                         if (playerToTrack == null) {
                             player.sendMessage(MessagesUtils.getMessage("tracking_failed_tracking_3"));
                         }
+
+                        // Todo: figure out how to make the player a waypoint lol
                     }
 
                     // Public waypoint tracking
@@ -54,7 +56,7 @@ public class TrackSubCommand extends SubCommand {
                 if (wp != null) {
                     if (Waypoints.getInstance().getTrackerManager().track(player, wp, Waypoints.getInstance().getWaypointHandler().getPlayer(player).getETracker())) {
 
-                        player.sendMessage(MessagesUtils.getMessage("tracking", wp.getName()));
+                        player.sendMessage(MessagesUtils.getMessage("tracking", wp.getName(), wp.getDistance(player)));
                         player.setCompassTarget(wp.getLocation());
                     } else {
                         player.sendMessage(MessagesUtils.getMessage("tracking_failed_tracking"));

@@ -20,10 +20,15 @@ total_limits:
   "waypoints-limit-default": 10
   "waypoints-limit-vip": 15
 
+# GUI configurations, A bunch of random settings to enable certain behaviours of the GUI that you may or may not want
+# Open the public waypoint GUI instead of the personal waypoint GUI if the player has no waypoints created.
+open_public_instead: true
+
 # Configurations for all the trackers available
 trackers:
   enabled: true
   destination_reached: 10
+  change_tracker_while_tracking: true
 
   actionbar:
     enabled: true
