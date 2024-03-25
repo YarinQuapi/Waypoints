@@ -25,7 +25,7 @@ public class ChunkScanSubCommand extends SubCommand {
 
     @Override
     public @Nullable String getPermission() {
-        return null;
+        return "qwaypoints.command.chunkscan";
     }
 
     @Override
