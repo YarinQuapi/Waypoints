@@ -15,10 +15,18 @@ waypoint_teleporting:
   economy: false
   cost: 20
 
-# Waypoint limits (this is permission based, in order to grant it you grant it using dots instead of dash's, e.g. "waypoints.limit.default")
+# WAYPOINTS SETTINGS
+
+# ALLOW CLICK-ADDING ON WAYPOINT SHARE
+waypoint_click_sharing: true
+
+# WAYPOINT LIMITS
+# PLEASE NOTE!: IF YOU WANT TO ADD A PERMISSION USE DASHES (-)! THIS IS IMPORTANT! THE PERMISSION ITSELF WILL STILL USE DOTS (.)!
+# OPERATORS STILL ARE BASED ON THOSE LIMITS, IF YOU WISH TO HAVE HIGHER LIMIT FOR OPERATORS ADD A PERMISSION SPECIFYING THAT OR UNMARK THE PERMISSION THAT EXISTS FOR THAT
 total_limits:
   "waypoints-limit-default": 10
   "waypoints-limit-vip": 15
+#  "operator": 9999
 
 # GUI configurations, A bunch of random settings to enable certain behaviours of the GUI that you may or may not want
 # Open the public waypoint GUI instead of the personal waypoint GUI if the player has no waypoints created.

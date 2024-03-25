@@ -34,6 +34,7 @@ public class WaypointCommand implements CommandExecutor, TabExecutor {
         commandMap.put("check", new CheckSubCommand());
         commandMap.put("distance", new DistanceSubCommand());
         commandMap.put("share", new ShareSubCommand());
+        commandMap.put("accept", new AcceptSubCommand()); // Accept click-sharing (suggested only)
         commandMap.put("track", new TrackSubCommand());
         commandMap.put("list", new ListSubCommand());
         commandMap.put("nearest", new NearestSubCommand());

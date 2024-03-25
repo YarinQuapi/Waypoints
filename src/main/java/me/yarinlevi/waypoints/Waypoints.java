@@ -15,6 +15,7 @@ import me.yarinlevi.waypoints.player.trackers.TrackerManager;
 import me.yarinlevi.waypoints.utils.Constants;
 import me.yarinlevi.waypoints.utils.MessagesUtils;
 import me.yarinlevi.waypoints.utils.Utils;
+import me.yarinlevi.waypoints.waypoint.handler.ClickSharingHandler;
 import me.yarinlevi.waypoints.waypoint.handler.WaypointHandler;
 import me.yarinlevi.waypoints.waypoint.types.IWaypointHandler;
 import org.bstats.bukkit.Metrics;
@@ -32,6 +33,7 @@ public class Waypoints extends JavaPlugin {
     @Getter private IData playerData;
     @Getter private TrackerManager trackerManager;
     @Getter private PlayerSettingsManager playerSettingsManager;
+    @Getter private ClickSharingHandler clickSharingHandler;
 
     /*
      * Extensions
@@ -60,6 +62,7 @@ public class Waypoints extends JavaPlugin {
 
         waypointHandler = new WaypointHandler(); // loads waypoint handler
 
+        clickSharingHandler = new ClickSharingHandler(); // Loads ClickSharing
 
         if (Constants.DEATH_POINTS) { // death point registerer
             Bukkit.getPluginManager().registerEvents(new PlayerDeathListener(), this);

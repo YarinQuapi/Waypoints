@@ -27,7 +27,7 @@ public class Waypoint {
     @Getter private final boolean deathpoint;
     @Getter private ItemStack item = new ItemStack(Material.DIRT);
     private final WaypointWorld world;
-    @Getter private final UUID owner;
+    @Getter private UUID owner;
     @Getter @Setter private StateIdentifier state = StateIdentifier.PRIVATE;
 
     public Waypoint(UUID owner, String name, Location location, boolean deathpoints) {
@@ -71,6 +71,12 @@ public class Waypoint {
 
         Waypoints.getInstance().getPlayerData().updateWaypointItem(this.owner, this.name, item.getType().name().toUpperCase());
     }
+
+    // This is ONLY to be used in CLICK-SHARING!!!
+    public void setOwner(UUID uuid) {
+        this.owner = uuid;
+    }
+
 
     public Vector getVector() {
         return this.location.toVector();
