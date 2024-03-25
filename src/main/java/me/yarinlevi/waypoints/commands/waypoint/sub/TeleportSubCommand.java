@@ -70,9 +70,7 @@ public class TeleportSubCommand extends SubCommand {
                             } else {
                                 player.sendMessage(MessagesUtils.getMessage("teleport_failed_no_money"));
                             }
-                        }, () -> {
-                            player.sendMessage(MessagesUtils.getMessage("action_failed_not_found"));
-                        });
+                        }, () -> player.sendMessage(MessagesUtils.getMessage("action_failed_not_found")));
             } else {
                 player.sendMessage(MessagesUtils.getMessage("never_played", checkArgs[0]));
             }
