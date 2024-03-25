@@ -29,6 +29,9 @@ import java.util.List;
  * @author YarinQuapi
  */
 public class WaypointListGui extends AbstractGui implements Listener {
+    boolean openPublicInstead = Waypoints.getInstance().getConfig().getBoolean("open_public_instead", true);
+
+
     @Override
     public void run(Player player) {
         this.setKey("gui.personal.waypointlist");
@@ -36,7 +39,9 @@ public class WaypointListGui extends AbstractGui implements Listener {
         this.setTitle(Utils.newMessageNoPrefix("&7Waypoint List"));
 
         if (Waypoints.getInstance().getWaypointHandler().getWaypoints(player).isEmpty()) {
-            player.sendMessage(MessagesUtils.getMessage("gui.no-items", player.getName()));
+            if (openPublicInstead) {
+                GuiUtils.openInventory("gui.public.browser", player);
+            } else player.sendMessage(MessagesUtils.getMessage("gui.no-items", player.getName()));
             return;
         }
 
