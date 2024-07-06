@@ -44,7 +44,7 @@ public class TrackSubCommand extends SubCommand {
                             player.sendMessage(MessagesUtils.getMessage("tracking_failed_tracking_3"));
                         }
 
-                        // Todo: figure out how to make the player a waypoint lol
+                        Waypoint pwp = new Waypoint(playerToTrack.getUniqueId(), )
                     }
 
                     // Public waypoint tracking

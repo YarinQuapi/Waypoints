@@ -24,7 +24,7 @@ waypoint_click_sharing: true
 # PLEASE NOTE!: IF YOU WANT TO ADD A PERMISSION USE DASHES (-)! THIS IS IMPORTANT! THE PERMISSION ITSELF WILL STILL USE DOTS (.)!
 # OPERATORS STILL ARE BASED ON THOSE LIMITS, IF YOU WISH TO HAVE HIGHER LIMIT FOR OPERATORS ADD A PERMISSION SPECIFYING THAT OR UNMARK THE PERMISSION THAT EXISTS FOR THAT
 total_limits:
-  "waypoints-limit-default": 10
+  "waypoints-limit-default": 10 # this in-game will be "waypoints.limit.default"
   "waypoints-limit-vip": 15
 #  "operator": 9999
 

@@ -4,6 +4,7 @@ import lombok.Getter;
 import me.yarinlevi.waypoints.Waypoints;
 import me.yarinlevi.waypoints.waypoint.Waypoint;
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
 import java.util.HashMap;
@@ -41,6 +42,10 @@ public class TrackerManager {
     }
 
     public boolean track(Player player, Waypoint waypoint, ETracker tracker) {
+        return trackers.get(tracker).track(player, waypoint);
+    }
+
+    public boolean track(Player player, Location waypoint, ETracker tracker) {
         return trackers.get(tracker).track(player, waypoint);
     }
 

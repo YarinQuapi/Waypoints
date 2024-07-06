@@ -11,6 +11,7 @@ import java.util.UUID;
 
 public class AcceptSubCommand extends SubCommand {
     boolean click_sharing = Waypoints.getInstance().getConfig().getBoolean("waypoint_click_sharing", true);
+    boolean player_tracking = Waypoints.getInstance().getConfig().getBoolean("waypoint_player_tracking", true);
 
     @Override
     public void run(Player player, String[] args) {
@@ -19,16 +20,31 @@ public class AcceptSubCommand extends SubCommand {
             return;
         }
 
-        if (args.length == 0) {
+        if (args.length <= 2) {
             player.sendMessage(MessagesUtils.getMessage("not_enough_args"));
-        } else if (args.length == 1) {
-            UUID uuid = UUID.fromString(args[0]);
+        }
+        if (args[1].equalsIgnoreCase("share")) {
+            if (!click_sharing) {
+                player.sendMessage(MessagesUtils.getMessage("click_sharing_disabled"));
+                return;
+            }
 
-            Waypoints.getInstance().getClickSharingHandler().acceptShare(player, uuid);
-        } else {
-            UUID uuid = UUID.fromString(args[0]);
+            if (args.length == 3) {
+                UUID uuid = UUID.fromString(args[2]);
 
-            Waypoints.getInstance().getClickSharingHandler().acceptShare(player, uuid, args[1]);
+                Waypoints.getInstance().getClickSharingHandler().acceptShare(player, uuid);
+            } else {
+                UUID uuid = UUID.fromString(args[2]);
+
+                Waypoints.getInstance().getClickSharingHandler().acceptShare(player, uuid, args[3]);
+            }
+        } else if (args[1].equalsIgnoreCase("track")) {
+            if (!player_tracking) {
+                player.sendMessage(MessagesUtils.getMessage("player_tracking_disabled"));
+                return;
+            }
+
+            UUID uuid = UUID.fromString(args[2]);
         }
     }
 

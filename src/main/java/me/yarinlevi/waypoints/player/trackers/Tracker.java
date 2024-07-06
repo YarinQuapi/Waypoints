@@ -2,9 +2,11 @@ package me.yarinlevi.waypoints.player.trackers;
 
 import me.yarinlevi.waypoints.Waypoints;
 import me.yarinlevi.waypoints.waypoint.Waypoint;
+import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 public abstract class Tracker {
@@ -18,6 +20,20 @@ public abstract class Tracker {
 
     boolean isTracked(Player player) {
         return trackedPlayers.containsKey(player);
+    }
+
+    boolean track(Player player, Location location) {
+        if (trackedPlayers.containsKey(player)) {
+            if (change_tracker_while_tracking) {
+                trackedPlayers.remove(player);
+                trackedPlayers.put(player, location);
+                return true;
+            }
+            return false;
+        } else {
+            trackedPlayers.put(player, location);
+            return true;
+        }
     }
 
     boolean track(Player player, Waypoint waypoint) {
